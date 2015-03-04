@@ -195,8 +195,8 @@ void go()
 
 		if('=' == key)
 		{
-			op_keys.back()->background(0x7ACC);
-			op_keys.back()->foreground(0xFFFFFF);
+			op_keys.back()->bgcolor ( color_rgb(  0x7ACC));
+			op_keys.back()->fgcolor ( color_rgb(0xFFFFFF));
 		}
 		place.field("opkeys") << *op_keys.back();
 
@@ -210,4 +210,9 @@ void go()
 	place.collocate();
 	fm.show();
 	exec();
+}
+
+int main()
+{
+    go();
 }
