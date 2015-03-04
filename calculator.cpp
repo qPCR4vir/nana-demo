@@ -1,6 +1,6 @@
 /*
  *	Nana Calculator
- *	Nana 0.8 and C++11 is required.
+ *	Nana 1.0 and C++11 is required.
  *	This is a demo for Nana C++ Library.
  *	It creates an intermediate level graphical calculator with few code.
  */
