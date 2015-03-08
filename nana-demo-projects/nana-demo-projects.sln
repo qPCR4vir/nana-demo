@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "calculator", "calculator.vc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "widget_show", "widget_show.vcxproj", "{A42511E4-0357-4730-B5BB-AE10C235C7D3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "a_group_impl", "a_group_impl.vcxproj", "{9D6ADD6E-6873-45A8-A752-64F57893C88F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +33,14 @@ Global
 		{A42511E4-0357-4730-B5BB-AE10C235C7D3}.Release|Win32.Build.0 = Release|Win32
 		{A42511E4-0357-4730-B5BB-AE10C235C7D3}.Release|x64.ActiveCfg = Release|x64
 		{A42511E4-0357-4730-B5BB-AE10C235C7D3}.Release|x64.Build.0 = Release|x64
+		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Debug|Win32.Build.0 = Debug|Win32
+		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Debug|x64.ActiveCfg = Debug|x64
+		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Debug|x64.Build.0 = Debug|x64
+		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Release|Win32.ActiveCfg = Release|Win32
+		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Release|Win32.Build.0 = Release|Win32
+		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Release|x64.ActiveCfg = Release|x64
+		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

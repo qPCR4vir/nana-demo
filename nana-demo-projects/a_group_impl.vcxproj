@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\calculator.cpp" />
+    <ClCompile Include="..\Examples\a_group_impl.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C6D0B6AC-E8E0-4791-A2E0-B22EEC864B7E}</ProjectGuid>
+    <ProjectGuid>{9D6ADD6E-6873-45A8-A752-64F57893C88F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>calculator</RootNamespace>
   </PropertyGroup>
