@@ -34,7 +34,7 @@ namespace dm
 		    drawing dw(*this);
 		    dw.draw([](paint::graphics& graph)
 		    {
-			    graph.rectangle(false, colors::black);
+			    graph.rectangle(false, colors::gray_border);
 		    });
 	    }
     private:
@@ -58,7 +58,7 @@ namespace dm
             drawing dw(*this);
 		    dw.draw([](paint::graphics& graph)
 		    {
-			    graph.rectangle(false, colors::black);
+			    graph.rectangle(false, colors::gray_border);
 		    });
             plc.div(fmt.c_str());
 
@@ -101,3 +101,4 @@ int main()
 
 	::nana::exec();
 }
+/// ![](groups.png)
