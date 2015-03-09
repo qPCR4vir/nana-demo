@@ -101,4 +101,4 @@ int main()
 
 	::nana::exec();
 }
-/// ![](groups.png)
+/// 
