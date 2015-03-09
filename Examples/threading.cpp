@@ -6,12 +6,12 @@ void foo()
 }
 int main()
 {
-  using namespace nana::gui;
+  using namespace nana;
   using namespace nana::threads;
     pool thrpool;
     form fm;
-    fm.make_event<events::click>(pool_push(thrpool, foo));
-    fm.make_event<events::click>(pool_push(thrpool, []{
+    fm.events().click(pool_push(thrpool, foo));
+    fm.events().click(pool_push(thrpool, []{
                                               //A lambda is also allowed.
                                       }));
     fm.show();
