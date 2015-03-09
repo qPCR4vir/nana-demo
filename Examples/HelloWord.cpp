@@ -3,7 +3,7 @@
 
 int main()
 {
-    using namespace nana::gui;
+    using namespace nana;
     form    fm;
     label   lb(fm, fm.size());
     lb.caption(STR("Hello, World"));

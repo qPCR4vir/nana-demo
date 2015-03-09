@@ -3,13 +3,13 @@
 
 int main()
  {
-     using namespace nana::gui;
+     using namespace nana;
 
      form fm;
      fm.caption(STR("Hello World"));
      button btn(fm, nana::rectangle(20, 20, 150, 30));
      btn.caption(STR("Quit"));
-     btn.make_event<events::click>(API::exit);
+     btn.events().click(API::exit);
      fm.show();
      exec();
  }
