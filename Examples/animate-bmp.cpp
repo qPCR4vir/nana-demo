@@ -3,7 +3,7 @@
 
 int main()
 {
-    using namespace nana::gui;
+    using namespace nana;
    
     //Build frames
     frameset fset;

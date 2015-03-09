@@ -6,7 +6,7 @@
 
 int main()
 {
-    using namespace nana::gui;
+    using namespace nana;
 
     form fm;
 
@@ -24,25 +24,25 @@ int main()
     API::effects_bground(btn2, effects::bground_blur(2), 0.5);
 
     label lb0(fm, L"Normal Label");
-    lb0.foreground(0xFFFFFF);
+    lb0.fgcolor(color_rgb(0xFFFFFF));
 
     label lb1(fm, L"Basic Mode: Transparent");
-    lb1.foreground(0xFFFFFF);
+    lb1.fgcolor(color_rgb(0xFFFFFF));
     //Equal to lb1.transparent(true);
     API::effects_bground(lb1, effects::bground_transparent(0), 0);
 
     label lb2(fm, L"Basic Mode: Transparent and blend with its background color");
-    lb2.foreground(0xFFFFFF);
-    lb2.background(0xFF0000);
+    lb2.fgcolor(color_rgb(0xFFFFFF));
+    lb2.bgcolor(color_rgb(0xFF0000));
     API::effects_bground(lb2, effects::bground_transparent(10), 0);
 
     label lb3(fm, L"Basic Mode: Blur");
-    lb3.foreground(0xFFFFFF);
+    lb3.fgcolor(color_rgb(0xFFFFFF));
     API::effects_bground(lb3, effects::bground_blur(2), 0);
 
     place pl(fm);
-    pl.div("<><weight=80% abc vertical><>");
-    pl.field("abc")<<5<<btn<<5<<btn0<<5<<btn1<<5<<btn2<<5<<lb0<<5<<lb1<<5<<lb2<<5<<lb3<<5;
+    pl.div("<><weight=80% abc vertical gap=5><>");
+    pl["abc"] <<  btn << btn0  << btn1 << btn2<< lb0<< lb1<< lb2<< lb3 ;
     pl.collocate();
 
     fm.show();
