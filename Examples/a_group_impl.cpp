@@ -49,16 +49,21 @@ namespace dm
         label           titel/*  {*this}*/;
         std::string     fmt;
 
-        group1(widget &owner, ::nana::string titel={}, rectangle r={})
+        group1(widget &owner, ::nana::string titel_={}, bool format=false, unsigned gap=2, rectangle r={})
             : panel  (owner, r), 
-              titel  (*this, titel),
-              fmt    ("vertical margin=[0,3,3,3] <weight=18 <weight=5> <titel weight=43> >")
+              titel  (*this, titel_)
         {
+            titel.format(format);
+            nana::size sz = titel.measure(1000);
+            std::stringstream ft;
+            ft << "vertical margin=[0," << gap << "," << gap << "," << gap << "]"
+               << " <weight="  << sz.height  << " <weight=5> <titel weight=" << sz.width+1  << "> >";
+            fmt = ft.str();
             plc["titel"] << titel;
             drawing dw(*this);
-		    dw.draw([](paint::graphics& graph)
+		    dw.draw([gap,sz](paint::graphics& graph)
 		    {
-			    graph.rectangle(false, colors::gray_border);
+			    graph.rectangle(rectangle(gap-1, sz.height/2, graph.width()-2*(gap-1), graph.height()-sz.height/2-(gap-1)),false, colors::gray_border);
 		    });
             plc.div(fmt.c_str());
 
@@ -68,7 +73,7 @@ namespace dm
 
 int main()
 {
-	form fm(rectangle{ 10, 10, 600, 300 });
+	form fm;
     place plc(fm);
 
 
@@ -76,20 +81,22 @@ int main()
 	grp.create(fm );
     grp.create_widget<label>(STR("Group:"));
 
-    plc["abc"] << grp;
+    plc["left"] << grp;
 
-    dm::group1 grp1(fm, STR("Group1:"), rectangle{ 220, 10, 200, 200 });
+    dm::group1 grp1(fm, STR("A new <bold=true, color=0xff0000, font=\"Consolas\">Group:</>"), true );
     button b1{grp1, STR("add button")};
     button b2{grp1, STR("button2")};
     button b3{grp1, STR("button3")};
-    grp1.fmt += "<vertical margin=2 gap= 2 buttons>";
-    grp1.plc["buttons"] << b1 << b2 << b3;
+    grp1.fmt += "<vertical margin=2 gap= 2 < <left> | 70% <right>> >";
+    grp1.plc["left"] << b1  ;
+    grp1.plc["right"] << b2 << b3;
     grp1.plc.div(grp1.fmt.c_str());
-    grp1.plc.collocate();
+    //grp1.plc.collocate();    // problem !!!!!!!!!!!!!!
 
-    plc["abc"] << grp1;
-    plc.div("horizontal gap=3 margin=30 abc");
+    plc["right"] << grp1;
+    plc.div("horizontal gap=3 margin=30  < <left> | 70% <right>> ");
     plc.collocate();
+    grp1.plc.collocate();    // OK
 
 	b1.events().click([&grp]
 	{
