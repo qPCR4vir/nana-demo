@@ -1,10 +1,9 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/label.hpp>
 
-using namespace nana::gui;
+using namespace nana;
 
-void listener(label::command cmd, const nana::string& s) //C++11
-//void listener(label::command::t cmd, const nana::string& s) //C++03
+void listener(label::command cmd, const nana::string& s)
 {
     if(label::command::click == cmd)
     {
