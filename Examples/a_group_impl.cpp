@@ -49,32 +49,42 @@ namespace dm
         label           titel/*  {*this}*/;
         std::string     fmt;
 
-        group1(widget &owner, ::nana::string titel_={}, bool format=false, unsigned gap=2, rectangle r={})
-            : panel  (owner, r), 
-              titel  (*this, titel_)
+        group1 ( widget &owner, 
+                 ::nana::string titel_={}, 
+                 bool format=false, 
+                 unsigned gap=2, 
+                 rectangle r={})
+        : panel (owner, r),
+          titel (*this, titel_)
         {
             titel.format(format);
             nana::size sz = titel.measure(1000);
             std::stringstream ft;
+
             ft << "vertical margin=[0," << gap << "," << gap << "," << gap << "]"
-               << " <weight="  << sz.height  << " <weight=5> <titel weight=" << sz.width+1  << "> >";
+               << " <weight=" << sz.height << " <weight=5> <titel weight=" << sz.width+1 << "> >";
             fmt = ft.str();
+
             plc["titel"] << titel;
-            drawing dw(*this);
-            color bg = owner.bgcolor();
+
+            color obg = owner.bgcolor();
+            titel.bgcolor(obg.blend(colors::black, 0.975) );
+            color bg=obg.blend(colors::black, 0.950 );
             bgcolor(bg);
-            titel.bgcolor(bg.blend(colors::black, 0.975) );
-            bg=bg.blend(colors::black, 0.950 );
-		    dw.draw([gap,sz,bg](paint::graphics& graph)
+
+            drawing dw(*this);
+		    dw.draw([gap,sz,bg,obg](paint::graphics& graph)
 		    {
-			    graph.round_rectangle(rectangle(       point ( gap-1,   sz.height/2), 
+			    graph.rectangle(true, obg);
+                graph.round_rectangle(rectangle(       point ( gap-1,   sz.height/2), 
                                                  nana::size  (graph.width()-2*(gap-1),   graph.height()-sz.height/2-(gap-1))),
                                       3,3, colors::gray_border,     true, bg);
-		    });
-            plc.div(fmt.c_str());
+           });
 
+           plc.div(fmt.c_str());
         }
     };
+
 }
 
 int main()
@@ -92,10 +102,12 @@ int main()
     plc["left"] << grp;
 
     dm::group1 grp1(fm, STR("A new <bold=true, color=0xff0000, font=\"Consolas\">Group:</>"), true );
+    label lab{grp1, STR("A label ")};
     button b1{grp1, STR("add button")};
     button b2{grp1, STR("button2")};
     button b3{grp1, STR("button3")};
-    grp1.fmt += "<vertical margin=2 gap= 2 < <left> | 70% <right>> >";
+    grp1.fmt += "<vertical margin=2 gap= 2 <lab> | 70% < <left> | 70% <right>> >";
+    grp1.plc["lab"] << lab.text_align(align::right)  ;
     grp1.plc["left"] << b1  ;
     grp1.plc["right"] << b2 << b3;
     grp1.plc.div(grp1.fmt.c_str());
