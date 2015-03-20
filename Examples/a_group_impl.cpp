@@ -61,9 +61,15 @@ namespace dm
             fmt = ft.str();
             plc["titel"] << titel;
             drawing dw(*this);
-		    dw.draw([gap,sz](paint::graphics& graph)
+            color bg = owner.bgcolor();
+            bgcolor(bg);
+            titel.bgcolor(bg.blend(colors::black, 0.975) );
+            bg=bg.blend(colors::black, 0.950 );
+		    dw.draw([gap,sz,bg](paint::graphics& graph)
 		    {
-			    graph.rectangle(rectangle(gap-1, sz.height/2, graph.width()-2*(gap-1), graph.height()-sz.height/2-(gap-1)),false, colors::gray_border);
+			    graph.round_rectangle(rectangle(       point ( gap-1,   sz.height/2), 
+                                                 nana::size  (graph.width()-2*(gap-1),   graph.height()-sz.height/2-(gap-1))),
+                                      3,3, colors::gray_border,     true, bg);
 		    });
             plc.div(fmt.c_str());
 
@@ -73,7 +79,9 @@ namespace dm
 
 int main()
 {
+
 	form fm;
+    fm.bgcolor(colors::mint_cream );
     place plc(fm);
 
 
