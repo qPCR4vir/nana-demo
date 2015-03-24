@@ -5,33 +5,33 @@
 
     int main()
     {
-        using namespace nana::gui;
+        using namespace nana;
 
-                 //Define widgets
+                 // Define widgets
         form fm;
-        textbox usr(fm), pswd(fm);
-        button login(fm), cancel(fm);
+        textbox usr  {fm},   
+                pswd {fm};
+        button  login {fm, STR("Login")}, 
+                cancel{fm, STR("Cancel")};
 
         usr .tip_string(STR("User:")    ).multi_lines(false);
         pswd.tip_string(STR("Password:")).multi_lines(false).mask('*');
 
-        login .caption(STR("Login"));
-        cancel.caption(STR("Cancel"));
+                // Define a place for the form.
+        place plc {fm};
 
-                //Define a place for the form.
-        place plc(fm);
+                // Divide the form into fields
+                
+        //plc.div("margin= 10%   gap=20 vertical< weight=70 gap=20 vertical textboxs arrange=[25,25]> <min=20> <weight=25 gap=10 buttons>  > ");
 
-                //Divide the form into fields
-        plc.div("<><weight=80% vertical<><weight=70% vertical<vertical textboxs><weight=25 buttons>><>><>");
+        plc.div("<><weight=80% vertical<><weight=70% vertical <vertical gap=10 textboxs arrange=[25,25]>  <weight=25 gap=10 buttons> ><>><>");
 
         //Insert widgets
 
-        //The field textboxs is vertical, it automatically adjusts the widgets' top
-        //and height. The usr and pswd are single-line textboxs, and we should specify
-        //them with a fixed height.
-        plc.field("textboxs") << plc.fixed(usr, 25) << 10 << plc.fixed(pswd, 25);
+        //The field textboxs is vertical, it automatically adjusts the widgets' top and height. 
+        plc.field("textboxs")<< usr  << pswd ;
 
-        plc.field("buttons") << login << 10 << cancel;
+        plc.field("buttons") <<login << cancel;
 
         //Finially, the widgets should be collocated.
         //Do not miss this line, otherwise the widgets are not collocated
