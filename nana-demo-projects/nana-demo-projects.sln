@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example.vcxproj"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nana", "..\..\nana\build\vc2013\nana.vcxproj", "{25B21068-491B-4A9F-B99F-6C27BF31BAAD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "place_login", "place_login.vcxproj", "{803BBA79-10E8-40FD-923C-B32ADB6433ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -73,6 +75,14 @@ Global
 		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|Win32.Build.0 = Release|Win32
 		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|x64.ActiveCfg = Release|x64
 		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|x64.Build.0 = Release|x64
+		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|Win32.Build.0 = Debug|Win32
+		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|x64.ActiveCfg = Debug|x64
+		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|x64.Build.0 = Debug|x64
+		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Release|Win32.ActiveCfg = Release|Win32
+		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Release|Win32.Build.0 = Release|Win32
+		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Release|x64.ActiveCfg = Release|x64
+		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
