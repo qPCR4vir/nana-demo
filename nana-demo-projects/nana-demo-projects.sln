@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nana", "..\..\nana\build\vc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "place_login", "place_login.vcxproj", "{803BBA79-10E8-40FD-923C-B32ADB6433ED}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "notepad", "notepad.vcxproj", "{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -83,6 +85,14 @@ Global
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Release|Win32.Build.0 = Release|Win32
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Release|x64.ActiveCfg = Release|x64
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Release|x64.Build.0 = Release|x64
+		{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}.Debug|Win32.Build.0 = Debug|Win32
+		{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}.Debug|x64.ActiveCfg = Debug|x64
+		{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}.Debug|x64.Build.0 = Debug|x64
+		{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}.Release|Win32.ActiveCfg = Release|Win32
+		{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}.Release|Win32.Build.0 = Release|Win32
+		{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}.Release|x64.ActiveCfg = Release|x64
+		{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
