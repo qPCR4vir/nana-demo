@@ -1,4 +1,5 @@
-/** Demo: Creating A Simple Notepad In Nana 0.8
+
+/** @file notepad.cpp Demo: Creating A Simple Notepad In Nana 0.8
 
 Let's start a tutorial to create a simple notepad, the simple notepad is a text editor allows the user to select and browse existing text files. This example also shows how you can use place, menubar, menu, textbox, msgbox, and filebox and their various options.
 
@@ -8,6 +9,7 @@ Get Started
 
 First of all, the whole program code is ready, and then we will go through each function.
 */
+
 
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/menubar.hpp>
@@ -24,6 +26,7 @@ class notepad_form
     place   place_;
     menubar menubar_;
     textbox textbox_;
+
 public:
     notepad_form()
     {
@@ -53,7 +56,6 @@ public:
                 arg.cancel = true;
         });
     }
-
 private:
     nana::string _m_pick_file(bool is_open) const
     {
@@ -130,6 +132,7 @@ private:
         });
         menubar_.at(1).check_style(0, menu::checks::highlight);
     }
+
 };
 
 int main()
@@ -192,3 +195,4 @@ int main()
 Creates the form of notpad.
 
 */
+
