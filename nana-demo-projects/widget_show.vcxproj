@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\widget_show.cpp" />
+    <ClCompile Include="..\widget_show2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A42511E4-0357-4730-B5BB-AE10C235C7D3}</ProjectGuid>

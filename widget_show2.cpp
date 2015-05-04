@@ -38,16 +38,18 @@ namespace demo
 		{
 			place_.div("< <list> |30% <check margin=5> >");
 
-			listbox_.append_header(STR("Supported compilers"), 200);
+			listbox_.append_header(STR("Supported compilers"), 200);             // A new column
+			listbox_.append_header(STR("Version"), 100);                         // Another column
 
-			listbox_.append(STR("Nana.C++03"))
-                          .append( { STR("GCC 3.4 and later"        ), 
-                                     STR("Visual C++ 2003 and later") } ) ;
+			auto cat=listbox_.append(STR("Nana.C++03 [abandoned]"));                         // A new category
+            cat.append( {nana::string(STR("GCC  ")) , nana::string(STR(" 3.4 and later")) });                 // A new item
+            cat.append( {nana::string(STR("Visual C++  ")) , nana::string(STR(" 2003 and later")) });         // Another item
 
-			listbox_.append(STR("Nana.C++11"))
-                          .append( { STR("GCC 4.6 and later"        ), 
-                                     STR("Visual C++ 2013 and later") } ) ;
-			
+			cat=listbox_.append(STR("Nana.C++11"));                                         // Another category
+            cat.append( {nana::string(STR("GCC  ")) , nana::string(STR(" 4.6 and later")) });                 // A new item
+            cat.append( {nana::string(STR("Visual C++  ")) , nana::string(STR(" 2013 and later")) });         // Another item
+            cat.append( {nana::string(STR("Clang  ")) , nana::string(STR(" ?")) });                           // Another item
+
             checkbox_.events().click([this](){ listbox_.checkable(checkbox_.checked()); });
 
 			place_.field("list")<<listbox_; 
