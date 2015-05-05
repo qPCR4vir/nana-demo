@@ -50,6 +50,11 @@ namespace demo
             cat.append( {nana::string(STR("Visual C++  ")) , nana::string(STR(" 2013 and later")) });         // Another item
             cat.append( {nana::string(STR("Clang  ")) , nana::string(STR(" ?")) });                           // Another item
 
+			cat=listbox_.append(STR("Nana.C++14 :-)"));                                         // Another category
+            cat.append( {nana::string(STR("GCC  ")) , nana::string(STR(" 4.8? and later")) });                 // A new item
+            cat.append( {nana::string(STR("Visual C++  ")) , nana::string(STR(" 2015 and later")) });         // Another item
+            cat.append( {nana::string(STR("Clang  ")) , nana::string(STR(" ?")) });                           // Another item
+
             checkbox_.events().click([this](){ listbox_.checkable(checkbox_.checked()); });
 
 			place_.field("list")<<listbox_; 
