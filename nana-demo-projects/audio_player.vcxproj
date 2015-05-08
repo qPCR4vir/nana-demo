@@ -18,8 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Examples\audio_player.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}</ProjectGuid>
+    <ProjectGuid>{02093AA8-D0D0-4F2D-A537-903C42D60F99}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>calculator</RootNamespace>
   </PropertyGroup>

@@ -19,12 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\widget_show2.cpp" />
+    <ClCompile Include="..\widget_show.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A42511E4-0357-4730-B5BB-AE10C235C7D3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>calculator</RootNamespace>
+    <ProjectName>widget_show</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

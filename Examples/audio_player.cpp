@@ -7,7 +7,7 @@
 
 int main()
 {
-    nana::audio::player player(STR("./audio.wav"));
+    nana::audio::player player(STR("audio.wav"));
     nana::threads::pool pool(1); //Only 1 thread.
 
     using namespace nana;

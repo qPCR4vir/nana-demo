@@ -18,8 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Examples\screen.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}</ProjectGuid>
+    <ProjectGuid>{1F62EF5A-8EFB-42A7-8E4F-E28C6BA6D31D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>calculator</RootNamespace>
   </PropertyGroup>

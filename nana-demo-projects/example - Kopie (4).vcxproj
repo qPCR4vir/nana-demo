@@ -18,9 +18,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Examples\menu_debug.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
