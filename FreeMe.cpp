@@ -377,14 +377,14 @@ private:
 	std::vector<std::deque<std::pair<nana::string, bool> > > files_;
 };
 
-class frm_main: public nana::gui::form
+class frm_main: public nana::form
 {
 	typedef frm_main self_type;
 public:
-	typedef nana::gui::appear appear;
+	typedef nana::linearappear appear;
 	
 	frm_main()
-		: nana::gui::form(nana::gui::API::make_center(400, 350), appear::decorate<appear::minimize, appear::taskbar>())
+		: nana::linearform(nana::linearAPI::make_center(400, 350), appear::decorate<appear::minimize, appear::taskbar>())
 	{
 		this->caption(STR("The FreeMe - A Sample of Nana, stdex.sf.net"));
 		
@@ -398,7 +398,7 @@ public:
 
 		btn_.create(*this, nana::rectangle(270, 270, 120, 26));
 		btn_.caption(STR("Scan junk files"));
-		btn_.make_event<nana::gui::events::click>(*this, &self_type::_m_button);
+		btn_.events().click(*this, &self_type::_m_button);
 		
 		pgbar_.create(*this, nana::rectangle(0, 310, 400, 20));
 		
@@ -410,7 +410,7 @@ private:
 	class pgbar_analysis_msnger: public messenger
 	{
 	public:
-		pgbar_analysis_msnger(nana::gui::progress& pgbar, nana::gui::label& lbl)
+		pgbar_analysis_msnger(nana::progress& pgbar, nana::label& lbl)
 			:pgbar_(pgbar), lbl_(lbl)
 		{}
 
@@ -430,14 +430,14 @@ private:
 		}
 	private:
 		unsigned size_;
-		nana::gui::progress& pgbar_;
-		nana::gui::label& lbl_;
+		nana::linearprogress& pgbar_;
+		nana::linearlabel& lbl_;
 	};
 	
 	class pgbar_delete_msnger: public messenger
 	{
 	public:
-		pgbar_delete_msnger(nana::gui::progress& pgbar, nana::gui::label& lbl)
+		pgbar_delete_msnger(nana::linearprogress& pgbar, nana::linearlabel& lbl)
 			:pgbar_(pgbar), lbl_(lbl)
 		{}
 
@@ -452,8 +452,8 @@ private:
 			lbl_.caption(STR("Deleting ") + msg);	
 		}
 	private:
-		nana::gui::progress& pgbar_;
-		nana::gui::label&	lbl_;
+		nana::linearprogress& pgbar_;
+		nana::linearlabel&	lbl_;
 	};
 private:
 	void _m_button()
@@ -540,11 +540,11 @@ private:
 		lbl_.caption(STR("Done!"));
 	}
 private:
-	nana::gui::picture pic_;
-	nana::gui::label	desc_;
-	nana::gui::button	btn_;
-	nana::gui::progress pgbar_;
-	nana::gui::label	lbl_;
+	nana::linearpicture pic_;
+	nana::linearlabel	desc_;
+	nana::linearbutton	btn_;
+	nana::linearprogress pgbar_;
+	nana::linearlabel	lbl_;
 	junk_sweeper		jkswp_;
 	nana::threads::thread thread_;
 };
@@ -556,7 +556,7 @@ private:
 int WINAPI WinMain(HINSTANCE, HINSTANCE, char*, int)
 {
 	frm_main main;
-	nana::gui::exec();
+	nana::linearexec();
 
 	return 0;
 }

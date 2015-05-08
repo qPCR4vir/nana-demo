@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Examples\group.cpp" />
+    <ClCompile Include="..\Examples\a_group_impl.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9D6ADD6E-6873-45A8-A752-64F57893C88F}</ProjectGuid>
