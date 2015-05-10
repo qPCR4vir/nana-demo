@@ -296,9 +296,9 @@ namespace demo
 			ptr = buttons_[1];
 			//Nana does not support ICON under Linux now
 #if defined(NANA_WINDOWS)
-			ptr->icon(STR("image.ico"));
+			ptr->icon(STR("../Examples/image.ico"));
 #else
-			ptr->icon(STR("image.bmp"));
+			ptr->icon(STR("../Examples/image.bmp"));
 #endif
 			ptr->caption(STR("Button with An Image"));
 

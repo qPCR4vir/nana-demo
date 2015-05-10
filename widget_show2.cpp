@@ -301,9 +301,9 @@ namespace demo
 
 			//Nana does not support ICON under Linux now
 #if defined(NANA_WINDOWS)
-			b_i.icon(STR("image.ico"));
+			b_i.icon(STR("../Examples/image.ico"));
 #else
-			ptr->icon(STR("image.bmp"));
+			ptr->icon(STR("../Examples/image.bmp"));
 #endif
 
 			b_p.enable_pushed(true);
