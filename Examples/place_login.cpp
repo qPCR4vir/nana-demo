@@ -33,9 +33,9 @@
 
         plc.field("buttons") <<login << cancel;
 
-        //Finially, the widgets should be collocated.
-        //Do not miss this line, otherwise the widgets are not collocated
-        //until the form is resized.
+        // Finially, the widgets should be collocated.
+        // Do not miss this line, otherwise the widgets are not collocated
+        // until the form is resized.
         plc.collocate();
 
         fm.show();
