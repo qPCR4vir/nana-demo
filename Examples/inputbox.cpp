@@ -1,7 +1,7 @@
 #include <nana/gui.hpp>
 int main()
 {
-	using namspace nana;
+	using namespace nana;
 	form fm;
 	
 	fm.show();

@@ -44,6 +44,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "audio_player", "audio_player.vcxproj", "{02093AA8-D0D0-4F2D-A537-903C42D60F99}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "audio_player_simple", "audio_player_simple.vcxproj", "{58EE28E9-4268-4726-8BC6-4966A5208B2D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "inputbox", "inputbox.vcxproj", "{277B257F-6460-4FA2-AC09-D2774FC22D52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +174,14 @@ Global
 		{58EE28E9-4268-4726-8BC6-4966A5208B2D}.Release|Win32.Build.0 = Release|Win32
 		{58EE28E9-4268-4726-8BC6-4966A5208B2D}.Release|x64.ActiveCfg = Release|x64
 		{58EE28E9-4268-4726-8BC6-4966A5208B2D}.Release|x64.Build.0 = Release|x64
+		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Debug|Win32.ActiveCfg = Debug|Win32
+		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Debug|Win32.Build.0 = Debug|Win32
+		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Debug|x64.ActiveCfg = Debug|x64
+		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Debug|x64.Build.0 = Debug|x64
+		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Release|Win32.ActiveCfg = Release|Win32
+		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Release|Win32.Build.0 = Release|Win32
+		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Release|x64.ActiveCfg = Release|x64
+		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
