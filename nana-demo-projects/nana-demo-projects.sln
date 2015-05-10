@@ -23,27 +23,58 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example.vcxproj"
 		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nana", "..\..\nana\build\vc2013\nana.vcxproj", "{25B21068-491B-4A9F-B99F-6C27BF31BAAD}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "place_login", "place_login.vcxproj", "{803BBA79-10E8-40FD-923C-B32ADB6433ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "notepad", "notepad.vcxproj", "{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "widget_show2", "widget_show2.vcxproj", "{E16651F7-357F-4ED2-B849-E219EBE67119}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FreeMe", "FreeMe.vcxproj", "{4E26751E-7E17-4298-97C1-CD3C9E1948DE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "screen", "screen.vcxproj", "{1F62EF5A-8EFB-42A7-8E4F-E28C6BA6D31D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "menu_debug", "menu_debug.vcxproj", "{85167B22-55DC-4A0E-9A59-7D7A63BE32EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "group", "group.vcxproj", "{11BB8A5F-792E-4FFE-B069-D3B88F248ED8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "animate-bmp", "animate-bmp.vcxproj", "{FE0CC8C4-C98A-4D39-89A4-A9873C6108FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "audio_player", "audio_player.vcxproj", "{02093AA8-D0D0-4F2D-A537-903C42D60F99}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "audio_player_simple", "audio_player_simple.vcxproj", "{58EE28E9-4268-4726-8BC6-4966A5208B2D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nana", "..\..\nana\build\vc2013\nana.vcxproj", "{25B21068-491B-4A9F-B99F-6C27BF31BAAD}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "inputbox", "inputbox.vcxproj", "{277B257F-6460-4FA2-AC09-D2774FC22D52}"
 EndProject
 Global
@@ -86,14 +117,6 @@ Global
 		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Release|Win32.Build.0 = Release|Win32
 		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Release|x64.ActiveCfg = Release|x64
 		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Release|x64.Build.0 = Release|x64
-		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Debug|Win32.ActiveCfg = Debug|Win32
-		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Debug|Win32.Build.0 = Debug|Win32
-		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Debug|x64.ActiveCfg = Debug|x64
-		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Debug|x64.Build.0 = Debug|x64
-		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|Win32.ActiveCfg = Release|Win32
-		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|Win32.Build.0 = Release|Win32
-		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|x64.ActiveCfg = Release|x64
-		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|x64.Build.0 = Release|x64
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|Win32.ActiveCfg = Debug|Win32
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|Win32.Build.0 = Debug|Win32
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|x64.ActiveCfg = Debug|x64
@@ -174,6 +197,14 @@ Global
 		{58EE28E9-4268-4726-8BC6-4966A5208B2D}.Release|Win32.Build.0 = Release|Win32
 		{58EE28E9-4268-4726-8BC6-4966A5208B2D}.Release|x64.ActiveCfg = Release|x64
 		{58EE28E9-4268-4726-8BC6-4966A5208B2D}.Release|x64.Build.0 = Release|x64
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Debug|Win32.Build.0 = Debug|Win32
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Debug|x64.ActiveCfg = Debug|x64
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Debug|x64.Build.0 = Debug|x64
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|Win32.ActiveCfg = Release|Win32
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|Win32.Build.0 = Release|Win32
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|x64.ActiveCfg = Release|x64
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD}.Release|x64.Build.0 = Release|x64
 		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Debug|Win32.ActiveCfg = Debug|Win32
 		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Debug|Win32.Build.0 = Debug|Win32
 		{277B257F-6460-4FA2-AC09-D2774FC22D52}.Debug|x64.ActiveCfg = Debug|x64
