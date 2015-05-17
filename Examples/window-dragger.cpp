@@ -4,7 +4,7 @@
 
 int main()
 {
-    using namespace nana::gui;
+    using namespace nana;
     form   fm;
     fm.caption(STR("Main Nana Window - target"));
     
@@ -22,8 +22,6 @@ int main()
     dg.trigger(btn);
     dg.trigger(adherent);
     fm.show();
-    //dg.trigger(btn);
-    //dg.target(adherent);
-    //fm.show();
+
     exec();
 }

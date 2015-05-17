@@ -18,8 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Examples\thread-pool.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}</ProjectGuid>
+    <ProjectGuid>{79BF64C1-99CE-4C77-A8F4-B18DA2924D3E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>calculator</RootNamespace>
   </PropertyGroup>

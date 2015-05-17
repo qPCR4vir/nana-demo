@@ -18,8 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Examples\various_events.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}</ProjectGuid>
+    <ProjectGuid>{2A01DEB3-BF23-4E34-A278-D718D8624A7F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>calculator</RootNamespace>
   </PropertyGroup>
