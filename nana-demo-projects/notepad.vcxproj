@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Examples\notepad.cpp" />
+    <ClCompile Include="..\notepad.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A1B1A972-F96A-485B-BFDC-E8E4C7870F3D}</ProjectGuid>

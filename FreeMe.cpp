@@ -1,4 +1,4 @@
-/*
+/**
  *	The FreeMe - A sample of Nana C++ Library
  *	Copyright(C) 2007-2009 Jinhao
  *
@@ -8,6 +8,8 @@
  *
  *	@description:
  *		This sample shows you how to write an application with Nana C++ Library.
+ *    This example need update. 
+ *   \todo update to nana v1.0.2
  */
 
 // http://nanapro.sourceforge.net/help/tutorials/thefreeme.htm

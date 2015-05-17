@@ -2,7 +2,8 @@
 int main()
 {
 	using namespace nana;
-	form fm;
+    form fm;
+    fm.caption(STR("Click me."));
 	
 	fm.show();
 	

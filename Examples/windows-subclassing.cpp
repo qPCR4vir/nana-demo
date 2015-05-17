@@ -1,4 +1,4 @@
-/*
+/**
  *	A helper class for subclassing under Windows.
  *	This is a demo for Nana C++ Library.
  *
