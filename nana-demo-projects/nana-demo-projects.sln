@@ -40,6 +40,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "various_events", "various_e
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thread-pool", "thread-pool.vcxproj", "{79BF64C1-99CE-4C77-A8F4-B18DA2924D3E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "background-effects", "background-effects.vcxproj", "{F35404E8-1E9B-4101-9241-709F75989EE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -200,6 +202,14 @@ Global
 		{79BF64C1-99CE-4C77-A8F4-B18DA2924D3E}.Release|Win32.Build.0 = Release|Win32
 		{79BF64C1-99CE-4C77-A8F4-B18DA2924D3E}.Release|x64.ActiveCfg = Release|x64
 		{79BF64C1-99CE-4C77-A8F4-B18DA2924D3E}.Release|x64.Build.0 = Release|x64
+		{F35404E8-1E9B-4101-9241-709F75989EE5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F35404E8-1E9B-4101-9241-709F75989EE5}.Debug|Win32.Build.0 = Debug|Win32
+		{F35404E8-1E9B-4101-9241-709F75989EE5}.Debug|x64.ActiveCfg = Debug|x64
+		{F35404E8-1E9B-4101-9241-709F75989EE5}.Debug|x64.Build.0 = Debug|x64
+		{F35404E8-1E9B-4101-9241-709F75989EE5}.Release|Win32.ActiveCfg = Release|Win32
+		{F35404E8-1E9B-4101-9241-709F75989EE5}.Release|Win32.Build.0 = Release|Win32
+		{F35404E8-1E9B-4101-9241-709F75989EE5}.Release|x64.ActiveCfg = Release|x64
+		{F35404E8-1E9B-4101-9241-709F75989EE5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
