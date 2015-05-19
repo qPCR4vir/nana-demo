@@ -4,7 +4,7 @@
 
 int main()
 {
-    using namespace nana::gui;
+    using namespace nana;
 
     form fm;
     button btn(fm, nana::rectangle(10, 10, 100, 20));

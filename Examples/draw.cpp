@@ -4,7 +4,7 @@ int main()
 {
     using namespace nana;
 
-    form fm;
+    form fm {API::make_center(340, 340)};
     drawing dw(fm);
     dw.draw([](paint::graphics& graph)
     {
