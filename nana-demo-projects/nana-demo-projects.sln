@@ -127,6 +127,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "drag-button", "drag-button.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "draw", "draw.vcxproj", "{26485E6F-EEE9-48E0-BA7A-ADD85F6AD08E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example.button", "example.button.vcxproj", "{045AAAE6-54E9-425A-A331-A17AFD226097}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -359,6 +361,14 @@ Global
 		{26485E6F-EEE9-48E0-BA7A-ADD85F6AD08E}.Release|Win32.Build.0 = Release|Win32
 		{26485E6F-EEE9-48E0-BA7A-ADD85F6AD08E}.Release|x64.ActiveCfg = Release|x64
 		{26485E6F-EEE9-48E0-BA7A-ADD85F6AD08E}.Release|x64.Build.0 = Release|x64
+		{045AAAE6-54E9-425A-A331-A17AFD226097}.Debug|Win32.ActiveCfg = Debug|Win32
+		{045AAAE6-54E9-425A-A331-A17AFD226097}.Debug|Win32.Build.0 = Debug|Win32
+		{045AAAE6-54E9-425A-A331-A17AFD226097}.Debug|x64.ActiveCfg = Debug|x64
+		{045AAAE6-54E9-425A-A331-A17AFD226097}.Debug|x64.Build.0 = Debug|x64
+		{045AAAE6-54E9-425A-A331-A17AFD226097}.Release|Win32.ActiveCfg = Release|Win32
+		{045AAAE6-54E9-425A-A331-A17AFD226097}.Release|Win32.Build.0 = Release|Win32
+		{045AAAE6-54E9-425A-A331-A17AFD226097}.Release|x64.ActiveCfg = Release|x64
+		{045AAAE6-54E9-425A-A331-A17AFD226097}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
