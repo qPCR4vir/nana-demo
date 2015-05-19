@@ -87,6 +87,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thread-pool", "thread-pool.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "background-effects", "background-effects.vcxproj", "{F35404E8-1E9B-4101-9241-709F75989EE5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "categ", "categ.vcxproj", "{E9998AA4-6603-47BC-9273-D377BBC2CA72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -263,6 +265,14 @@ Global
 		{F35404E8-1E9B-4101-9241-709F75989EE5}.Release|Win32.Build.0 = Release|Win32
 		{F35404E8-1E9B-4101-9241-709F75989EE5}.Release|x64.ActiveCfg = Release|x64
 		{F35404E8-1E9B-4101-9241-709F75989EE5}.Release|x64.Build.0 = Release|x64
+		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Debug|Win32.Build.0 = Debug|Win32
+		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Debug|x64.ActiveCfg = Debug|x64
+		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Debug|x64.Build.0 = Debug|x64
+		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Release|Win32.ActiveCfg = Release|Win32
+		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Release|Win32.Build.0 = Release|Win32
+		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Release|x64.ActiveCfg = Release|x64
+		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

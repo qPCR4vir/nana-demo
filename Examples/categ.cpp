@@ -20,7 +20,7 @@
 				ui_element();
 			};
 			virtual ~renderer() = 0;
-			virtual void background(graph_reference, nana::gui::window, const nana::rectangle&, 
+			virtual void background(graph_reference, nana::window, const nana::rectangle&, 
 									const   ui_element&)     = 0;
 			virtual void root_arrow(graph_reference, const nana::rectangle&, state_t) = 0;
 			virtual void item(graph_reference, const nana::rectangle&, size_t index,
@@ -32,18 +32,18 @@
 
 
 
-	void selected(nana::gui::categorize<int> & categ, int&)
+	void selected(nana::arg_categorize<int>  categ)
 	{
-		nana::gui::msgbox mb(categ, STR("categorize"));
+		nana::msgbox mb(categ.widget, STR("categorize"));
 		mb.icon(mb.icon_information);
-		mb<<STR("The value of selected is ")<<categ.value()<<STR(", caption is \"")
-		<<categ.caption()<<STR("\""); //caption() method, see Note 3.
+		mb<<STR("The value of selected is ")<<categ.value<<STR(", caption is \"")
+		<<categ.widget.caption()<<STR("\""); //caption() method, see Note 3.
 		mb();
 	}
 
 	int main()
 	{
-		using namespace nana::gui;
+		using namespace nana;
 		form fm;
 		categorize<int> categ(fm, nana::rectangle(10, 10, 200, 24));
 
@@ -62,7 +62,7 @@
 			; // it does not displace the current category, and therefore "Another Child"
 			; // is a child of "Second".
 
-		categ.ext_event().selected = selected;
+		categ.events().selected(selected);
 			; // This may crash in VC2012-RC due to compiler bug.
 			; // Please refer to compatibility-issue for more details
 
