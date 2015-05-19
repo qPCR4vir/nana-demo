@@ -1,9 +1,11 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/button.hpp>
 
+#include <iostream> 
+
 void clicked(const nana::arg_mouse & eventinfo)
 {
-     //When the window  fm  is clicked, this function will be "called".
+     std::cout<<  "When the window  fm  is clicked, this function is called. \n";
 }
 
 int main()

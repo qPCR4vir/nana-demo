@@ -44,6 +44,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "background-effects", "backg
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "categ", "categ.vcxproj", "{E9998AA4-6603-47BC-9273-D377BBC2CA72}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clicked", "clicked.vcxproj", "{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -220,6 +222,14 @@ Global
 		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Release|Win32.Build.0 = Release|Win32
 		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Release|x64.ActiveCfg = Release|x64
 		{E9998AA4-6603-47BC-9273-D377BBC2CA72}.Release|x64.Build.0 = Release|x64
+		{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}.Debug|Win32.Build.0 = Debug|Win32
+		{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}.Debug|x64.ActiveCfg = Debug|x64
+		{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}.Debug|x64.Build.0 = Debug|x64
+		{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}.Release|Win32.ActiveCfg = Release|Win32
+		{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}.Release|Win32.Build.0 = Release|Win32
+		{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}.Release|x64.ActiveCfg = Release|x64
+		{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
