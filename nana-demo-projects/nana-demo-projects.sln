@@ -76,20 +76,44 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nana", "..\..\nana\build\vc2013\nana.vcxproj", "{25B21068-491B-4A9F-B99F-6C27BF31BAAD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "inputbox", "inputbox.vcxproj", "{277B257F-6460-4FA2-AC09-D2774FC22D52}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "windows-subclassing", "windows-subclassing.vcxproj", "{4D36FC7D-A4CD-40FD-BE9C-4E941112B064}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "window-dragger", "window-dragger.vcxproj", "{5E18DB89-3991-40EB-9357-A371CAADA16F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "various_events", "various_events.vcxproj", "{2A01DEB3-BF23-4E34-A278-D718D8624A7F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thread-pool", "thread-pool.vcxproj", "{79BF64C1-99CE-4C77-A8F4-B18DA2924D3E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "background-effects", "background-effects.vcxproj", "{F35404E8-1E9B-4101-9241-709F75989EE5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "categ", "categ.vcxproj", "{E9998AA4-6603-47BC-9273-D377BBC2CA72}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clicked", "clicked.vcxproj", "{35B34F63-E91B-4F5B-8A40-5C19633B8AF3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
