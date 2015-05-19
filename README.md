@@ -1,7 +1,7 @@
 # nana-demo
 This is colection of small examples barroewed from any possible source, mostly from documents and blogs posted by Jin Hao. 
   
-All are updated to Nana v1.0.2 except stretch_image ,  list_resolver and FreeMe
+All 47 are updated to Nana v1.0.2 except stretch_image ,  list_resolver and FreeMe
   
 Need periodical revision and adaptation.
 
