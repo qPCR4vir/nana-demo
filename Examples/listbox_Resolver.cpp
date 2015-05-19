@@ -8,7 +8,7 @@ struct person
     unsigned     age;
 };
 
-class resolver : public nana::gui::listbox::resolver_interface<person>
+class resolver : public nana::listbox::oresolver   //:resolver_interface<person>
 {
     nana::string decode(std::size_t i, const person& pr) const override
     {
@@ -39,7 +39,7 @@ class resolver : public nana::gui::listbox::resolver_interface<person>
 
 int main()
 {
-	using namespace nana::gui;
+	using namespace nana;
 
 	form fm;
 	listbox lb(fm, nana::rectangle(10, 10, 280, 120));

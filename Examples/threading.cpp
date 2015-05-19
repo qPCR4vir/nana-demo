@@ -1,8 +1,10 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/threads/pool.hpp>
+#include <iostream> 
+
 void foo()
 {
-  //This function will be "called" in other thread created by thread pool.
+      std::cout << "This function will be 'called' in other thread created by thread pool.\n";
 }
 int main()
 {
@@ -12,7 +14,7 @@ int main()
     form fm;
     fm.events().click(pool_push(thrpool, foo));
     fm.events().click(pool_push(thrpool, []{
-                                              //A lambda is also allowed.
+                                              std::cout << "A lambda is also allowed.\n";
                                       }));
     fm.show();
     exec();

@@ -1,21 +1,31 @@
-	#include <nana/gui/wvl.hpp>
-	#include <nana/gui/widgets/listbox.hpp>
-		int main()
-		{
-		   using namespace nana::gui;
-		   form fm;
-		   listbox lb(fm, nana::rectangle(10, 10, 280, 120));
-		   lb.append_header(STR("Header"), 200);
-		   lb.at(0).append(STR("int"));
-		   lb.at(0).append(STR("double"));
+#include <nana/gui/wvl.hpp>
+#include <nana/gui/widgets/listbox.hpp>
+#include <iostream> 
 
-		   lb.anyobj(0, 0, 10);     ///    \todo this crash   lb.anyobj(0, 0, 10);   
+int main()
+{
+	using namespace nana;
+	form fm;
+	listbox lb(fm, nana::rectangle(10, 10, 280, 120));
 
-		   lb.anyobj(0, 1, 0.1);   ///    \todo this crash  
+	lb.append_header(STR("Header"), 200);
 
-		   int * pi = lb.anyobj<int>(0, 0); 	  // it returns a nullptr if there is not an int object specified.
-		   double * pd = lb.anyobj<double>(0, 1); // it returns a nullptr if there is not an double object specified.
+    // this will attemp to use   
+    // item_proxy cat_proxy::append (T &&t, bool set_value=false) 
+    // to add a value any of wchar_t[4]  = "int"
+	// lb.at(0).append(STR("int"));
+    lb.at(0).append({STR("int")});
+    lb.at(0).append({STR("double")});
 
-		   fm.show();
-		   exec();
-		 }
+	lb.anyobj(0, 0, 10);     ///    \todo this crash   lb.anyobj(0, 0, 10);   
+	lb.anyobj(0, 1, 0.1);   ///    \todo this crash  
+
+	int * pi = lb.anyobj<int>(0, 0); 	  // it returns a nullptr if there is not an int object specified.
+    std::cout << "Index: (0,0) -> int value: " << *pi << std::endl; 
+
+	double * pd = lb.anyobj<double>(0, 1); // it returns a nullptr if there is not an double object specified.
+    std::cout << "Index: (0,1) -> double value: " << *pd; 
+
+	fm.show();
+	exec();
+}

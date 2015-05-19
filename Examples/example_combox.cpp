@@ -3,7 +3,7 @@
 #include <iostream> 
 int main()
 {
-	using namespace nana::gui;	   //No Minimize button, no maximize button and sizable frame.
+	using namespace nana;	   //No Minimize button, no maximize button and sizable frame.
 	form fm(API::make_center(240, 100), appear::decorate<>());
 	fm.caption(STR("Nana C++ Library - Example"));
 	combox child ( fm, nana::rectangle ( 20, 3, 150, 30) );
@@ -14,7 +14,11 @@ int main()
 	child.push_back(STR("Item 5"));
 				// This function will be called after changing the combox text by selecting 
 				// a text from the drop-down list.
-	child.ext_event().selected = [](combox&){ std::cout<<"selected a new text"<<std::endl; };
+       // dont use the arg info
+	//child.events().selected ( []( ){ std::cout<<"selected a new text"<<std::endl; });
+
+       // use the arg info
+	child.events().selected ( [](const arg_combox &ar_cbx){ std::wcout<<ar_cbx.widget.caption()<<std::endl; });
 	fm.show();
 	exec();
 }

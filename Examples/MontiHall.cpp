@@ -4,32 +4,31 @@
 #include <nana/system/platform.hpp> 
 
 class monty_hall 
-      : public nana::gui::form 
+      : public nana::form 
 { 
     enum state_t{state_begin, state_picked, state_over}; 
   public: 
     monty_hall(); 
   private: 
-    void _m_pick_door  (const nana::gui::eventinfo& ei); 
+    void _m_pick_door  (const nana::arg_mouse& ei); 
     void _m_play       (int door); 
     void _m_remove_door(int exclude); 
   private: 
-    state_t    state_; 
+      state_t    state_{state_begin}; 
     int        door_has_car_; 
-    nana::gui::label  label_; 
-    nana::gui::button door_[3]; 
+    nana::label  label_; 
+    nana::button door_[3]; 
  }; 
+
  int main() 
  { 
     monty_hall mh; 
     mh.show(); 
-    nana::gui::exec(); 
+    nana::exec(); 
  }
 
 monty_hall::monty_hall() 
-      : nana::gui::form(  nana::gui::API::make_center(400, 150)
-	                      , appear::decorate<appear::taskbar>()   ) 
-       ,state_(state_begin) 
+      : nana::form(  nana::API::make_center(400, 150) , appear::decorate<appear::taskbar>()   ) 
  { 
   this->caption(STR("The Monty Hall Problem")); 
   nana::string text = STR("Hi, I am the host, you are on a Game Show:\n") 
@@ -46,20 +45,19 @@ monty_hall::monty_hall()
   { 
     door_[i].create(*this, nana::rectangle(50 + 110 * i, 110, 100, 24)); 
     door_[i].caption(door_name[i]); 
-    door_[i].make_event<nana::gui::events::click>(*this, 
-                                                        &monty_hall::_m_pick_door); 
+    door_[i].events().click([this](const nana::arg_mouse& ei){ _m_pick_door(ei); });
   } 
 }
 
- void monty_hall::_m_pick_door(const nana::gui::eventinfo& ei) 
+ void monty_hall::_m_pick_door(const nana::arg_mouse& ei) 
 { 
- int index = 0; 
- for(; index < 3; ++index) 
- { 
-     if(door_[index] == ei.window) 
-        break; 
- } 
- _m_play(index); 
+     int index = 0; 
+     for(; index < 3; ++index) 
+     { 
+         if(door_[index] == ei.window_handle) 
+            break; 
+     } 
+     _m_play(index); 
 }
 
 void monty_hall::_m_play(int door) 

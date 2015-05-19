@@ -1,8 +1,9 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/menu.hpp>
+#include <iostream> 
 
-using namespace nana::gui;
+using namespace nana;
 
 //class menu_popuper
 //{
@@ -23,9 +24,11 @@ using namespace nana::gui;
 
 // Now let's use it. There is a button, it popups the menu when it is clicked.
 
-void on_menu_item(nana::gui::menu::item_proxy& ip)
+
+void on_menu_item(nana::menu::item_proxy& ip)
 {
-		std::size_t index = ip.index(); //Get the index of the clicking item.
+	std::size_t index = ip.index(); //Get the index of the clicking item.
+    std::cout << "Menu item index:  " << index << std::endl; 
 }
 
 int main()
@@ -43,7 +46,7 @@ int main()
 	btn.caption(STR("Popup Menu"));
 
 	;//Popup the menu when right clicking the button.
-	btn.make_event<events::click>(menu_popuper(mobj));
+	btn.events().click(menu_popuper(mobj));
 
 	;//Or popuping the menu with a specified coordinate when any mouse button is clicked.
 	;//btn.make_event<events::click> ( menu_popuper( mobj, btn, nana::point(0, 26),
