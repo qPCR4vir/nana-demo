@@ -116,58 +116,136 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clicked", "clicked.vcxproj"
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "framework_design_1", "design_1.vcxproj", "{2350AFEB-D899-4BA5-A344-BD190596D7D1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "framework_design_2", "design_2.vcxproj", "{7B4ECCE3-2940-4045-81EA-40436E706BFD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "framework_design_3", "design_3.vcxproj", "{1F2C48BF-ECA3-40BF-9BCA-EB46CA0D5508}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "decore", "decore.vcxproj", "{A1F71E6E-C824-418D-A2AD-B5B59D29CE85}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "drag-button", "drag-button.vcxproj", "{508148CF-C12F-4B66-AFDF-3A5944FC3D89}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "draw", "draw.vcxproj", "{26485E6F-EEE9-48E0-BA7A-ADD85F6AD08E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example.button", "example.button.vcxproj", "{045AAAE6-54E9-425A-A331-A17AFD226097}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example_combox", "example_combox.vcxproj", "{15BA5E03-7CCC-4A16-9395-C0CE7050D14F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example_listbox", "example_listbox.vcxproj", "{1D2872D9-B133-4D17-825A-4A4573D269DE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example_menu", "example_menu.vcxproj", "{495C80E0-16FE-4ED1-AD64-2C3044B02DCD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filebox-txt", "filebox-txt.vcxproj", "{2F83D844-7F9B-4933-A4AA-161B7A64F3FA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "folder_tree", "folder_tree.vcxproj", "{43DB4979-D021-4463-96AC-6410CD89517F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloWord", "HelloWord.vcxproj", "{5A610E68-F04D-4B89-BF6F-1DE8574CD799}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloWord-Quit", "HelloWord-Quit.vcxproj", "{C671CCA3-3E29-44A0-8A99-EB5A29852E1C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "loader_1", "loader_1.vcxproj", "{3D77A811-0DC0-40EE-BF1F-57B09B513F3D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "loader_2", "loader_2.vcxproj", "{B7F3C5B0-55D0-4D30-B741-6FA1D3764C0D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "listbox_Resolver", "listbox_Resolver.vcxproj", "{553CB75C-CBE6-47A8-9434-0556EF13E3C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lambda_event.Cpp11", "lambda_event.Cpp11.vcxproj", "{3B1417A5-A58B-40A8-AB5F-9DD0EAB409F9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "label_listener", "label_listener.vcxproj", "{6D7C98B9-BEB5-42CC-B983-73A6A764C74B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mbox", "mbox.vcxproj", "{7372568C-F069-4DAB-B7D1-8591D36EE547}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "menu_popuper", "menu_popuper.vcxproj", "{49B412E8-37CB-436D-8CBA-71B548FAFE30}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "modal_form", "modal_form.vcxproj", "{60FF9931-6072-4402-8364-4CC1107CB745}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MontiHall", "MontiHall.vcxproj", "{A5D1E15D-A336-407B-8B04-80B8CE44A257}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stretch_image", "stretch_image.vcxproj", "{1099EA00-7CB7-4364-BDFE-19EA0537D4AB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B4FDD7B-B155-477E-93B6-F6541AC6A8AA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "threading", "threading.vcxproj", "{57EDE569-3756-4561-B95F-8AD23C85DF95}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_explorer", "file_explorer.vcxproj", "{B2FCD63A-84B5-4353-B606-2B172E17F1DF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
