@@ -2,27 +2,34 @@
 #include <nana/gui/widgets/treebox.hpp>
 #include <nana/filesystem/filesystem.hpp>
 
+#if defined(NANA_WINDOWS)
+	constexpr auto root = L"C:";
+	constexpr auto rootstr = L"C:\\";
+	constexpr auto rootname = L"Local Drive(C:)";
+#elif defined(NANA_LINUX)
+	constexpr auto root = L"/";
+	constexpr auto rootstr = L"/";
+	constexpr auto rootname = L"Root/";
+#endif
+
+
 int main()
 {
 	using namespace nana;
 	using namespace experimental;
+	//using SubDir = filesystem::directory_iterator;
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
-	fm.caption(L"Nana C++ Library - Treebox-filesystem example.");
+	fm.caption(L"Nana C++ Library - Treebox-nana::filesystem example.");
 
 	nana::treebox tree{ fm, { 10, 10, 380, 480 } };
+    
+	auto node = tree.insert(root, rootname);
 
-#if defined(NANA_WINDOWS)
-	auto node = tree.insert(L"C:", L"Local Drive(C:)");
-	filesystem::directory_iterator i(L"C:\\"), end;
-#elif defined(NANA_LINUX)
-	auto node = tree.insert(L"/", L"Root/");
-	filesystem::directory_iterator i(L"/"), end;
-#endif
-	for (; i != end; ++i)
+	for ( const auto& dir : filesystem::directory_iterator { rootstr })
 	{
-		if (!i->attr.directory) continue;
-		tree.insert(node, i->path().name(), i->path().name());
+		if (! dir.attr.directory) continue;
+		tree.insert(node, dir.path().name(), dir.path().name());
 		break;
 	}
 
@@ -37,21 +44,21 @@ int main()
 		tree.auto_draw(false);
 
 		//Walk in the path directory for sub directories.
-		for (filesystem::directory_iterator i{ Path }, end; i != end; ++i)
+		for (const auto& dir : filesystem::directory_iterator{ Path } )
 		{
-			if (!i->attr.directory) continue; //If it is not a directory.
+			if (!dir.attr.directory) continue; //If it is not a directory.
 
-			auto child = tree.insert(arg.item, i->path().name(), i->path().name());
+			auto child = tree.insert(arg.item, dir.path().name(), dir.path().name());
 			if (child.empty()) continue;
 
 			//Find a directory in child directory, if there is a directory,
 			//insert it into the child, just insert one node to indicate the
 			//node has a child and an arrow symbol will be?displayed in the
 			//front of the node.
-			for (filesystem::directory_iterator u{ Path + i->path().name() }; u != end; ++u)
+			for (const auto& dr : filesystem::directory_iterator{ Path + dir.path().name() })
 			{
-				if (!u->attr.directory) continue; //If it is not a directory.
-				tree.insert(child, u->path().name(), u->path().name());
+				if (! dr.attr.directory) continue; //If it is not a directory.
+				tree.insert(child, dr.path().name(), dr.path().name());
 				break;
 			}
 		}
