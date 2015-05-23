@@ -7,7 +7,6 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 #include <nana/filesystem/filesystem.hpp>
-//#include <nana/gui/filebox.hpp>
 	#include <nana/gui/widgets/label.hpp>
 	#include <nana/gui/widgets/button.hpp>
 	#include <nana/gui/widgets/listbox.hpp>
@@ -15,11 +14,13 @@
 	#include <nana/gui/widgets/textbox.hpp>
 	#include <nana/gui/widgets/treebox.hpp>
 	#include <nana/gui/widgets/combox.hpp>
-	//#include <nana/filesystem/file_iterator.hpp>
 	#include <nana/gui/place.hpp>
 	#include <stdexcept>
 	#include <algorithm>
 #include <iostream> 
+#include <filesystem>
+
+//__cpp_lib_experimental_filesystem 
 
     //using namespace nana;
 
@@ -35,7 +36,7 @@ class file_explorer 	: public nana::form
 
 	nana::place	        place_  {*this};
     nana::categorize<int> path_ {*this};
-	//nana::textbox		filter_;
+	nana::textbox		filter_ {*this};
     nana::button	    btn_new_folder_ {*this, STR("&New Folder") };
 	nana::treebox       tree_   {*this};
 	nana::listbox	    ls_file_{*this};
@@ -138,7 +139,7 @@ class file_explorer 	: public nana::form
 
 	struct selection_tag
 	{
-		kind::t type;
+		kind type;
 		nana::string target;
 	}    selection_;
 
@@ -155,7 +156,7 @@ class file_explorer 	: public nana::form
 	};
 public:
 
-	file_explorer( const nana::string& title) 	: form( nana::API::make_center( 630, 440) ) 
+	file_explorer( const nana::string& title= L"Nana File Explorer") 	: form( nana::API::make_center( 630, 440) ) 
 	{
 		path_.splitstr(STR("/"));
 		path_.events().selected.connect_unignorable([this](const nana::arg_categorize<int>&)
@@ -402,7 +403,7 @@ private:
 	{
 		using namespace nana::filesystem;
 
-		//The path in linux is starting with the character '/', the name of root key should be
+		//The path in linux start with the character '/', the root key should be
 		//"FS.HOME", "FS.ROOT". Because a key of the tree widget should not be '/'
 		nodes_.home = tree_.insert(STR("FS.HOME"), STR("Home"));
 		nodes_.home.value(kind::filesystem);
@@ -412,9 +413,9 @@ private:
 		directory_iterator end;
 		for(directory_iterator i(path_user()); i != end; ++i)
 		{
-			if(( ! i->directory) || (i->name.size() && i->name[0] == '.')) continue;
+			if(( ! i->directory) || (i->path().name().size() && i->path().name()[0] == '.')) continue;
 
-			item_proxy node = tree_.insert(nodes_.home, i->name, i->name);
+			item_proxy node = tree_.insert(nodes_.home, i->path().name(), i->path().name());
 			if( ! node.empty() )
 			{
 				node.value(*i); //node.value(kind::filesystem);
@@ -424,9 +425,9 @@ private:
 
 		for(directory_iterator i(STR("/")); i != end; ++i)
 		{
-			if(( ! i->directory) || (i->name.size() && i->name[0] == '.')) continue;
+			if(( ! i->directory) || (i->path().name().size() && i->path().name()[0] == '.')) continue;
 
-			item_proxy node = tree_.insert(nodes_.filesystem, i->name, i->name);
+			item_proxy node = tree_.insert(nodes_.filesystem, i->path().name(), i->path().name());
 			if( ! node.empty() )
 			{
 				node.value(*i); //node.value(kind::filesystem);
@@ -475,13 +476,13 @@ private:
 
 		using namespace nana::filesystem;
 		attribute fattr;
-		file_iterator end;
-		for(file_iterator i(path); i != end; ++i)
+		directory_iterator end;
+		for(directory_iterator i(path); i != end; ++i)
 		{
-			if((i->name.size() == 0) || (i->name[0] == STR('.')))
+			if((i->path().name().size() == 0) || (i->path().name()[0] == STR('.')))
 				continue;
 			item_fs m;
-			m.name = i->name;
+			m.name = i->path().name();
 			if(file_attrib(path + m.name, fattr))
 			{
 				m.bytes = fattr.bytes;
@@ -492,7 +493,7 @@ private:
 			{
 				m.bytes = 0;
 				m.directory = i->directory;
-				modified_file_time(path + i->name, m.modified_time);
+				modified_file_time(path + i->path().name(), m.modified_time);
 			}
 
 			file_container_.push_back(m);
@@ -530,11 +531,11 @@ private:
 		if(head.size() == 0 || head[head.size() - 1] != STR('/'))
 			head += STR('/');
 
-		nana::filesystem::file_iterator end;
-		for(nana::filesystem::file_iterator i(head); i != end; ++i)
+		nana::filesystem::directory_iterator end;
+		for(nana::filesystem::directory_iterator i(head); i != end; ++i)
 		{
 			if(i->directory)
-				path_.childset(i->name, 0);
+				path_.childset(i->path().name(), 0);
 		}
 		auto cat_path = path_.caption();
 		if(cat_path.size() && cat_path[cat_path.size() - 1] != STR('/'))
@@ -550,10 +551,10 @@ private:
 			(head += folder) += STR('/');
 			path_.caption(cat_path);
 				
-			for(nana::filesystem::file_iterator i(head); i != end; ++i)
+			for(nana::filesystem::directory_iterator i(head); i != end; ++i)
 			{
 				if(i->directory)
-					path_.childset(i->name, 0);
+					path_.childset(i->path().name(), 0);
 			}
 
 			if(pos == path.npos)
@@ -599,7 +600,7 @@ private:
 		ls_file_.auto_draw(true);
 	}
 
-	void _m_finish(kind::t type, const nana::string& tar)
+	void _m_finish(kind type, const nana::string& tar)
 	{
 		selection_.target = tar;
 		selection_.type = type;
@@ -654,19 +655,10 @@ private:
 				return false;
 		}
 
-		if(def_ext_.size())
-		{
-			if(def_ext_[0] != STR('.'))
-				tar += STR('.');
-			tar += def_ext_;
-		}
-
 		std::vector<nana::string> * exts = cb_types_.anyobj<std::vector<nana::string> >(cb_types_.option());
 		if(0 == exts || exts->size() == 0)	return false;
 			
 		auto & ext = exts->at(0);
-		if(def_ext_[0] != STR('.'))
-			tar += STR('.');
 		tar += ext;
 		return true;
 	}
@@ -736,19 +728,6 @@ private:
 					return;
 				}
 					
-				if(io_read_)
-				{
-					if(false == good)
-					{
-						nana::msgbox mb(*this, caption());
-						mb.icon(nana::msgbox::icon_information);
-						mb<<STR("The file \"")<<tar<<STR("\"\n is not existing. Please check and retry.");
-						mb();
-					}
-					else
-						_m_finish(kind::filesystem, tar);
-				}
-				else
 				{
 					if(good)
 					{
@@ -770,23 +749,23 @@ private:
 	{
 		if(false == exp) return;
 
-		if(kind::filesystem == node.value<kind::t>())
+		if( ! node.empty())
 		{
 			nana::string path = tree_.make_key_path(node, STR("/")) + STR("/");
 			_m_resolute_path(path);
 
-			nana::filesystem::file_iterator end;
-			for(nana::filesystem::file_iterator i(path); i != end; ++i)
+			nana::filesystem::directory_iterator end;
+			for(nana::filesystem::directory_iterator i(path); i != end; ++i)
 			{
-				if((false == i->directory) || (i->name.size() && i->name[0] == '.')) continue;
-				auto child = node.append(i->name, i->name, kind::filesystem);
+				if((false == i->directory) || (i->path().name().size() && i->path().name()[0] == '.')) continue;
+				auto child = node.append(i->path().name(), i->path().name(), *i);
 				if(!child.empty())
 				{
-					for(nana::filesystem::file_iterator u(path + i->name); u != end; ++u)
+					for(nana::filesystem::directory_iterator u(path + i->path().name()); u != end; ++u)
 					{
-						if(! u->directory || (u->name.size() && u->name[0] == '.')) continue;
+						if(! u->directory || (u->path().name().size() && u->path().name()[0] == '.')) continue;
 
-						child.append(u->name, u->name, kind::filesystem);
+						child.append(u->path().name(), u->path().name(), *i);
 						break;
 					}
 				}
@@ -803,14 +782,11 @@ nana::string file_explorer::saved_selected_path;
 int main()
 {
     using namespace nana;
-    filebox fb(0, true);
-    fb.add_filter(STR("Text File"), STR("*.text;*.doc"));
-    fb.add_filter(STR("All Files"), STR("*.*"));
-    if(fb())
-    {
-        nana::string file = fb.file();
-        std::wcout << L"Selected file:  " << file << std::endl; 
-    }
+    file_explorer fb;
+	fb.add_filter(STR("Text File"), STR("*.text;*.doc"));
+	fb.add_filter(STR("All Files"), STR("*.*"));
+    fb.show();
+    nana::exec();
     char a;
     std::cin >> a;
 }
