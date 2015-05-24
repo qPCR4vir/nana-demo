@@ -28,7 +28,7 @@ int main()
 
 	for ( const auto& dir : SubDirectories{ rootstr })
 	{
-		if (! dir.attr.directory) continue;
+		if (!filesystem::is_directory(dir)) continue;
 		tree.insert(node, dir.path().filename(), dir.path().filename());
 		break;
 	}
@@ -46,7 +46,7 @@ int main()
 		//Walk in the path directory for sub directories.
 		for (const auto& dir : SubDirectories{ Path } )
 		{
-			if (!dir.attr.directory) continue; //If it is not a directory.
+			if (!filesystem::is_directory(dir)) continue; //If it is not a directory.
 
 			auto child = tree.insert(arg.item, dir.path().filename(), dir.path().filename());
 			if (child.empty()) continue;
@@ -57,7 +57,7 @@ int main()
 			//front of the node.
 			for (const auto& dr : SubDirectories{ Path + dir.path().filename() })
 			{
-				if (! dr.attr.directory) continue; //If it is not a directory.
+				if (!filesystem::is_directory(dr)) continue; //If it is not a directory.
 				tree.insert(child, dr.path().filename(), dr.path().filename());
 				break;
 			}
