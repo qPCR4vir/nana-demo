@@ -248,6 +248,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nana", "..\..\nana\build\vc2015\nana.vcxproj", "{25B21068-491B-4A9F-B99F-6C27BF31BAAD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "folder_tree_std", "folder_tree_std.vcxproj", "{5AB0C96E-6F14-4EC3-960E-D8B6375D8B25}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B21068-491B-4A9F-B99F-6C27BF31BAAD} = {25B21068-491B-4A9F-B99F-6C27BF31BAAD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "folder_tree_nana", "folder_tree_nana.vcxproj", "{1442405D-B956-4F32-87F3-A2146D58E509}"
 	ProjectSection(ProjectDependencies) = postProject
