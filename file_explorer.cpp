@@ -31,33 +31,29 @@ class file_explorer 	: public nana::form
 
  private:
 
-    //bool                io_read_;
-	//nana::string        def_ext_;
-
 	nana::place	        place_  {*this};
-    nana::categorize<int> path_ {*this};
-	nana::textbox		filter_ {*this};
+
     nana::button	    btn_new_folder_ {*this, STR("&New Folder") };
+    nana::categorize<int> path_ {*this};
 	nana::treebox       tree_   {*this};
 	nana::listbox	    ls_file_{*this};
 
+	nana::textbox		filter_ {*this};
+	nana::combox	    cb_types_ {*this};
+
 	nana::label         lb_file_  {*this, STR("File:") };
 	nana::textbox	    tb_file_  {*this};
-	nana::combox	    cb_types_ {*this};
-	//nana::button        btn_ok_,    btn_cancel_;
 
-	struct tree_node_tag
-	{
-		item_proxy home;
-		item_proxy filesystem;
-	}     nodes_;
+	//nana::button        btn_ok_,    btn_cancel_;
+    //bool                io_read_;
+	//nana::string        def_ext_;
 
 	struct item_fs
 	{
 		nana::string  name;
 		tm            modified_time;
 		bool          directory;
-		long long     bytes;       // nana::long_long_t
+		uintmax_t     bytes;       // nana::long_long_t
 
 		friend nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires, item_fs& m)
 		{
