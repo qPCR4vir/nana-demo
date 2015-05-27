@@ -5,6 +5,14 @@
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/label.hpp>
 
+// This example need nana/gui/widgets/group.hpp and the corresponding group.cpp. 
+// It can be found in branch:
+// https://github.com/cnjinhao/nana/tree/feature-group
+// or in:
+// https://github.com/qPCR4vir/nana
+// for exapmle in: https://github.com/qPCR4vir/nana/blob/master/include/nana/gui/widgets/group.hpp
+// and: https://github.com/qPCR4vir/nana/blob/master/source/gui/widgets/group.cpp
+
 using namespace nana;
 
 template<typename T, typename ...Args>
