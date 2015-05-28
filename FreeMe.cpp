@@ -21,6 +21,7 @@
 #include <windows.h>
 
 
+
 namespace path
 {
 	namespace detail
@@ -218,16 +219,17 @@ namespace path
  *		This sample shows you how to write an application with Nana C++ Library.
  */
 // TODO: , HACK, or UNDONE
-#include <nana/gui/wvl.hpp>
+//#include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/picture.hpp>
 #include <nana/gui/widgets/progress.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/filesystem/file_iterator.hpp>
 #include <nana/filesystem/fs_utility.hpp>
-//#include <nana/threads/thread.hpp>
+#include <thread>
 #include <vector>
 #include <deque>
+#include <algorithm>
 //#include "path_creator.hpp"
 	
 /*
@@ -383,10 +385,10 @@ class frm_main: public nana::form
 {
 	typedef frm_main self_type;
 public:
-	typedef nana::linearappear appear;
+	typedef nana::appear appear;
 	
 	frm_main()
-		: nana::linearform(nana::linearAPI::make_center(400, 350), appear::decorate<appear::minimize, appear::taskbar>())
+		: nana::form(nana::API::make_center(400, 350), appear::decorate<appear::minimize, appear::taskbar>())
 	{
 		this->caption(STR("The FreeMe - A Sample of Nana, stdex.sf.net"));
 		
@@ -400,7 +402,7 @@ public:
 
 		btn_.create(*this, nana::rectangle(270, 270, 120, 26));
 		btn_.caption(STR("Scan junk files"));
-		btn_.events().click(*this, &self_type::_m_button);
+        btn_.events().click([this](){_m_button();});
 		
 		pgbar_.create(*this, nana::rectangle(0, 310, 400, 20));
 		
@@ -420,7 +422,7 @@ private:
 		{
 			if((size_ % 50) == 0)
 			{
-				nana::threads::thread::check_break(0);
+				//nana::  ::threads::check_break(0);
 				pgbar_.inc();
 			}
 			size_++;
@@ -432,20 +434,20 @@ private:
 		}
 	private:
 		unsigned size_;
-		nana::linearprogress& pgbar_;
-		nana::linearlabel& lbl_;
+		nana::progress& pgbar_;
+		nana::label& lbl_;
 	};
 	
 	class pgbar_delete_msnger: public messenger
 	{
 	public:
-		pgbar_delete_msnger(nana::linearprogress& pgbar, nana::linearlabel& lbl)
+		pgbar_delete_msnger(nana::progress& pgbar, nana::label& lbl)
 			:pgbar_(pgbar), lbl_(lbl)
 		{}
 
 		void active()
 		{
-			nana::threads::thread::check_break(0);
+			//nana::threads::thread::check_break(0);
 			pgbar_.inc();
 		}
 		
@@ -454,8 +456,8 @@ private:
 			lbl_.caption(STR("Deleting ") + msg);	
 		}
 	private:
-		nana::linearprogress& pgbar_;
-		nana::linearlabel&	lbl_;
+		nana::progress& pgbar_;
+		nana::label&	lbl_;
 	};
 private:
 	void _m_button()
@@ -465,15 +467,16 @@ private:
 			pgbar_.amount(static_cast<unsigned int>(jkswp_.size()));
 			btn_.enabled(false);
 			//Start a thread for deleting the files.
-			thread_.start(nana::functor<void()>(*this, &self_type::_m_clear));
+            std::thread ([this](){_m_clear();});
 		}
 		else
 		{
-			pgbar_.style(false);
+			//pgbar_.style(false);
 			btn_.enabled(false);
 			lbl_.caption(STR("Analyzing..."));
 			//Start a thread for searching junk files
-			thread_.start(nana::functor<void()>(*this, &self_type::_m_search));
+            std::thread ([this](){_m_search();});
+			//thread_.start(nana::functor<void()>(*this, &self_type::_m_search));
 		}
 	}
 
@@ -484,10 +487,10 @@ private:
 		pgbar_analysis_msnger msnger(pgbar_, lbl_);
 		jkswp_.search(msnger);
 
-		pgbar_.style(true);
+		//pgbar_. .style(true);
 		pgbar_.value(0);
 
-		nana::wint_t bytes = jkswp_.bytes();
+		uintmax_t bytes = jkswp_.bytes();
 		size_t x = 1;
 		int capid = 0;
 
@@ -527,7 +530,7 @@ private:
 		ss.str("");
 		ss.clear();
 		ss<<"Analysis Result: "<<jkswp_.size()<<" files, "<<cap<<" "<<capa[capid]<<'.';
-		lbl_.caption(nana::charset(ss.str()));
+		lbl_.caption(nana::string(nana::charset(ss.str())));
 		btn_.caption(STR("FreeMe"));
 	}
 	
@@ -542,23 +545,23 @@ private:
 		lbl_.caption(STR("Done!"));
 	}
 private:
-	nana::linearpicture pic_;
-	nana::linearlabel	desc_;
-	nana::linearbutton	btn_;
-	nana::linearprogress pgbar_;
-	nana::linearlabel	lbl_;
+	nana::picture pic_;
+	nana::label	desc_;
+	nana::button	btn_;
+	nana::progress pgbar_;
+	nana::label	lbl_;
 	junk_sweeper		jkswp_;
-	nana::threads::thread thread_;
+	std::thread thread_;
 };
 
 /*
  * WinMain
  * @brief: Main Entry
  */
-int WINAPI WinMain(HINSTANCE, HINSTANCE, char*, int)
+int  main( )
 {
 	frm_main main;
-	nana::linearexec();
+	nana::exec();
 
 	return 0;
 }
