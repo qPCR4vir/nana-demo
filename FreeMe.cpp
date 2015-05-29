@@ -224,6 +224,7 @@ namespace path
 #include <nana/gui/widgets/picture.hpp>
 #include <nana/gui/widgets/progress.hpp>
 #include <nana/gui/widgets/label.hpp>
+#include <nana/gui/place.hpp>
 #include <nana/filesystem/file_iterator.hpp>
 #include <nana/filesystem/fs_utility.hpp>
 #include <thread>
@@ -383,6 +384,19 @@ private:
 
 class frm_main: public nana::form
 {
+	nana::place     plc_	{ *this };
+	nana::label		desc_   { *this,
+		STR("The FreeMe - A Sample of Nana C++ Library\n")
+		STR("Refer to stdex.sourceforge.net for the source code if you are a C++ developer.\n\n")
+		STR("The FreeMe cleans junk files in:\n    DLLCache, Prefetch, Temporary and Internet Cache Directories.") };
+																// nana::rectangle( 10, 150, 380, 110) };
+	nana::button   scan_btn_{ *this, STR("Scan junk files") };	// nana::rectangle(270, 270, 120,  26));
+	nana::progress	pgbar_	{ *this };							// nana::rectangle(  0, 310, 400,  20));
+	nana::label		lbl_	{ *this, STR("Nana C++ Library") }; // nana::rectangle(  5, 335, 400,  15));
+	nana::picture	pic_	{ *this };							//,nana::rectangle(  0,   0, 400, 144)
+	junk_sweeper	jkswp_;
+	std::thread		thread_;
+
 	typedef frm_main self_type;
 public:
 	typedef nana::appear appear;
@@ -392,22 +406,24 @@ public:
 	{
 		this->caption(STR("The FreeMe - A Sample of Nana, stdex.sf.net"));
 		
-		pic_.create(*this, nana::rectangle(0, 0, 400, 144));
 		pic_.load(STR("background.png"));
 
-		desc_.create(*this, nana::rectangle(10, 150, 380, 110));
-		desc_.caption(	STR("The FreeMe - A Sample of Nana C++ Library\n")
-						STR("Refer to stdex.sourceforge.net for the source code if you are a C++ developer.\n\n")
-						STR("The FreeMe cleans junk files in:\n    DLLCache, Prefetch, Temporary and Internet Cache Directories."));
+        scan_btn_.events().click([this](){_m_button();});
+		
+		plc_.div("vertical  gap=5 <weigth=144 pic>"
+			     "                <weigth=110 desc>"
+			     "                <weigth= 26 <> <weigth= 120 scan> >"
+			     "                <weigth= 20 pgbar>"
+			     "                <weigth= 15 lbl>"
+			);
+		plc_["pic" ] << pic_ ;
+		plc_["desc"] << desc_;
+		plc_["scan"] << scan_btn_;
+		plc_["pgbar"]<< pgbar_;
+		plc_["lbl" ] << lbl_;
 
-		btn_.create(*this, nana::rectangle(270, 270, 120, 26));
-		btn_.caption(STR("Scan junk files"));
-        btn_.events().click([this](){_m_button();});
-		
-		pgbar_.create(*this, nana::rectangle(0, 310, 400, 20));
-		
-		lbl_.create(*this, nana::rectangle(5, 335, 400, 15));
-		lbl_.caption(STR("Nana C++ Library"));
+		plc_.collocate();
+
 		this->show();
 	}
 private:
@@ -465,14 +481,14 @@ private:
 		if(jkswp_.ready())
 		{
 			pgbar_.amount(static_cast<unsigned int>(jkswp_.size()));
-			btn_.enabled(false);
+			scan_btn_.enabled(false);
 			//Start a thread for deleting the files.
             std::thread ([this](){_m_clear();});
 		}
 		else
 		{
 			//pgbar_.style(false);
-			btn_.enabled(false);
+			scan_btn_.enabled(false);
 			lbl_.caption(STR("Analyzing..."));
 			//Start a thread for searching junk files
             std::thread ([this](){_m_search();});
@@ -526,12 +542,12 @@ private:
 				cap.erase(cap.size() - 1);
 		}
 
-		btn_.enabled(true);
+		scan_btn_.enabled(true);
 		ss.str("");
 		ss.clear();
 		ss<<"Analysis Result: "<<jkswp_.size()<<" files, "<<cap<<" "<<capa[capid]<<'.';
 		lbl_.caption(nana::string(nana::charset(ss.str())));
-		btn_.caption(STR("FreeMe"));
+		scan_btn_.caption(STR("FreeMe"));
 	}
 	
 	void _m_clear()
@@ -540,24 +556,12 @@ private:
 		jkswp_.clear(msnger);
 		
 		jkswp_.reset();
-		btn_.caption(STR("Scan junk files"));
-		btn_.enabled(true);
+		scan_btn_.caption(STR("Scan junk files"));
+		scan_btn_.enabled(true);
 		lbl_.caption(STR("Done!"));
 	}
-private:
-	nana::picture pic_;
-	nana::label	desc_;
-	nana::button	btn_;
-	nana::progress pgbar_;
-	nana::label	lbl_;
-	junk_sweeper		jkswp_;
-	std::thread thread_;
 };
 
-/*
- * WinMain
- * @brief: Main Entry
- */
 int  main( )
 {
 	frm_main main;
