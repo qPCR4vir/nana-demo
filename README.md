@@ -1,7 +1,7 @@
 # nana-demo
 This is collection of small examples borrowed from any possible source, mostly from documents and blogs posted by Jin Hao.  
 
-The simple applications in the root directory show how to combine a few features of Nana GUI programing.  
+The simple applications in the root directory show how to combine a few features of [Nana C++ GUI programing](https://github.com/cnjinhao/nana).  
 
 The aim of each .cpp files in the "examples" directory is to show how to use one feature.  
 
