@@ -1,5 +1,6 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/listbox.hpp>
+#include <iostream>
 
 struct person
 {
@@ -8,34 +9,31 @@ struct person
     unsigned     age;
 };
 
-class resolver : public nana::listbox::oresolver   //:resolver_interface<person>
+nana::listbox::oresolver& operator << ( nana::listbox::oresolver& or , const person& pr)
 {
-    nana::string decode(std::size_t i, const person& pr) const override
-    {
-		std::stringstream ss;
-		switch(i)
-		{
-			case 0: return pr.name;
-			case 1: return (pr.gender ? STR("Male") : STR("Female"));
-			case 2: ss<<pr.age; return nana::charset(ss.str());
-		}
-		return nana::string();
-	}  
+	or << pr.name;
+	or << (pr.gender ? STR("Male") : STR("Female"));
+	or << pr.age;  
+	return or ;
+}
+std::wostream & operator << (std::wostream& or , const person& pr)
+{
+	or << pr.name;
+	or << (pr.gender ? STR("Male") : STR("Female"));
+	or << pr.age;
+	return or ;
+}
+nana::listbox::iresolver& operator >> ( nana::listbox::iresolver& or , person& pr)
+{
+	or >> pr.name;
+	nana::string gender;
+	or >> gender;
+	pr.gender = gender == STR("Male") ;
+	or >> pr.age;  
+	return or ;
+}
 
-	void encode(person& pr, std::size_t i, const nana::string& s)const override
-	{
-		std::stringstream ss;
-		switch(i)
-		{
-			case 0: pr.name = s; 			  break;
-			case 1: pr.gender = (s == STR("Male")); break;
-			case 2:
-					ss<<static_cast<std::string>(nana::charset(s));
-					ss>>pr.age;
-					break;
-		}
-	}
-};
+
 
 int main()
 {
@@ -47,7 +45,7 @@ int main()
 	lb.append_header(STR("Gender"), 60);
 	lb.append_header(STR("Age"), 60);
 
-	lb.resolver(resolver()); //Pass the user defined resolver to the listbox
+	//lb.resolver(resolver()); //Pass the user defined resolver to the listbox
 
 	person pr;
 	pr.name = STR("Peter");
@@ -55,8 +53,10 @@ int main()
 	pr.age = 10;
 	lb.at(0).append (pr); //person to item. resolver::decode() is required
 
-	lb.at(0).at(0).resolve_to( pr); //item to person. resolver::encode() is required
-
+	person prr;
+	lb.at(0).at(0).resolve_to( prr); //item to person. resolver::encode() is required
+	std::wcout << pr << "\n";
+	std::wcout << prr << "\n";
 	fm.show();
 	exec();
 }

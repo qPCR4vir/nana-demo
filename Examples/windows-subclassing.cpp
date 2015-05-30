@@ -106,7 +106,7 @@ private:
 		{
 			if(native_ && (nullptr == old_proc_))
 			{
-				old_proc_ = (WNDPROC)::SetWindowLongPtr(native_, GWL_WNDPROC, (LONG_PTR)_m_subclass_proc);
+				old_proc_ = (WNDPROC)::SetWindowLongPtr(native_, -4 /* GWL_WNDPROC*/, (LONG_PTR)_m_subclass_proc);
 				if(old_proc_)
 					table_[native_] = this;
 			}
@@ -116,7 +116,7 @@ private:
 			if(old_proc_)
 			{
 				table_.erase(native_);
-				::SetWindowLongPtr(native_, GWL_WNDPROC, (LONG_PTR)old_proc_);
+				::SetWindowLongPtr(native_, -4 /* GWL_WNDPROC*/, (LONG_PTR)old_proc_);
 				old_proc_ = nullptr;
 
 			}
