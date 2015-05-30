@@ -1,8 +1,12 @@
 # nana-demo
-This is colection of small examples barroewed from any possible source, mostly from documents and blogs posted by Jin Hao. 
-  
-All are updated to Nana v1.0.2 except stretch_image ,  list_resolver and FreeMe
-  
-Need periodical revision and adaptation.
+This is collection of small examples borrowed from any possible source, mostly from documents and blogs posted by Jin Hao.  
 
-This is also a test for each new version of nana.
+The simple applications in the root directory show how to combine a few features of [Nana C++ GUI programing](https://github.com/cnjinhao/nana).  
+
+The aim of each .cpp files in the "examples" directory is to show how to use one feature.  
+
+All are updated to Nana v1.0.2.  
+
+Need periodical revision and adaptation.  
+
+This is also a test for each change in nana.  
