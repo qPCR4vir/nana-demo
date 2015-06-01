@@ -10,3 +10,4 @@ All are updated to Nana v1.0.2.
 Need periodical revision and adaptation.  
 
 This is also a test for each change in nana.  
+And all are automatically added to the Doxygen-generated [Nana Documentation](http://qpcr4vir.github.io/nana-docs/nana-doxy/index.html) from the project [Nana-docs](https://github.com/qPCR4vir/nana-docs)
