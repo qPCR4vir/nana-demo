@@ -160,7 +160,7 @@ public:
 			auto path = path_.caption();
 			auto root = path.substr(0, path.find(STR('/')));
 			if(root == STR("HOME"))
-				path.replace(0, 4, nana::filesystem::path_user());
+				path.replace(0, 4, nana::experimental::filesystem::path_user());
 			else if(root == STR("FILESYSTEM"))
 				path.erase(0, 10);
 			else
@@ -321,7 +321,7 @@ public:
 		else
 			dir = saved_selected_path;
 
-		_m_load_cat_path(dir.size() ? dir : nana::filesystem::path_user());
+		_m_load_cat_path(dir.size() ? dir : nana::experimental::filesystem::path_user());
 
 		tb_file_.caption(file_with_path_removed);					
 	}
@@ -397,36 +397,36 @@ private:
 
 	void _m_init_tree()
 	{
-		using namespace nana::filesystem;
+		using namespace nana::experimental::filesystem;
 
 		//The path in linux start with the character '/', the root key should be
 		//"FS.HOME", "FS.ROOT". Because a key of the tree widget should not be '/'
-		nodes_.home = tree_.insert(STR("FS.HOME"), STR("Home"));
-		nodes_.home.value(kind::filesystem);
-		nodes_.filesystem = tree_.insert(STR("FS.ROOT"), STR("Filesystem"));
-		nodes_.filesystem.value(kind::filesystem);
+		auto node_home = tree_.insert(STR("FS.HOME"), STR("Home"));
+		node_home.value(kind::filesystem);
+		auto node_filesystem = tree_.insert(STR("FS.ROOT"), STR("Filesystem"));
+		node_filesystem.value(kind::filesystem);
+		using SubDirectories =  directory_iterator;
 
-		directory_iterator end;
-		for(directory_iterator i(path_user()); i != end; ++i)
+		for (const auto& dir : SubDirectories{ path_user() })
 		{
-			if(( ! i->directory) || (i->path().name().size() && i->path().name()[0] == '.')) continue;
+			if ( !is_directory(dir) || (dir.path().filename().size() && dir.path().filename()[0] == '.')) continue;
 
-			item_proxy node = tree_.insert(nodes_.home, i->path().name(), i->path().name());
+			item_proxy node = tree_.insert(node_home, dir.path().filename(), dir.path().filename());
 			if( ! node.empty() )
 			{
-				node.value(*i); //node.value(kind::filesystem);
+				node.value(dir); //node.value(kind::filesystem);
 				break;
 			}
 		}
 
-		for(directory_iterator i(STR("/")); i != end; ++i)
+		for (const auto& dir : SubDirectories{ STR("/") })
 		{
-			if(( ! i->directory) || (i->path().name().size() && i->path().name()[0] == '.')) continue;
+			if ( !is_directory(dir) || (dir.path().filename().size() && dir.path().filename()[0] == '.')) continue;
 
-			item_proxy node = tree_.insert(nodes_.filesystem, i->path().name(), i->path().name());
+			item_proxy node = tree_.insert(node_home, dir.path().filename(), dir.path().filename());
 			if( ! node.empty() )
 			{
-				node.value(*i); //node.value(kind::filesystem);
+				node.value(dir); //node.value(kind::filesystem);
 				break;
 			}
 		}
@@ -454,7 +454,7 @@ private:
 		{
 			auto begstr = path.substr(0, pos);
 			if(begstr == STR("FS.HOME"))
-				path.replace(0, 7, nana::filesystem::path_user());
+				path.replace(0, 7, nana::experimental::filesystem::path_user());
 			else
 				path.erase(0, pos);
 			return begstr;
@@ -470,26 +470,26 @@ private:
 
 		file_container_.clear();
 
-		using namespace nana::filesystem;
+		using namespace nana::experimental::filesystem;
 		attribute fattr;
 		directory_iterator end;
 		for(directory_iterator i(path); i != end; ++i)
 		{
-			if((i->path().name().size() == 0) || (i->path().name()[0] == STR('.')))
+			if((i->path().filename().size() == 0) || (i->path().filename()[0] == STR('.')))
 				continue;
 			item_fs m;
-			m.name = i->path().name();
+			m.name = i->path().filename();
 			if(file_attrib(path + m.name, fattr))
 			{
-				m.bytes = fattr.bytes;
-				m.directory = fattr.is_directory;
+				m.bytes = fattr.size;
+				m.directory = fattr.directory;
 				m.modified_time = fattr.modified;
 			}
 			else
 			{
 				m.bytes = 0;
-				m.directory = i->directory;
-				modified_file_time(path + i->path().name(), m.modified_time);
+				m.directory = i->attr.directory;
+				modified_file_time(path + i->path().filename(), m.modified_time);
 			}
 
 			file_container_.push_back(m);
@@ -527,8 +527,8 @@ private:
 		if(head.size() == 0 || head[head.size() - 1] != STR('/'))
 			head += STR('/');
 
-		nana::filesystem::directory_iterator end;
-		for(nana::filesystem::directory_iterator i(head); i != end; ++i)
+		nana::experimental::filesystem::directory_iterator end;
+		for(nana::experimental::filesystem::directory_iterator i(head); i != end; ++i)
 		{
 			if(i->directory)
 				path_.childset(i->path().name(), 0);
@@ -547,7 +547,7 @@ private:
 			(head += folder) += STR('/');
 			path_.caption(cat_path);
 				
-			for(nana::filesystem::directory_iterator i(head); i != end; ++i)
+			for(nana::experimental::filesystem::directory_iterator i(head); i != end; ++i)
 			{
 				if(i->directory)
 					path_.childset(i->path().name(), 0);
