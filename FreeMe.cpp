@@ -241,7 +241,7 @@ class messenger
 	virtual ~messenger(){}
 	virtual void active(){}
 	virtual void message(const nana::string&){}
-	virtual bool stoped() {return false;}
+	virtual bool stopped() {return false;}
 };
 
 /// search temporary files and clear these files.
@@ -290,7 +290,7 @@ class junk_sweeper
 		for (auto &temp_dir : files_ )
 			for(auto &file : temp_dir)
 			{
-				if (msnger.stoped()) 
+				if (msnger.stopped()) 
 					return;
 
 				if (file.second)
@@ -334,7 +334,7 @@ class junk_sweeper
 				helper hlp(file, msnger_);
 				for (auto & sub_dir = file_iterator(hlp.path); sub_dir != file_iterator(); ++sub_dir)
 				{
-					if (msnger_.stoped()) break;
+					if (msnger_.stopped()) break;
 					hlp(*sub_dir);
 				}
 				//std::for_each<file_iterator, helper&>(file_iterator(hlp.path), file_iterator(), hlp);
@@ -455,9 +455,9 @@ private:
 		{
 			lbl_.caption(STR("Analyzing...") + msg );
 		}
-		bool stoped() override
+		bool stopped() override
 		{
-			return pgbar_.stoped();
+			return pgbar_.stopped();
 		}
 	};
 	
@@ -480,9 +480,9 @@ private:
 		{
 			lbl_.caption(STR("Deleting ") + msg);	
 		}
-		bool stoped() override
+		bool stopped() override
 		{
-			return pgbar_.stoped();
+			return pgbar_.stopped();
 		}
 
 	};
