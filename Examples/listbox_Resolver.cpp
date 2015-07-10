@@ -40,7 +40,7 @@ int main()
 	using namespace nana;
 
 	form fm;
-	listbox lb/*(fm, nana::rectangle(10, 10, 280, 120))*/;
+	listbox lb(fm, nana::rectangle(10, 10, 280, 120));
 
 	auto cat = lb.at(0);
 	if (cat.begin() == cat.end())
