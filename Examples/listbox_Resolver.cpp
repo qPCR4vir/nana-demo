@@ -40,7 +40,16 @@ int main()
 	using namespace nana;
 
 	form fm;
-	listbox lb(fm, nana::rectangle(10, 10, 280, 120));
+	listbox lb/*(fm, nana::rectangle(10, 10, 280, 120))*/;
+
+	auto cat = lb.at(0);
+	if (cat.begin() == cat.end())
+		std::wcout << STR("true ");
+	else 		
+		std::wcout << STR("false ");
+
+	std::wcout << "\n";
+
 	lb.append_header(STR("Name"), 100);
 	lb.append_header(STR("Gender"), 60);
 	lb.append_header(STR("Age"), 60);
