@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Examples\HelloWord-Quit.cpp" />
+    <ClCompile Include="..\Examples\helloword_quit.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C671CCA3-3E29-44A0-8A99-EB5A29852E1C}</ProjectGuid>
