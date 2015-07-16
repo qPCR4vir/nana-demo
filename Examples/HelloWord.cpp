@@ -5,7 +5,7 @@ int main()
 {
     using namespace nana;
     form    fm;
-    label   lb(fm, fm.size());
+    label   lb(fm, rectangle(fm.size()));
     lb.caption(STR("Hello, World"));
     fm.show();
     exec();
