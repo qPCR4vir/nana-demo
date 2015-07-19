@@ -36,7 +36,7 @@ monty_hall::monty_hall()
   STR("One door has a new Car behind it and the other two: Goats.\n") 
   STR("Now pick a door to win the Car."); 
 
-  label_.create(*this, nana::size(400, 100)); 
+  label_.create(*this, nana::rectangle(nana::size(400, 100))); 
   label_.caption(text); 
 
   nana::string door_name[3] = 

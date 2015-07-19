@@ -18,12 +18,12 @@ int main()
         graph.line_to(point(200,100));
 		graph.save_as_file("graphics.bmp");
 		nana::paint::image img(STR("C:\\Prog\\ExtLib\\nana-demo\\bin\\test.bmp"));
-		img.paste(img.size(), graph, nana::point());
+		img.paste(nana::rectangle(img.size()), graph, nana::point());
 		graph.save_as_file("C:\\Prog\\ExtLib\\nana-demo\\bin\\testGraphics.bmp");
     });
 	nana::paint::graphics graphics;
 	nana::paint::image img(STR("C:\\Prog\\ExtLib\\nana-demo\\bin\\test.bmp"));
-	img.paste(img.size(), graphics, nana::point());
+	img.paste(nana::rectangle(img.size()), graphics, nana::point());
 	graphics.save_as_file("C:\\Prog\\ExtLib\\nana-demo\\bin\\testGraphics2.bmp");
     dw.update();
     fm.show();
