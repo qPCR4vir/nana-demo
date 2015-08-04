@@ -28,7 +28,7 @@ struct stateinfo
 	{}
 };
 
-void numkey_pressed(stateinfo& state, const arg_mouse& arg)
+void numkey_pressed(stateinfo& state, const arg_click& arg)
 {
 	if(state.opstate != stateinfo::state::init)
 	{
@@ -54,7 +54,7 @@ void numkey_pressed(stateinfo& state, const arg_mouse& arg)
 		state.result.caption(rstr + d);
 }
 
-void opkey_pressed(stateinfo& state, const arg_mouse& arg)
+void opkey_pressed(stateinfo& state, const arg_click& arg)
 {
 	wchar_t d = API::window_caption(arg.window_handle)[0];
 	if('C' == d)

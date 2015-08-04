@@ -10,7 +10,7 @@ class monty_hall
   public: 
     monty_hall(); 
   private: 
-    void _m_pick_door  (const nana::arg_mouse& ei); 
+    void _m_pick_door  (const nana::arg_click& ei); 
     void _m_play       (int door); 
     void _m_remove_door(int exclude); 
   private: 
@@ -45,11 +45,11 @@ monty_hall::monty_hall()
   { 
     door_[i].create(*this, nana::rectangle(50 + 110 * i, 110, 100, 24)); 
     door_[i].caption(door_name[i]); 
-    door_[i].events().click([this](const nana::arg_mouse& ei){ _m_pick_door(ei); });
+    door_[i].events().click([this](const nana::arg_click& ei){ _m_pick_door(ei); });
   } 
 }
 
- void monty_hall::_m_pick_door(const nana::arg_mouse& ei) 
+ void monty_hall::_m_pick_door(const nana::arg_click& ei)
 { 
      int index = 0; 
      for(; index < 3; ++index) 

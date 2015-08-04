@@ -1,7 +1,7 @@
 #include <nana/gui/wvl.hpp> 
 #include <nana/gui/widgets/button.hpp> 
 #include <iostream> 
-void foo(const nana::arg_mouse& ei) 
+void foo(const nana::arg_click& ei)
 { 
     using namespace nana; 
     form fm(ei.window_handle, API::make_center(ei.window_handle, 400, 300)); 

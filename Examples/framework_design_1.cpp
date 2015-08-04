@@ -59,7 +59,7 @@ namespace ui
             btn_pair p{ std::make_shared<button>(*this) , dat} ; 
 
                           //Make the click event 
-            p.first->events().click(  [&](const arg_mouse& ei){_m_click( ei);} ); 
+            p.first->events().click(  [&](const arg_click& ei){_m_click( ei);} );
             p.first->caption(nana::string(charset(dat.url))) ; 
   
             plc_["abc"]<< *(p.first); 
@@ -67,7 +67,7 @@ namespace ui
 
             ui_el_.push_back(p); 
         } 
-        void _m_click(const arg_mouse& ei) 
+        void _m_click(const arg_click& ei)
         { 
             //Check which button is clicked 
             for(btn_pair &bp : ui_el_) 

@@ -46,7 +46,7 @@ int main()
 	btn.caption(STR("Popup Menu"));
 
 	;//Popup the menu when right clicking the button.
-	btn.events().click(menu_popuper(mobj));
+	btn.events().mouse_down(menu_popuper(mobj));
 
 	;//Or popuping the menu with a specified coordinate when any mouse button is clicked.
 	;//btn.make_event<events::click> ( menu_popuper( mobj, btn, nana::point(0, 26),

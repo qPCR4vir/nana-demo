@@ -51,9 +51,9 @@
         fm.events().click(f); 
         fm.events().click(bar); 
 
-        fm.events().click(foo_with_eventinfo); 
+        fm.events().mouse_down (foo_with_eventinfo); 
         fun_with_param_t fp(foo_with_eventinfo); 
-        fm.events().click(fp); 
+        fm.events().mouse_down(fp);
 
         fm.events().click( [&cs](){cs.respond();}                  ); 
         f= std::bind( &click_stat::respond, cs); 
@@ -65,9 +65,9 @@
 
 
         fp= std::bind( &click_stat::respond_ei, &cs , std::placeholders::_1 ); 
-        fm.events().click(   fp                                                            ); 
-        fm.events().click( [&](const arg_mouse&ma){cs.respond_ei(ma);}                     ); 
-        fm.events().click( std::bind( &click_stat::respond_ei, cs, std::placeholders::_1)  ); 
+        fm.events().mouse_down(   fp                                                            );
+        fm.events().mouse_down( [&](const arg_mouse&ma){cs.respond_ei(ma);}                     );
+        fm.events().mouse_down( std::bind( &click_stat::respond_ei, cs, std::placeholders::_1)  );
 
         fm.show(); 
         exec(); 

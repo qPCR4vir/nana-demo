@@ -29,7 +29,7 @@ int main()
 	//btn.events().click(menu_popuper(mobj)) ;
 
 	;//Or popuping the menu with a specified coordinate when any mouse button is clicked.
-	btn.events().click( menu_popuper( mobj, btn, nana::point(100, 36),   mouse::any_button ));
+	btn.events().mouse_down( menu_popuper( mobj, btn, nana::point(100, 36),   mouse::any_button ));
 
 	fm.show();
 	exec();
