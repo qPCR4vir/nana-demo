@@ -17,7 +17,7 @@ namespace dm
 	    template<typename T, typename ...Args>
 	    T* create_widget(Args&&... args)
 	    {
-		    widgets_.emplace_back(new T(*this, std::forward<Args>(args)...));
+		    widgets_.emplace_back(new T(*this, std::forward<Args>(args)...)); // warning C4800: 'const wchar_t *': forcing value to bool 'true' or 'false'  
 
 		    plc_["abc"] << widgets_.back()->handle();
 		    plc_.collocate();
@@ -97,7 +97,7 @@ int main()
 
 	dm::group grp;
 	grp.create(fm );
-    grp.create_widget<label>(STR("Group:"));
+    grp.create_widget<label>(nana::string(STR("Group:")));
 
     plc["left"] << grp;
 

@@ -51,7 +51,7 @@ int main()
     drawing dw(fm);
     dw.draw([&img](nana::paint::graphics & graph)
     {
-        img.paste(graph, 0, 0);
+		img.paste(graph, nana::point{} );
     });
     dw.update();
 
