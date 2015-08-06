@@ -408,7 +408,7 @@ public:
 	{
 		this->caption(STR("The FreeMe - A Sample of Nana, stdex.sf.net"));
 		
-		pic_.load(STR("background.png"));
+		pic_.load(STR("..\\Examples\\image02.bmp"   /*background.png"*/   ));
 
         scan_btn_.events().click([this](){_m_button();});
 		
