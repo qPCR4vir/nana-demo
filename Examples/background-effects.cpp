@@ -36,7 +36,7 @@ int main()
     lb2.bgcolor(color_rgb(0xFF0000));
     API::effects_bground(lb2, effects::bground_transparent(10), 0);
 
-    label lb3(fm, string(L"Basic Mode: Blur"));
+    label lb3(fm, L"Basic Mode: Blur");
     lb3.fgcolor(color_rgb(0xFFFFFF));
     API::effects_bground(lb3, effects::bground_blur(2), 0);
 

@@ -17,15 +17,25 @@ int main()
         graph.line_to(point(100,300));
         graph.line_to(point(200,100));
 		graph.save_as_file("graphics.bmp");
-		nana::paint::image img(STR("C:\\Prog\\ExtLib\\nana-demo\\bin\\test.bmp"));
-		img.paste(nana::rectangle(img.size()), graph, nana::point());
-		graph.save_as_file("C:\\Prog\\ExtLib\\nana-demo\\bin\\testGraphics.bmp");
+		nana::paint::image img(STR("test.bmp"));
+		if (img.empty())
+		{
+			graph.line(point(100, 100), point(300, 100), colors::red);
+			graph.save_as_file("test.bmp");
+		}
+		else 
+			img.paste(nana::rectangle(img.size()), graph, nana::point());
+
+		graph.save_as_file("testGraphics.bmp");
     });
 	nana::paint::graphics graphics;
-	nana::paint::image img(STR("C:\\Prog\\ExtLib\\nana-demo\\bin\\test.bmp"));
-	img.paste(nana::rectangle(img.size()), graphics, nana::point());
-	graphics.save_as_file("C:\\Prog\\ExtLib\\nana-demo\\bin\\testGraphics2.bmp");
-    dw.update();
+	nana::paint::image img(STR("test.bmp"));
+	if (!img.empty())
+	{
+		img.paste(nana::rectangle(img.size()), graphics, nana::point());
+		graphics.save_as_file("testGraphics2.bmp");
+	}
+	dw.update();
     fm.show();
     ::nana::exec();
 }
