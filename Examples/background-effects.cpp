@@ -23,20 +23,20 @@ int main()
     button btn2(fm, L"Blend Mode: Blur");
     API::effects_bground(btn2, effects::bground_blur(2), 0.5);
 
-    label lb0(fm, L"Normal Label");
-    lb0.fgcolor(color_rgb(0xFFFFFF));
+    label lb0(fm, string(L"Normal Label"));
+    //lb0.fgcolor(color_rgb(0xFFFFFF));
 
-    label lb1(fm, L"Basic Mode: Transparent");
+    label lb1(fm, string(L"Basic Mode: Transparent"));
     lb1.fgcolor(color_rgb(0xFFFFFF));
     //Equal to lb1.transparent(true);
     API::effects_bground(lb1, effects::bground_transparent(0), 0);
 
-    label lb2(fm, L"Basic Mode: Transparent and blend with its background color");
+    label lb2(fm, string(L"Basic Mode: Transparent and blend with its background color"));
     lb2.fgcolor(color_rgb(0xFFFFFF));
     lb2.bgcolor(color_rgb(0xFF0000));
     API::effects_bground(lb2, effects::bground_transparent(10), 0);
 
-    label lb3(fm, L"Basic Mode: Blur");
+    label lb3(fm, string(L"Basic Mode: Blur"));
     lb3.fgcolor(color_rgb(0xFFFFFF));
     API::effects_bground(lb3, effects::bground_blur(2), 0);
 
@@ -47,10 +47,11 @@ int main()
 
     fm.show();
 
-    nana::paint::image img(L"image.bmp");
+    nana::paint::image img(L"..\\Examples\\image02.bmp");
     drawing dw(fm);
     dw.draw([&img](nana::paint::graphics & graph)
     {
+		if (img.empty()) return;
 		img.paste(graph, nana::point{} );
     });
     dw.update();
