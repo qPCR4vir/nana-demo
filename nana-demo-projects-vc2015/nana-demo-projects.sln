@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "calculator", "calculator.vcxproj", "{C6D0B6AC-E8E0-4791-A2E0-B22EEC864B7E}"
 EndProject
@@ -104,6 +104,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "folder_tree_std", "folder_tree_std.vcxproj", "{5AB0C96E-6F14-4EC3-960E-D8B6375D8B25}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "folder_tree_nana", "folder_tree_nana.vcxproj", "{1442405D-B956-4F32-87F3-A2146D58E509}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "listbox_inline_widget", "listbox_inline_widget.vcxproj", "{A04D754E-1C54-4525-B57D-C348D61A88FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -513,6 +515,14 @@ Global
 		{1442405D-B956-4F32-87F3-A2146D58E509}.Release|Win32.Build.0 = Release|Win32
 		{1442405D-B956-4F32-87F3-A2146D58E509}.Release|x64.ActiveCfg = Release|x64
 		{1442405D-B956-4F32-87F3-A2146D58E509}.Release|x64.Build.0 = Release|x64
+		{A04D754E-1C54-4525-B57D-C348D61A88FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A04D754E-1C54-4525-B57D-C348D61A88FD}.Debug|Win32.Build.0 = Debug|Win32
+		{A04D754E-1C54-4525-B57D-C348D61A88FD}.Debug|x64.ActiveCfg = Debug|x64
+		{A04D754E-1C54-4525-B57D-C348D61A88FD}.Debug|x64.Build.0 = Debug|x64
+		{A04D754E-1C54-4525-B57D-C348D61A88FD}.Release|Win32.ActiveCfg = Release|Win32
+		{A04D754E-1C54-4525-B57D-C348D61A88FD}.Release|Win32.Build.0 = Release|Win32
+		{A04D754E-1C54-4525-B57D-C348D61A88FD}.Release|x64.ActiveCfg = Release|x64
+		{A04D754E-1C54-4525-B57D-C348D61A88FD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
