@@ -7,6 +7,7 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 #include <nana/filesystem/filesystem.hpp>
+#include <nana/filesystem/fs_utility.hpp>
 	#include <nana/gui/widgets/label.hpp>
 	#include <nana/gui/widgets/button.hpp>
 	#include <nana/gui/widgets/listbox.hpp>
@@ -138,6 +139,12 @@ class file_explorer 	: public nana::form
 		kind type;
 		nana::string target;
 	}    selection_;
+	
+	struct tree_node_tag
+	{
+		item_proxy home;
+		item_proxy filesystem;
+	}nodes_;
 
 	static nana::string saved_init_path;
 	static nana::string saved_selected_path;
@@ -170,7 +177,7 @@ public:
 			_m_load_cat_path(path);
 		});
 
-		btn_new_folder_.events().click.connect_unignorable([this](const nana::arg_mouse&)
+		btn_new_folder_.events().click.connect_unignorable([this](const nana::arg_click&)
 		{
               // use inputbox
 			form fm(this->handle(), nana::API::make_center(*this, 300, 35));
@@ -187,7 +194,7 @@ public:
 			nana::button btn_cancel(fm, nana::rectangle(235, 5, 60, 25));
 			btn_cancel.caption(STR("Cancel"));
 
-			btn_cancel.events().click.connect_unignorable([&fm](const nana::arg_mouse&)
+			btn_cancel.events().click.connect_unignorable([&fm](const nana::arg_click&)
 			{
 				fm.close();
 			});
@@ -527,11 +534,12 @@ private:
 		if(head.size() == 0 || head[head.size() - 1] != STR('/'))
 			head += STR('/');
 
-		nana::experimental::filesystem::directory_iterator end;
-		for(nana::experimental::filesystem::directory_iterator i(head); i != end; ++i)
+		using namespace nana::experimental::filesystem;
+		directory_iterator end;
+		for(directory_iterator i(head); i != end; ++i)
 		{
-			if(i->directory)
-				path_.childset(i->path().name(), 0);
+			if(i->attr.directory)
+				path_.childset(i->path().filename(), 0);
 		}
 		auto cat_path = path_.caption();
 		if(cat_path.size() && cat_path[cat_path.size() - 1] != STR('/'))
@@ -549,8 +557,8 @@ private:
 				
 			for(nana::experimental::filesystem::directory_iterator i(head); i != end; ++i)
 			{
-				if(i->directory)
-					path_.childset(i->path().name(), 0);
+				if (i->attr.directory)
+					path_.childset(i->path().filename(), 0);
 			}
 
 			if(pos == path.npos)
@@ -750,18 +758,19 @@ private:
 			nana::string path = tree_.make_key_path(node, STR("/")) + STR("/");
 			_m_resolute_path(path);
 
-			nana::filesystem::directory_iterator end;
-			for(nana::filesystem::directory_iterator i(path); i != end; ++i)
+			using namespace nana::experimental::filesystem;
+			directory_iterator end;
+			for(directory_iterator i(path); i != end; ++i)
 			{
-				if((false == i->directory) || (i->path().name().size() && i->path().name()[0] == '.')) continue;
-				auto child = node.append(i->path().name(), i->path().name(), *i);
+				if((false == i->attr.directory) || (i->path().filename().size() && i->path().filename()[0] == '.')) continue;
+				auto child = node.append(i->path().filename(), i->path().filename(), *i);
 				if(!child.empty())
 				{
-					for(nana::filesystem::directory_iterator u(path + i->path().name()); u != end; ++u)
+					for(directory_iterator u(path + i->path().filename()); u != end; ++u)
 					{
-						if(! u->directory || (u->path().name().size() && u->path().name()[0] == '.')) continue;
+						if(! u->attr.directory || (u->path().filename().size() && u->path().filename()[0] == '.')) continue;
 
-						child.append(u->path().name(), u->path().name(), *i);
+						child.append(u->path().filename(), u->path().filename(), *i);
 						break;
 					}
 				}
