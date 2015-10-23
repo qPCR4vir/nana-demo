@@ -382,8 +382,7 @@ public:
 	}
 private:
 	void _m_layout()
-	{
-		place_.bind(*this);
+	{	
 		place_.div(	"vert"
 				"<weight=34 margin=5          path       arrange=[variable,200] gap=5 >"
 				"<weight=30 margin=[0,0,5,10] new_folder arrange=[100]                >"
