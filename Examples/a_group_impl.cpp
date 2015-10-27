@@ -99,22 +99,22 @@ int main()
 	grp.create(fm );
     grp.create_widget<label>(nana::string(STR("Group:")));
 
-    plc["left"] << grp;
+    plc["left_field"] << grp;
 
     dm::group1 grp1(fm, STR("A new <bold=true, color=0xff0000, font=\"Consolas\">Group:</>"), true );
     label lab{grp1, STR("A label ")};
     button b1{grp1, STR("add button")};
     button b2{grp1, STR("button2")};
     button b3{grp1, STR("button3")};
-    grp1.fmt += "<vertical margin=2 gap= 2 <lab> | 70% < <left> | 70% <right>> >";
+    grp1.fmt += "<vertical margin=2 gap= 2 <lab> | 70% < <left_field> | 70% <right_field>> >";
     grp1.plc["lab"] << lab.text_align(align::right)  ;
-    grp1.plc["left"] << b1  ;
-    grp1.plc["right"] << b2 << b3;
+    grp1.plc["left_field"] << b1  ;
+    grp1.plc["right_field"] << b2 << b3;
     grp1.plc.div(grp1.fmt.c_str());
     //grp1.plc.collocate();    // problem !!!!!!!!!!!!!!
 
-    plc["right"] << grp1;
-    plc.div("horizontal gap=3 margin=30  < <left> | 70% <right>> ");
+    plc["right_field"] << grp1;
+    plc.div("horizontal gap=3 margin=30  < <left_field> | 70% <right_field>> ");
     plc.collocate();
     grp1.plc.collocate();    // OK
 
