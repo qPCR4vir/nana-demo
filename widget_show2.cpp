@@ -164,7 +164,7 @@ namespace demo
 		{
 			place_.bind(*this);
 
-			place_.div("<weight=5><vertical <weight=5>< weight=150 gap=5 check vertical> <bottom vertical gap=5 weight=50>><weight=5>");
+			place_.div("<weight=5><vertical <weight=5>< weight=150 gap=5 check vertical> <bottom_cat vertical gap=5 weight=50>><weight=5>");
 
 			const nana::string str[6] = {
 					STR("Airbus"), STR("AHTOHOB"),
@@ -197,7 +197,7 @@ namespace demo
 
 			categorize_.create(*this);
 
-			place_.field("bottom")<< label_ << categorize_ ;
+			place_.field("bottom_cat")<< label_ << categorize_ ;
 
 			std::map<nana::string, std::vector<nana::string>> map;
 			auto p = &(map[str[0]]);
