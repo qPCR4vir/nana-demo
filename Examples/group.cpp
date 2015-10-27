@@ -5,14 +5,6 @@
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/label.hpp>
 
-// This example need nana/gui/widgets/group.hpp and the corresponding group.cpp. 
-// It can be found in branch:
-// https://github.com/cnjinhao/nana/blob/develop/include/nana/gui/widgets/group.hpp
-// or in:
-// https://github.com/qPCR4vir/nana
-// for exapmle in: https://github.com/qPCR4vir/nana/blob/master/include/nana/gui/widgets/group.hpp
-// and: https://github.com/qPCR4vir/nana/blob/master/source/gui/widgets/group.cpp
-
 using namespace nana;
 
 int main()
@@ -35,9 +27,9 @@ int main()
     group grp_left {ext_gr, STR("A new <bold=true, color=0xff0000, font=\"Consolas\">Group:</>"), true };
     group grp_right{ext_gr, STR("A right <bold=true, color=0xff0000, font=\"Consolas\">Group:</>"), true};
 
-    ext_gr.div("horizontal gap=3 margin=20  < <left> | 70% <right>> ");
-    ext_gr["left"]  << grp_left;
-    ext_gr["right"] << grp_right;
+    ext_gr.div("horizontal gap=3 margin=20  < <left_field> | 70% <right_field>> ");
+    ext_gr["left_field"]  << grp_left;
+    ext_gr["right_field"] << grp_right;
 
     // the left group
     grp_left.div("buttons vert gap=5 margin=3");
@@ -56,10 +48,10 @@ int main()
 	});
     button b2  {grp_right, STR("button2")};
     button b3  {grp_right, STR("button3")};
-    grp_right.div( "<vertical margin=2 gap= 2 <vert lab> | 40% < <left> | 70% <right>> >");
+    grp_right.div( "<vertical margin=2 gap= 2 <vert lab> | 40% < <left_field> | 70% <right_field>> >");
     grp_right["lab"]  << lab.text_align(align::right) << nested ;
-    grp_right["left"] << b1  ;
-    grp_right["right"]<< b2 << b3;
+    grp_right["left_field"] << b1  ;
+    grp_right["right_field"]<< b2 << b3;
 
     // the nested (rigth up) group
     label lab1{nested, STR("A very simple group:")};
