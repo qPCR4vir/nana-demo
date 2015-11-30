@@ -16,7 +16,7 @@ int main()
 	fm.events().click([&fm]
 	{
 		inputbox::text name(L"<bold blue>Name</>");	//The format text is also available.
-		inputbox::text gender(L"Gender", {L"Male", L"Female"});
+		inputbox::text gender(L"Gender", {L"Male", L"Female", L"bisexual"});
 		inputbox::date birth(L"Date of birth");
 		inputbox::real height(L"Height(cm)", 100, 1, 300, 1);
 		inputbox::integer kids(L"Kids", 0, 0, 100, 1);
