@@ -8,7 +8,7 @@ The aim of each .cpp files in the "Examples" directory is to show how to use one
 The __master__ branch allow you to quickly browse, modify and compile any of the demos. You can use it for a quick setup of your own project.  
 The branch __dev_nana_in examples__ introduce a dependency of each demo project on the source code of nana and add the project for the generation of the nana static library to the solutions for Visual Studio 2013 and 2015. This allow you to quickly select (checkout) the exact version of nana (in the nana repository!!) - for example, the latest hotfix - you want to use and recompile it together with the demo of your choice. It also allow you to quickly browse, modify, test and contribute! to nana.
 
-All demos are updated to Nana v1.1.  
+All demos are updated to Nana v1.2.  
 
 Need periodical revision and adaptation.  
 
