@@ -19,7 +19,7 @@ private:
 	//Creates inline widget
 	//listbox calls this method to create the widget
 	//The position and size of widget can be ignored in this process
-	virtual void create(window wd) override
+	void create(window wd) override
 	{
 		//Create listbox
 		txt_.create(wd);
@@ -65,7 +65,7 @@ private:
 	//Activates the inline widget, bound to a certain item of the listbox
 	//The inline_indicator is an object to operate the listbox item,
 	//pos is an index object refers to the item of listbox
-	virtual void activate(inline_indicator& ind, index_type pos)
+	void activate(inline_indicator& ind, index_type pos) override
 	{
 		indicator_ = &ind;
 		pos_ = pos;
@@ -85,7 +85,7 @@ private:
 	}
 
 	//Sets the value of inline widget with the value of the sub item
-	virtual void set(const value_type& value)
+	void set(const value_type& value) override
 	{
 		txt_.caption(value);
 	}
