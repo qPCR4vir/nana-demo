@@ -304,7 +304,7 @@ namespace demo
 			//b_i.icon(STR("../Examples/image.ico"));
 			b_i.icon(STR("../Examples/image.bmp"));
 #else
-			ptr->icon(STR("../Examples/image.bmp"));
+			b_i.icon(STR("../Examples/image.bmp"));
 #endif
 
 			b_p.enable_pushed(true);
