@@ -50,7 +50,7 @@ namespace dm
         std::string     fmt;
 
         group1 ( widget &owner, 
-                 ::nana::string titel_={}, 
+                 std::string titel_={}, 
                  bool format=false, 
                  unsigned gap=2, 
                  rectangle r={})
@@ -97,31 +97,31 @@ int main()
 
 	dm::group grp;
 	grp.create(fm );
-    grp.create_widget<label>(nana::string(STR("Group:")));
+    grp.create_widget<label>("Group:");
 
     plc["left_field"] << grp;
 
-    dm::group1 grp1(fm, STR("A new <bold=true, color=0xff0000, font=\"Consolas\">Group:</>"), true );
-    label lab{grp1, STR("A label ")};
-    button b1{grp1, STR("add button")};
-    button b2{grp1, STR("button2")};
-    button b3{grp1, STR("button3")};
-    grp1.fmt += "<vertical margin=2 gap= 2 <lab> | 70% < <left_field> | 70% <right_field>> >";
-    grp1.plc["lab"] << lab.text_align(align::right)  ;
-    grp1.plc["left_field"] << b1  ;
-    grp1.plc["right_field"] << b2 << b3;
-    grp1.plc.div(grp1.fmt.c_str());
+    dm::group1 grp_1(fm, "A new <bold=true, color=0xff0000, font=\"Consolas\">Group:</>", true );
+    label lab{grp_1, "A label "};
+    button b1{grp_1, "add button"};
+    button b2{grp_1, "button2"};
+    button b3{grp_1, "button3"};
+    grp_1.fmt += "<vertical margin=2 gap= 2 <lab> | 70% < <left_field> | 70% <right_field>> >";
+    grp_1.plc["lab"] << lab.text_align(align::right)  ;
+    grp_1.plc["left_field"] << b1  ;
+    grp_1.plc["right_field"] << b2 << b3;
+    grp_1.plc.div(grp_1.fmt.c_str());
     //grp1.plc.collocate();    // problem !!!!!!!!!!!!!!
 
-    plc["right_field"] << grp1;
+    plc["right_field"] << grp_1;
     plc.div("horizontal gap=3 margin=30  < <left_field> | 70% <right_field>> ");
     plc.collocate();
-    grp1.plc.collocate();    // OK
+    grp_1.plc.collocate();    // OK
 
 	b1.events().click([&grp]
 	{
 		auto p = grp.create_widget<button>();
-		p->caption(L"Button");
+		p->caption("Button");
 	});
 
 	fm.show();
