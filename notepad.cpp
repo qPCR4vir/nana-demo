@@ -1,13 +1,18 @@
 
-/** @file notepad.cpp Demo: Creating A Simple Notepad In Nana 0.8
-
-Let's start a tutorial to create a simple notepad, the simple notepad is a text editor allows the user to select and browse existing text files. This example also shows how you can use place, menubar, menu, textbox, msgbox, and filebox and their various options.
-
-This example requires Nana 0.8 for C++11 and a C++11 compiler.
-
-Get Started
-
-First of all, the whole program code is ready, and then we will go through each function.
+/** 
+* @file notepad.cpp Demo 
+*
+* @brief Creating A Simple Notepad In Nana 0.8 (updated to 1.3 Alpha)
+* 
+* Let's start a tutorial to create a simple notepad, the simple notepad is a text editor 
+* that allows the user to select and browse existing text files.
+* This example also shows how you can use place, menubar, menu, textbox, msgbox, and filebox and their various options.
+*
+* This example requires Nana 1.3 Alpha for C++11 and a C++11 compiler.
+* 
+* Get Started
+* 
+* First of all, the whole program code is ready, and then we will go through each function.
 */
 
 
@@ -30,7 +35,7 @@ class notepad_form
 public:
     notepad_form()
     {
-        caption(L"Simple Notepad - Nana C++ Library");
+        caption("Simple Notepad - Nana C++ Library");
         menubar_.create(*this);
 
         textbox_.create(*this);
@@ -57,13 +62,13 @@ public:
         });
     }
 private:
-    nana::string _m_pick_file(bool is_open) const
+    std::string _m_pick_file(bool is_open) const
     {
         filebox fbox(*this, is_open);
-        fbox.add_filter(L"Text", L"*.txt");
-        fbox.add_filter(L"All Files", L"*.*");
+        fbox.add_filter("Text", "*.txt");
+        fbox.add_filter("All Files", "*.*");
 
-        return (fbox.show() ? fbox.file() : nana::string());
+		return (fbox.show() ? fbox.file() : "" );
     }
 
     bool _m_ask_save()
@@ -71,8 +76,8 @@ private:
         if (textbox_.edited())
         {
             auto fs = textbox_.filename();
-            msgbox box(*this, L"Simple Notepad", msgbox::button_t::yes_no_cancel);
-            box << L"Do you want to save these changes?";
+            msgbox box(*this, "Simple Notepad", msgbox::button_t::yes_no_cancel);
+            box << "Do you want to save these changes?";
 
             switch (box.show())
             {
@@ -82,8 +87,8 @@ private:
                     fs = _m_pick_file(false);
                     if (fs.empty())
                         break;
-                    if (fs.find(L".txt") == fs.npos)
-                        fs += L".txt";
+                    if (fs.find(".txt") == fs.npos)
+                        fs += ".txt";
                 }
                 textbox_.store(fs.data());
                 break;
@@ -98,13 +103,13 @@ private:
 
     void _m_make_menus()
     {
-        menubar_.push_back(L"&FILE");
-        menubar_.at(0).append(L"New", [this](menu::item_proxy& ip)
+        menubar_.push_back("&FILE");
+        menubar_.at(0).append("New", [this](menu::item_proxy& ip)
         {
             if(_m_ask_save())
                 textbox_.reset();
         });
-        menubar_.at(0).append(L"Open", [this](menu::item_proxy& ip)
+        menubar_.at(0).append("Open", [this](menu::item_proxy& ip)
         {
             if (_m_ask_save())
             {
@@ -113,7 +118,7 @@ private:
                     textbox_.load(fs.data());
             }
         });
-        menubar_.at(0).append(L"Save", [this](menu::item_proxy&)
+        menubar_.at(0).append("Save", [this](menu::item_proxy&)
         {
             auto fs = textbox_.filename();
             if (fs.empty())
@@ -125,8 +130,8 @@ private:
             textbox_.store(fs.data());
         });
 
-        menubar_.push_back(L"F&ORMAT");
-        menubar_.at(1).append(L"Line Wrap", [this](menu::item_proxy& ip)
+        menubar_.push_back("F&ORMAT");
+        menubar_.at(1).append("Line Wrap", [this](menu::item_proxy& ip)
         {
             textbox_.line_wrapped(ip.checked());
         });
@@ -148,7 +153,7 @@ Simple Notepad
 _m_pick_file()
 We start with a private member function _m_pick_file(), this function is to tell user to select a file.
 
-return (fbox.show() ? fbox.file() : nana::string());
+return (fbox.show() ? fbox.file() : std::string());
 
 If user clicks "cancel" button or closes the dialog by clicking 'X' close button, fbox.show() returns false for no file selection.
 
@@ -179,7 +184,8 @@ textbox_.events().mouse_dropfiles([this](const arg_drppfiles& arg)
         textbox_.load(arg.files.at(0).data());
 });
 
-Sets a Drag'n Drop event for the textbox, it allows user to open a file by dragging the file outside of the program and dropping the file inside the program. the call of _m_ask_save() here is to try to ask user to save the edited text.
+Sets a Drag'n Drop event for the textbox, it allows user to open a file by dragging the file outside of the program and dropping the file inside the program. 
+The call of _m_ask_save() here is to try to ask user to save the edited text.
 
 events().unload([this](const arg_unload& arg){
     if (!_m_ask_save())
