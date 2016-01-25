@@ -8,14 +8,14 @@ int main()
 	form fm;
 	listbox lb(fm, nana::rectangle(10, 10, 280, 120));
 
-	lb.append_header(STR("Header"), 200);
+	lb.append_header("Header", 200);
 
     // this will attemp to use   
     // item_proxy cat_proxy::append (T &&t, bool set_value=false) 
     // to add a value any of wchar_t[4]  = "int"
 	// lb.at(0).append(STR("int"));
-    lb.at(0).append({STR("int")});
-    lb.at(0).append({STR("double")});
+    lb.at(0).append({"int"});
+    lb.at(0).append({"double"});
 
 	lb.anyobj(0, 0, 10);     ///    \todo this crash   lb.anyobj(0, 0, 10);   
 	lb.anyobj(0, 1, 0.1);   ///    \todo this crash  

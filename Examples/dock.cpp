@@ -34,10 +34,10 @@ int main()
 	//	pane name, specified the pane where the button is created in.
 	//	factory name, a name is used to create the pane
 	//	the third parameter and after the thired, are passed to the constructor of button. button(PaneHandle, std::forward<Args>(third_args)...);
-	plc.dock<button>("pane1", "f1", nana::string(L"Button1"));
-	plc.dock<button>("pane2", "f2", nana::string(L"Button2"));
-	plc.dock<button>("pane3", "f3", nana::string(L"Button3"));
-	plc.dock<button>("pane4", "f4", nana::string(L"Button4"));
+	plc.dock<button>("pane1", "f1", std::string("Button1"));
+	plc.dock<button>("pane2", "f2", std::string("Button2"));
+	plc.dock<button>("pane3", "f3", std::string("Button3"));
+	plc.dock<button>("pane4", "f4", std::string("Button4"));
 
 	//Call the factory to create the dockpane
 	plc.dock_create("f1");

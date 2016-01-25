@@ -6,16 +6,16 @@ int main()
 {
 	using namespace nana;
 	form fm{ API::make_center(300, 300), appear::decorate<appear::taskbar>() };
-	fm.caption(L"Nana C++ Library - Treebox Sample.");
+	fm.caption("Nana C++ Library - Treebox Sample.");
 
 	nana::treebox tree(fm, { 0, 0, 300, 300 });
 
 #if defined(NANA_WINDOWS)
-	auto node = tree.insert(L"C:", L"Local Drive(C:)");
-	filesystem::file_iterator i(L"C:\\"), end;
+	auto node = tree.insert("C:", "Local Drive(C:)");
+	filesystem::file_iterator i("C:\\"), end;
 #elif defined(NANA_LINUX)
-	auto node = tree.insert(L"/", L"Root/");
-	filesystem::file_iterator i(L"/"), end;
+	auto node = tree.insert("/", "Root/");
+	filesystem::file_iterator i("/"), end;
 #endif
 	for (; i != end; ++i)
 	{
@@ -29,7 +29,7 @@ int main()
 		if (!arg.operated) return; //If this is contracted.
 
 		//Windows supports the path separator '/'
-		auto path = tree.make_key_path(arg.item, L"/") + L"/";
+		auto path = tree.make_key_path(arg.item, "/") + "/";
 
 		//avoids frequent useless refreshing
 		tree.auto_draw(false);

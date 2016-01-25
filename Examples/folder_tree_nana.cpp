@@ -3,13 +3,13 @@
 #include <nana/filesystem/filesystem.hpp>
 
 #if defined(NANA_WINDOWS)
-	constexpr auto root = L"C:";
-	constexpr auto rootstr = L"C:\\";
-	constexpr auto rootname = L"Local Drive(C:)";
+	constexpr auto root = "C:";
+	constexpr auto rootstr = "C:\\";
+	constexpr auto rootname = "Local Drive(C:)";
 #elif defined(NANA_LINUX)
-	constexpr auto root = L"/";
-	constexpr auto rootstr = L"/";
-	constexpr auto rootname = L"Root/";
+	constexpr auto root = "/";
+	constexpr auto rootstr = "/";
+	constexpr auto rootname = "Root/";
 #endif
 
 
@@ -20,7 +20,7 @@ int main()
 	using SubDirectories = filesystem::directory_iterator;
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
-	fm.caption(L"Nana C++ Library - Treebox-nana::filesystem example.");
+	fm.caption("Nana C++ Library - Treebox-nana::filesystem example.");
 
 	nana::treebox tree{ fm, { 10, 10, 380, 480 } };
     
@@ -38,7 +38,7 @@ int main()
 		if (!arg.operated) return; //If this is contracted.
 
 		//Windows supports the path separator '/'
-		auto Path = tree.make_key_path(arg.item, L"/") + L"/";
+		auto Path = tree.make_key_path(arg.item, "/") + "/";
 
 		//avoids frequent useless refreshing
 		tree.auto_draw(false);

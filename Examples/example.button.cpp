@@ -15,7 +15,7 @@ int main()
     //Load the BMP file
     //The second parameter is passed by true to indicate that each state aligns vertically.
     //The third parameter specifies the valid area of the picture. It uses the whole picture when the width or height of the valid area is zero.
-    bground.image(L"../Examples/bground.6states.bmp", true, {});
+    bground.image(paint::image("../Examples/bground.6states.bmp"), true, {});
 
     //Defaultly the button will stretch the whole background of state to fit the widget,
     //but it's easy to make the border deformation occurred. Now we need to specified the pixels

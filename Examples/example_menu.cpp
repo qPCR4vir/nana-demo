@@ -17,13 +17,13 @@ int main()
 
 	;//We need a menu object
 	menu mobj;
-	mobj.append ( STR("Item 0"), &on_menu_item);
+	mobj.append ( "Item 0", &on_menu_item);
 	mobj.append_splitter();
-	mobj.append ( STR("Item 1"), &on_menu_item);
+	mobj.append ( "Item 1", &on_menu_item);
 
 	;//Now we need a button.
 	button btn(fm, nana::rectangle(nana::point(10, 10), nana::size(100, 25)));
-	btn.caption(STR("Popup Menu"));
+	btn.caption("Popup Menu");
 
 	;//Popup the menu when right clicking the button.
 	//btn.events().click(menu_popuper(mobj)) ;

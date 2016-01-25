@@ -60,7 +60,7 @@ namespace ui
 
                           //Make the click event 
             p.first->events().click(  [&](const arg_click& ei){_m_click( ei);} );
-            p.first->caption(nana::string(charset(dat.url))) ; 
+            p.first->caption( dat.url) ; 
   
             plc_["abc"]<< *(p.first); 
             plc_.collocate();

@@ -7,12 +7,12 @@ int main()
 {
     using namespace nana;
     filebox fb(0, true);
-    fb.add_filter(STR("Text File"), STR("*.text;*.doc"));
-    fb.add_filter(STR("All Files"), STR("*.*"));
+    fb.add_filter( ("Text File"),  ("*.text;*.doc"));
+    fb.add_filter( ("All Files"),  ("*.*"));
     if(fb())
     {
-        nana::string file = fb.file();
-        std::wcout << L"Selected file:  " << file << std::endl; 
+        std::string file = fb.file();
+        std::cout << "Selected file:  " << file << std::endl; 
     }
     char a;
     std::cin >> a;

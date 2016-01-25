@@ -3,13 +3,13 @@
 #include <filesystem>
 
 #if defined(NANA_WINDOWS)
-	constexpr auto root = L"C:";
-	constexpr auto rootstr = L"C:\\";
-	constexpr auto rootname = L"Local Drive(C:)";
+	constexpr auto root = "C:";
+	constexpr auto rootstr = "C:\\";
+	constexpr auto rootname = "Local Drive(C:)";
 #elif defined(NANA_LINUX)
-	constexpr auto root = L"/";
-	constexpr auto rootstr = L"/";
-	constexpr auto rootname = L"Root/";
+	constexpr auto root = "/";
+	constexpr auto rootstr = "/";
+	constexpr auto rootname = "Root/";
 #endif
 
 int main()

@@ -19,25 +19,25 @@
 #include <nana/gui/wvl.hpp>
 #include <shlobj.h>
 #include <windows.h>
-
+using wstring = std::wstring;
 
 namespace path
 {
 	namespace detail
 	{
-		nana::string reg_string(HKEY hkey, const nana::char_t* subkey, const nana::char_t* value)
+		 wstring reg_string(HKEY hkey, const wchar_t * subkey, const  wchar_t * value)
 		{
 			HKEY key;
-			nana::string str;
+			std::wstring str;
 			if(::RegOpenKey(hkey, subkey, &key) != ERROR_SUCCESS  )
 				return str;
 			
 			DWORD len = MAX_PATH;
-			auto buf = std::make_unique< nana::char_t[]>( len );
+			auto buf = std::make_unique< wchar_t[]>( len );
 
 			LONG result;
 			while(ERROR_MORE_DATA == (result = ::RegQueryValueEx(key, value, 0, 0, reinterpret_cast<LPBYTE>(buf.get()), &len)))
-				buf = std::make_unique< nana::char_t[]>( len );
+				buf = std::make_unique< wchar_t[]>( len );
 
 			if(ERROR_SUCCESS == result)
 				str = buf.get();
@@ -56,151 +56,151 @@ namespace path
 	template<int ID>
 	struct creator
 	{
-		static nana::string fetch(); ///< the dir path
-		static nana::string msg();
+		static wstring fetch(); ///< the dir path
+		static wstring msg();
 	};
 	
 	template<>
 	struct creator<tasks::dllcache>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
-			nana::char_t temp[260];
+			wchar_t temp[260];
 			::GetSystemDirectory(temp, 260);
-			return nana::string(temp) + STR("\\dllcache");
+			return wstring(temp) +  (L"\\dllcache");
 		}
 		
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("DLLCache");	
+			return  (L"DLLCache");	
 		}
 	};
 
 	template<>
 	struct creator<tasks::prefetch>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
-			nana::char_t temp[260];
+			wchar_t temp[260];
 			::GetWindowsDirectory(temp, 260);
-			return nana::string(temp) + STR("\\Prefetch");
+			return wstring(temp) +  (L"\\Prefetch");
 		}
 		
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("Prefetch");	
+			return  (L"Prefetch");	
 		}
 	};
 
 	template<>
 	struct creator<tasks::user_temporary>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
-			nana::char_t temp[260];
+			wchar_t temp[260];
 			::GetTempPath(260, temp);
-			return nana::string(temp).substr(0, nana::strlen(temp) - 1);
+			return wstring(temp).substr(0,  std::wcslen(temp) - 1);
 		}
 		
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("Temporary Directory");	
+			return  (L"Temporary Directory");	
 		}
 	};
 
 	template<>
 	struct creator<tasks::windows_temporary>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
-			nana::char_t temp[260];
+			wchar_t temp[260];
 			::GetWindowsDirectory(temp, 260);
-			return nana::string(temp) + STR("\\Temp");
+			return wstring(temp) +  (L"\\Temp");
 		}
 		
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("Temporary Directory");	
+			return  (L"Temporary Directory");	
 		}
 	};
 
 	template<>
 	struct creator<tasks::internet_temporary>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
-			nana::char_t temp[MAX_PATH];
+			wchar_t temp[MAX_PATH];
 			::SHGetFolderPath(0, CSIDL_INTERNET_CACHE, 0, 0, temp);
-			return nana::string(temp);
+			return wstring(temp);
 		}
 		
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("Internet Temporary Directory");	
+			return (L"Internet Temporary Directory");	
 		}
 	};
 
 	template<>
 	struct creator<tasks::wer_user_archive>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
 			return detail::reg_string(HKEY_LOCAL_MACHINE, 
-				STR("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\VolumeCaches\\Windows Error Reporting Archive Files"), 
-				STR("Folder"));
+				(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\VolumeCaches\\Windows Error Reporting Archive Files"), 
+				(L"Folder"));
 		}
 
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("Windows Error Reporting Archive Files");
+			return (L"Windows Error Reporting Archive Files");
 		}
 	};
 
 	template<>
 	struct creator<tasks::wer_user_queue>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
 			return detail::reg_string(HKEY_LOCAL_MACHINE, 
-				STR("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\VolumeCaches\\Windows Error Reporting Queue Files"), 
-				STR("Folder"));
+				(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\VolumeCaches\\Windows Error Reporting Queue Files"), 
+				(L"Folder"));
 		}
 
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("Windows Error Reporting Queue Files");
+			return (L"Windows Error Reporting Queue Files");
 		}
 	};
 
 	template<>
 	struct creator<tasks::wer_system_archive>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
 			return detail::reg_string(HKEY_LOCAL_MACHINE, 
-				STR("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\VolumeCaches\\Windows Error Reporting System Archive Files"), 
-				STR("Folder"));
+				(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\VolumeCaches\\Windows Error Reporting System Archive Files"), 
+				(L"Folder"));
 		}
 
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("Windows Error Reporting System Archive Files");
+			return (L"Windows Error Reporting System Archive Files");
 		}
 	};
 
 	template<>
 	struct creator<tasks::wer_system_queue>
 	{
-		static nana::string fetch()
+		static wstring fetch()
 		{
 			return detail::reg_string(HKEY_LOCAL_MACHINE, 
-				STR("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\VolumeCaches\\Windows Error Reporting System Queue Files"), 
-				STR("Folder"));
+				(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\VolumeCaches\\Windows Error Reporting System Queue Files"), 
+				(L"Folder"));
 		}
 
-		static nana::string msg()
+		static wstring msg()
 		{
-			return STR("Windows Error Reporting System Queue Files");
+			return (L"Windows Error Reporting System Queue Files");
 		}
 	};
 }
@@ -225,8 +225,10 @@ namespace path
 #include <nana/gui/widgets/progress.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
-#include <nana/filesystem/file_iterator.hpp>
-#include <nana/filesystem/fs_utility.hpp>
+//#include <nana/filesystem/file_iterator.hpp>
+//#include <nana/filesystem/fs_utility.hpp>
+#include <nana/filesystem/filesystem.hpp>
+
 #include <thread>
 #include <vector>
 #include <deque>
@@ -240,7 +242,7 @@ class messenger
   public:
 	virtual ~messenger(){}
 	virtual void active(){}
-	virtual void message(const nana::string&){}
+	virtual void message(const wstring&){}
 	virtual bool stopped() {return false;}
 };
 
@@ -250,13 +252,13 @@ class junk_sweeper
 	bool		ready_{ false };
 	std::size_t bytes_{};
 	std::size_t size_ {};
-	std::vector<std::deque<std::pair<nana::string, bool> > > files_;
+	std::vector<std::deque<std::pair<wstring, bool> > > files_;
 
 	using self_type = junk_sweeper ;
 
  public:
-	typedef nana::filesystem::file_iterator file_iterator;
-	typedef file_iterator::value_type       file_info_type;
+	 using file_iterator = nana::filesystem::directory_iterator; // ::file_iterator file_iterator;
+	 using file_info_type =  file_iterator::value_type       ;
 
 	junk_sweeper() {}
 
@@ -295,13 +297,13 @@ class junk_sweeper
 
 				if (file.second)
 				{
-					// nana::filesystem::rmdir(file.first.c_str(), true);
-					std::wcout << STR("Deleting directory: ") << file.first << STR("\n");
+					// nana::filesystem::rmdir(file.first.c_(L), true);
+					std::wcout << (L"Deleting directory: ") << file.first << (L"\n");
 				}
 				else
 				{
-					// nana::filesystem::rmfile(file.first.c_str());
-					std::wcout << STR("Deleting file: ") << file.first << STR("\n");
+					// nana::filesystem::rmfile(file.first.c_(L));
+					std::wcout << (L"Deleting file: ") << file.first << (L"\n");
 				}
 				msnger.active();            // inc progresbar
 				msnger.message(file.first); // 
@@ -315,20 +317,20 @@ class junk_sweeper
  private:
 	struct helper
 	{
-		nana::string	path;
+		wstring	path;
 		std::size_t		bytes;
 		std::size_t		size;
-		std::deque<std::pair<nana::string, bool> > files;
+		std::deque<std::pair<wstring, bool> > files;
 	 private:
 		messenger& msnger_;
 	 public:
-		helper(const nana::string& path, messenger& m)
-			:path(path + STR('\\')), bytes(0), size(0), msnger_(m)
+		helper(const wstring& path, messenger& m)
+			:path(path + (L'\\')), bytes(0), size(0), msnger_(m)
 		{}
 
 		void operator()(const file_info_type& v)
 		{
-			nana::string file = path + v.name;
+			wstring file = path + v.name;
 			if(v.directory)
 			{
 				helper hlp(file, msnger_);
@@ -343,7 +345,7 @@ class junk_sweeper
 				files.insert(files.end(), hlp.files.begin(), hlp.files.end());
 			}
 			else
-				bytes += nana::filesystem::filesize(file.c_str());
+				bytes += nana::filesystem::filesize(file.c_(L));
 			
 			files.push_back(std::make_pair(file, v.directory));
 			msnger_.active();
@@ -357,16 +359,16 @@ class junk_sweeper
 	{
 		static void job(junk_sweeper& js, messenger& msnger)
 		{
-			nana::string path = path::creator<ID>::fetch();
+			wstring path = path::creator<ID>::fetch();
 			if ( path.empty() )  return;
-			nana::string::size_type envbeg = path.find('%');
+			wstring::size_type envbeg = path.find('%');
 			if(envbeg != path.npos)
 			{
-				nana::string::size_type envend = path.find('%', envbeg + 1);
+				wstring::size_type envend = path.find('%', envbeg + 1);
 				if(envend != path.npos)
 				{
-					nana::char_t buf[MAX_PATH];
-					DWORD n = ::GetEnvironmentVariable(path.substr(envbeg + 1, envend - envbeg - 1).c_str(), buf, MAX_PATH);
+					wchar_t buf[MAX_PATH];
+					DWORD n = ::GetEnvironmentVariable(path.sub(Lenvbeg + 1, envend - envbeg - 1).c_(L), buf, MAX_PATH);
 					path.replace(envbeg, envend-envbeg + 1, buf);
 				}
 			}
@@ -387,14 +389,14 @@ class frm_main: public nana::form
 {
 	nana::place     plc_	{ *this };
 	nana::label		desc_   { *this,
-		STR("The FreeMe - A Sample of Nana C++ Library GUI programing\n")
-		STR("Refer to http://nanapro.org/ for the source code if you are a C++ developer.\n\n")
-		STR("(Currently it don't erase any file, only show what it could delete in a real version)\n")
-		STR("The FreeMe cleans WINDOWS from junk files in:\n    DLLCache, Prefetch, Temporary and Internet Cache Directories.") };
+		(L"The FreeMe - A Sample of Nana C++ Library GUI programing\n")
+		(L"Refer to http://nanapro.org/ for the source code if you are a C++ developer.\n\n")
+		(L"(Currently it don't erase any file, only show what it could delete in a real version)\n")
+		(L"The FreeMe cleans WINDOWS from junk files in:\n    DLLCache, Prefetch, Temporary and Internet Cache Directories.") };
 																 
-	nana::button   scan_btn_{ *this, STR("Scan junk files") };	 
+	nana::button   scan_btn_{ *this, (L"Scan junk files") };	 
 	nana::progress	pgbar_	{ *this };							 
-	nana::label		lbl_	{ *this, STR("Nana C++ Library") };  
+	nana::label		lbl_	{ *this, (L"Nana C++ Library") };  
 	nana::picture	pic_	{ *this };							 
 	junk_sweeper	jkswp_;  // dont do anything
 	std::thread		thread_; // ?
@@ -406,9 +408,9 @@ public:
 	frm_main()
 		: nana::form(nana::API::make_center(400, 350), appear::decorate<appear::minimize, appear::taskbar>())
 	{
-		this->caption(STR("The FreeMe - A Sample of Nana, stdex.sf.net"));
+		this->caption((L"The FreeMe - A Sample of Nana, stdex.sf.net"));
 		
-		pic_.load(STR("..\\Examples\\image02.bmp"   /*background.png"*/   ));
+		pic_.load((L"..\\Examples\\image02.bmp"   /*background.png"*/   ));
 
         scan_btn_.events().click([this](){_m_button();});
 		
@@ -451,9 +453,9 @@ private:
 			size_++;
 		}
 		
-		void message(const nana::string& msg) override
+		void message(const wstring& msg) override
 		{
-			lbl_.caption(STR("Analyzing...") + msg );
+			lbl_.caption((L"Analyzing...") + msg );
 		}
 		bool stopped() override
 		{
@@ -476,9 +478,9 @@ private:
 			pgbar_.inc();
 		}
 		
-		void message(const nana::string& msg)
+		void message(const wstring& msg)
 		{
-			lbl_.caption(STR("Deleting ") + msg);	
+			lbl_.caption((L"Deleting ") + msg);	
 		}
 		bool stopped() override
 		{
@@ -489,7 +491,7 @@ private:
 private:
 	void _m_button()
 	{
-		if (scan_btn_.caption() == STR("Stop"))
+		if (scan_btn_.caption() == (L"Stop"))
 			pgbar_.stop();
 		else
 		if(jkswp_.ready())
@@ -497,7 +499,7 @@ private:
 			pgbar_.stop(false);
 			pgbar_.unknown(false);
 			pgbar_.amount(static_cast<unsigned int>(jkswp_.size()));
-			scan_btn_.caption(STR("Stop"));
+			scan_btn_.caption((L"Stop"));
 			//Start a thread for deleting the files.
             std::thread ([this](){_m_clear();}).detach();
 		}
@@ -506,8 +508,8 @@ private:
 			pgbar_.stop(false);
 			pgbar_.unknown(true);
 		    pgbar_.value(0);
-			scan_btn_.caption(STR("Stop"));
-			lbl_.caption(STR("Scaning..."));
+			scan_btn_.caption((L"Stop"));
+			lbl_.caption((L"Scaning..."));
 			//Start a thread for searching junk files
             std::thread ([this](){_m_search();}).detach();
 		}
@@ -530,7 +532,7 @@ private:
 
 		std::stringstream ss;
 		ss<<capsize;
-		std::string cap = ss.str();
+		std::string cap = ss.(L);
 
 		std::string::size_type dotpos = cap.find('.');
 		if(dotpos != cap.npos)
@@ -551,10 +553,10 @@ private:
 			if(cap[cap.size() - 1] == '.')
 				cap.erase(cap.size() - 1);
 		}
-		ss.str("");
+		ss.(L"");
 		ss.clear();
 		ss << cap << " " << capa[capid];
-		return ss.str();
+		return ss.(L);
 	}
 
 	void _m_search()
@@ -563,10 +565,10 @@ private:
 		jkswp_.search(msnger);
 
 		uintmax_t bytes = jkswp_.bytes();
-		scan_btn_.caption(STR("FreeMe"));
+		scan_btn_.caption((L"FreeMe"));
 		std::stringstream ss;
 		ss << (pgbar_.stop(false) ? "Stoped at: " : "Analysis Result: ")<<jkswp_.size()<<" files, ["<<cap(bytes)<<"].";
-		lbl_.caption(nana::string(nana::charset(ss.str())));
+		lbl_.caption(wstring(nana::charset(ss.(L))));
 	}
 	
 	void _m_clear()
@@ -575,8 +577,8 @@ private:
 		jkswp_.clear(msnger);
 		
 		jkswp_.reset();
-		scan_btn_.caption(STR("Scan junk files"));
-		lbl_.caption( (pgbar_.stop(false) ? STR("Stoped!") : STR("Done!") )  ) ;
+		scan_btn_.caption((L"Scan junk files"));
+		lbl_.caption( (pgbar_.stop(false) ? (L"Stoped!") : (L"Done!") )  ) ;
 	}
 };
 

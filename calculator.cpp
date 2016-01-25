@@ -1,6 +1,6 @@
 /*
  *	Nana Calculator
- *	Nana 1.0 and C++11 is required.
+ *	Nana 1.3 and C++11 is required.
  *	This is a demo for Nana C++ Library.
  *	It creates an intermediate level graphical calculator with few code.
  */
@@ -16,10 +16,10 @@ struct stateinfo
 {
 	enum class state{init, operated, assigned};
 
-	state	opstate{state::init};
-	wchar_t operation{L'+'};
-	double oprand{0};
-	double outcome{0};
+	state	opstate {state::init};
+	std::string    operation {"+"};
+	double  oprand  {0};
+	double  outcome {0};
 	label & procedure;
 	label & result;
 
@@ -35,20 +35,20 @@ void numkey_pressed(stateinfo& state, const arg_click& arg)
 		if(state.opstate == stateinfo::state::assigned)
 		{
 			state.outcome = 0;
-			state.operation = '+';			
+			state.operation = "+";			
 		}
-		state.result.caption(STR(""));
+		state.result.caption("");
 		state.opstate = stateinfo::state::init;
 	}
 
-	nana::string rstr = state.result.caption();
-	if(rstr == STR("0"))	rstr.clear();
+	std::string rstr = state.result.caption();
+	if(rstr == "0")	rstr.clear();
 
-	wchar_t d = API::window_caption(arg.window_handle)[0];
-	if(d == '.')
+	std::string d = API::window_caption(arg.window_handle);
+	if(d == ".")
 	{
-		if(rstr.find(L'.') == rstr.npos)
-			state.result.caption(rstr.size() ? rstr + d : nana::string(STR("0.")));
+		if(rstr.find('.') == rstr.npos)
+			state.result.caption(rstr.size() ? rstr + d : std::string("0."));
 	}
 	else
 		state.result.caption(rstr + d);
@@ -56,17 +56,17 @@ void numkey_pressed(stateinfo& state, const arg_click& arg)
 
 void opkey_pressed(stateinfo& state, const arg_click& arg)
 {
-	wchar_t d = API::window_caption(arg.window_handle)[0];
-	if('C' == d)
+	std::string d = API::window_caption(arg.window_handle) ;
+	if("C" == d)
 	{
-		state.result.caption(STR("0"));
-		state.procedure.caption(STR(""));
+		state.result.caption("0");
+		state.procedure.caption("");
 		state.opstate = stateinfo::state::init;
 		state.outcome = 0;
-		state.operation = '+';
+		state.operation = "+";
 		return;
 	}
-	else if(0xB1 == d)
+	else if(u8"\261" == d) // 0xB1
 	{
 		auto s = state.result.caption();
 		if(s.size())
@@ -79,7 +79,7 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 			if(state.opstate == stateinfo::state::assigned)
 			{
 				state.outcome = -state.outcome;
-				state.operation = '=';
+				state.operation = "=";
 			}
 
 			state.result.caption(s);
@@ -87,14 +87,14 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 		}
 		return;
 	}
-	else if('%' == d)
+	else if("%" == d)
 	{
 		auto s = state.result.caption();
 		if(s.size())
 		{
 			double d = std::stod(s);
 			d = state.outcome * d / 100;
-			state.result.caption(std::to_wstring(d));
+			state.result.caption(std::to_string(d));
 			state.opstate = stateinfo::state::init;
 		}
 		return;			
@@ -102,27 +102,27 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 	else if(state.opstate == stateinfo::state::operated)
 		return;
 
-	nana::string oprandstr = state.result.caption();
-	if(0 == oprandstr.size()) oprandstr = L'0';
+	std::string oprandstr = state.result.caption();
+	if(0 == oprandstr.size()) oprandstr = '0';
 
-	wchar_t pre_operation = state.operation;
-	nana::string proc;
-	if('=' != d)
+	std::string pre_operation = state.operation;
+	std::string proc;
+	if("=" != d)
 	{
 		state.operation = d;
 		if(state.opstate != stateinfo::state::assigned)
 			state.oprand = std::stod(oprandstr);
 		else
-			pre_operation = L'=';
+			pre_operation = "=";
 
-		proc = state.procedure.caption() + oprandstr;
-		if(('X' == d || '/' == d) && (proc.find_last_of(STR("+-")) != proc.npos))
+		proc =  state.procedure.caption()  + oprandstr ;
+		if(("X" == d || "/" == d) && (proc.find_last_of("+-") != proc.npos))
 		{
-			proc.insert(0, L"(");
-			((proc += STR(") ")) += d) += ' ';
+			proc.insert(0, "(");
+			(( proc += ") " )  += d) += " ";
 		}
 		else
-			((proc += ' ') += d) += ' ';
+			((proc += " ") += d) += " ";
 
 		state.opstate = stateinfo::state::operated;
 	}
@@ -134,7 +134,7 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 		state.opstate = stateinfo::state::assigned;
 	}
 
-	switch(pre_operation)
+	switch(pre_operation[0])
 	{
 	case '+':
 		state.outcome += state.oprand;
@@ -152,20 +152,20 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 
 	state.procedure.caption(proc);
 
-	std::wstring outstr = std::to_wstring(state.outcome);
+	std::string outstr = std::to_string(state.outcome);
 	while(outstr.size() && ('0' == outstr.back()))
 		outstr.pop_back();
 	
 	if(outstr.size() && (outstr.back() == '.'))
 		outstr.pop_back();
-	if(outstr.size() == 0) outstr += L'0';
+	if(outstr.size() == 0) outstr += '0';
 	state.result.caption(outstr);
 }
 
 void go()
 {
 	form fm;
-	fm.caption(STR("Calculator"));
+	fm.caption(("Calculator"));
 	
 	//Use class place to layout the widgets.
 	place place(fm);
@@ -177,7 +177,7 @@ void go()
 	//Make the label right aligned.
 	procedure.text_align(nana::align::right);
 	result.text_align(nana::align::right);
-	result.typeface(nana::paint::font(nullptr, 14, true));
+	result.typeface(nana::paint::font("", 14, true));
 
 	place.field("procedure")<<procedure;
 	place.field("result")<<result;
@@ -185,12 +185,20 @@ void go()
 	stateinfo state(procedure, result);
 	std::vector<std::unique_ptr<nana::button>> op_keys;
 
-	wchar_t keys[] = L"C\261%/789X456-123+0.=";
-	nana::paint::font keyfont(nullptr, 10, true);
+	char keys[] = "Cm%/789X456-123+0.="; // \261
+	nana::paint::font keyfont("", 10, true);
+	//constexpr char k[]{ u8"\261" };
 	for(auto key : keys)
 	{
+
+		std::string Key;
+		if (key == 'm')
+			Key = u8"\261";
+		else
+			Key = std::string(1, key);
+
 		op_keys.emplace_back(new button(fm));
-		op_keys.back()->caption(string(1, key));
+		op_keys.back()->caption( Key);
 		op_keys.back()->typeface(keyfont);
 
 		if('=' == key)
@@ -201,7 +209,7 @@ void go()
 		place.field("opkeys") << *op_keys.back();
 
 		//Make event answer for keys.
-		if(('0' <= key && key <= '9') || ('.' == key))
+		if((L'0' <= key && key <= L'9') || (L'.' == key))
 			op_keys.back()->events().click.connect(std::bind(numkey_pressed, std::ref(state), std::placeholders::_1));
 		else
 			op_keys.back()->events().click.connect(std::bind(opkey_pressed, std::ref(state), std::placeholders::_1));

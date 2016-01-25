@@ -54,7 +54,7 @@ namespace ui
                //Now we implement the virtual function declared by uiface 
         void create_ui_element(const data& dat) override
         { 
-            auto p= std::make_shared<button>(*this, nana::string(charset(dat.url)) ) ; 
+            auto p= std::make_shared<button>(*this,  dat.url ) ; 
 
 		     //Make the click event 
 		    using fun = std::function<void()>; 

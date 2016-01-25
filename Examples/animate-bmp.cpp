@@ -7,9 +7,9 @@ int main()
    
     //Build frames
     frameset fset;
-    fset.push_back(nana::paint::image(STR("../Examples/a_pic0.bmp")));
-    fset.push_back(nana::paint::image(STR("../Examples/a_pic1.bmp")));
-    fset.push_back(nana::paint::image(STR("../Examples/a_pic2.bmp")));
+    fset.push_back(nana::paint::image("../Examples/a_pic0.bmp"));
+    fset.push_back(nana::paint::image("../Examples/a_pic1.bmp"));
+    fset.push_back(nana::paint::image("../Examples/a_pic2.bmp"));
 
     //A widget to display animation.
     form fm;
