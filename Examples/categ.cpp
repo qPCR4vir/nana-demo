@@ -24,7 +24,7 @@
 									const   ui_element&)     = 0;
 			virtual void root_arrow(graph_reference, const nana::rectangle&, state_t) = 0;
 			virtual void item(graph_reference, const nana::rectangle&, size_t index,
-			const nana::string& name, unsigned text_height,
+			const std::string& name, unsigned text_height,
 			bool has_child, state_t) = 0;
 			virtual void border(graph_reference) = 0;
 		};
@@ -34,10 +34,10 @@
 
 	void selected(nana::arg_categorize<int>  categ)
 	{
-		nana::msgbox mb(categ.widget, STR("categorize"));
+		nana::msgbox mb(categ.widget, "categorize");
 		mb.icon(mb.icon_information);
-		mb<<STR("The value of selected is ")<<categ.value<<STR(", caption is \"")
-		<<categ.widget.caption()<<STR("\""); //caption() method, see Note 3.
+		mb<<"The value of selected is "<<categ.value<< (", caption is \"")
+		<<categ.widget.caption()<<"\""; //caption() method, see Note 3.
 		mb();
 	}
 
@@ -47,17 +47,17 @@
 		form fm;
 		categorize<int> categ(fm, nana::rectangle(10, 10, 200, 24));
 
-		categ.childset(STR("Invalid Category"), 0); // Invalid category because of empty current category.
+		categ.childset("Invalid Category", 0); // Invalid category because of empty current category.
 
-		categ.insert(STR("First"), 0); 	// Insert a category and now it is the current category.
+		categ.insert("First", 0); 	// Insert a category and now it is the current category.
 
-		categ.insert(STR("Second"), 1); // Insert a category as a child of "First" category, and then 
+		categ.insert("Second", 1); // Insert a category as a child of "First" category, and then 
 		                              ;  // the "Second" is the current category.
 
-		categ.childset(STR("Third"), 2);
+		categ.childset("Third", 2);
 		; // Insert a category as a child of "Second".
 
-		categ.childset(STR("Another Child"), 2);
+		categ.childset("Another Child", 2);
 			; // childset() always insert categories into current category, and
 			; // it does not displace the current category, and therefore "Another Child"
 			; // is a child of "Second".
