@@ -8,7 +8,7 @@ int main()
 
     form fm;
     button btn(fm, nana::rectangle(10, 10, 100, 20));
-    btn.caption(STR("Drag Me"));
+    btn.caption("Drag Me");
     
     dragger dg;
     dg.trigger(btn);  //When you drag the btn, then

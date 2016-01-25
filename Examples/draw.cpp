@@ -17,7 +17,7 @@ int main()
         graph.line_to(point(100,300));
         graph.line_to(point(200,100));
 		graph.save_as_file("graphics.bmp");
-		nana::paint::image img(STR("test.bmp"));
+		nana::paint::image img("test.bmp");
 		if (img.empty())
 		{
 			graph.line(point(100, 100), point(300, 100), colors::red);
@@ -29,7 +29,7 @@ int main()
 		graph.save_as_file("testGraphics.bmp");
     });
 	nana::paint::graphics graphics;
-	nana::paint::image img(STR("test.bmp"));
+	nana::paint::image img("test.bmp");
 	if (!img.empty())
 	{
 		img.paste(nana::rectangle(img.size()), graphics, nana::point());
