@@ -28,7 +28,7 @@ class tsform
 public:
     tsform()
     {
-		if (!img_.open(STR("../Examples/bground.6states.bmp")))
+		if (!img_.open(("../Examples/bground.6states.bmp")))
 			throw std::runtime_error("Imposible to open the image");    /// \todo Open the image file.
         
 		drawing dw(*this);

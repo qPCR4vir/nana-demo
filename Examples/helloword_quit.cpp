@@ -6,9 +6,9 @@ int main()
      using namespace nana;
 
      form fm;
-     fm.caption(STR("Hello World"));
+     fm.caption("Hello World");
      button btn(fm, nana::rectangle(20, 20, 150, 30));
-     btn.caption(STR("Quit"));
+     btn.caption("Quit");
      btn.events().click(API::exit);
      fm.show();
      exec();

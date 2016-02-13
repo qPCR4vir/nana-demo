@@ -9,11 +9,17 @@
  *	A C++11 compiler is required for the demo.
  */
 
+
+
+
+
 #include <map>
 #include <functional>
 #include <mutex>
-#include <windows.h>
+
 #include <nana/gui.hpp>
+#include <windows.h>
+#ifdef NANA_WINDOWS
 
 class subclass
 {
@@ -185,7 +191,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, char*, int)
 	using namespace nana;
 
 	form fm;
-	fm.caption(STR("fm"));
+	fm.caption(("fm"));
 
 	//Start to subclass
 	subclass sc(fm);
@@ -215,3 +221,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, char*, int)
 	exec();
 	return 0;
 }
+#else
+int main() {}
+#endif // NANA_WINDOWS

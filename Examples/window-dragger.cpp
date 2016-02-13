@@ -6,13 +6,13 @@ int main()
 {
     using namespace nana;
     form   fm;
-    fm.caption(STR("Main Nana Window - target"));
+    fm.caption(("Main Nana Window - target"));
     
     button btn(fm, nana::rectangle(10, 10, 100, 20));
-    btn.caption(STR("Drag Me"));
+    btn.caption(("Drag Me"));
     
     form & adherent = form_loader<form>()();
-    adherent.caption(STR("target & trigger"));
+    adherent.caption(("target & trigger"));
 
     adherent.show();
 

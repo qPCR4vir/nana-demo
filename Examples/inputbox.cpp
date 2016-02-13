@@ -3,28 +3,28 @@ int main()
 {
 	using namespace nana;
     form fm;
-    fm.caption(STR("Click me."));
+    fm.caption(("Click me."));
 	
 	fm.show();
 	
 	internationalization i18n;
 	//Translate these 2 words into Chinese.
-	i18n.set("OK", L"确定");
-	i18n.set("Cancel", L"取消");
+	i18n.set("OK", u8"确定");
+	i18n.set("Cancel", u8"取消");
 		
 	//Show an inputbox when the form is clicked.
 	fm.events().click([&fm]
 	{
-		inputbox::text name(L"<bold blue>Name</>");	//The format text is also available.
-		inputbox::text gender(L"Gender", {L"Male", L"Female", L"bisexual"});
-		inputbox::date birth(L"Date of birth");
-		inputbox::real height(L"Height(cm)", 100, 1, 300, 1);
-		inputbox::integer kids(L"Kids", 0, 0, 100, 1);
+		inputbox::text name("<bold blue>Name</>");	//The format text is also available.
+		inputbox::text gender("Gender", {"Male", "Female", "bisexual"});
+		inputbox::date birth("Date of birth");
+		inputbox::real height("Height(cm)", 100, 1, 300, 1);
+		inputbox::integer kids("Kids", 0, 0, 100, 1);
 		
-		inputbox inbox(fm, L"Please input <bold>your personal information</>.", L"Personal information");
+		inputbox inbox(fm, "Please input <bold>your personal information</>.", "Personal information");
 		
 		//Open the image file
-		paint::image img(L"inputbox.bmp");
+		paint::image img("inputbox.bmp");
 		
 		//Use 'copy' to assign the image, these image objects refer to the same
 		//image resource.
@@ -38,8 +38,8 @@ int main()
 		{
 			if (name.value().empty())
 			{
-				msgbox mb(handle, L"Invalid input");
-				mb << L"Name should not be empty, Please input your name.";
+				msgbox mb(handle, "Invalid input");
+				mb << "Name should not be empty, Please input your name.";
 				mb.show();
 				return false; //verification failed
 			}

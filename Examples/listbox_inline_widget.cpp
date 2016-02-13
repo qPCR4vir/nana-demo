@@ -47,7 +47,7 @@ private:
 
 		//Create button
 		btn_.create(wd);
-		btn_.caption(L"Delete");
+		btn_.caption("Delete");
 		btn_.events().click([this]
 		{
 			//Delete the item when button is clicked
@@ -108,23 +108,23 @@ int main()
 	listbox lsbox(fm, rectangle{ 10, 10, 300, 200 });
 
 	//Create two columns
-	lsbox.append_header(L"column 0");
-	lsbox.append_header(L"column 1");
+	lsbox.append_header("column 0");
+	lsbox.append_header("column 1");
 
 	//Then append items
-	lsbox.at(0).append({ nana::string(L"Hello0"), nana::string(L"World0") });
-	lsbox.at(0).append({ nana::string(L"Hello1"), nana::string(L"World1") });
-	lsbox.at(0).append({ nana::string(L"Hello2"), nana::string(L"World2") });
-	lsbox.at(0).append({ nana::string(L"Hello3"), nana::string(L"World3") });
+	lsbox.at(0).append({ std::string("Hello0"), std::string("World0") });
+	lsbox.at(0).append({ std::string("Hello1"), std::string("World1") });
+	lsbox.at(0).append({ std::string("Hello2"), std::string("World2") });
+	lsbox.at(0).append({ std::string("Hello3"), std::string("World3") });
 
 	//Create a new category
-	lsbox.append(L"Category 1");
+	lsbox.append("Category 1");
 
 	//Append items for category 1
-	lsbox.at(1).append({ nana::string(L"Hello4"), nana::string(L"World4") });
-	lsbox.at(1).append({ nana::string(L"Hello5"), nana::string(L"World5") });
-	lsbox.at(1).append({ nana::string(L"Hello6"), nana::string(L"World6") });
-	lsbox.at(1).append({ nana::string(L"Hello7"), nana::string(L"World7") });
+	lsbox.at(1).append({ std::string("Hello4"), std::string("World4") });
+	lsbox.at(1).append({ std::string("Hello5"), std::string("World5") });
+	lsbox.at(1).append({ std::string("Hello6"), std::string("World6") });
+	lsbox.at(1).append({ std::string("Hello7"), std::string("World7") });
 
 	//Set the inline_widget, the first column of category 0, the second column of category 1
 	lsbox.at(0).inline_factory(0, pat::make_factory<inline_widget>());

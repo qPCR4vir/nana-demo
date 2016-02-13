@@ -2,9 +2,9 @@
 
 void when_exit(const nana::arg_unload& ei)
 {
-    nana::msgbox m(ei.window_handle, STR("msgbox example"), nana::msgbox::yes_no);
+    nana::msgbox m(ei.window_handle,"msgbox example", nana::msgbox::yes_no);
     m.icon(m.icon_question);
-    m<<STR("Are you sure you want to exit the game?");
+    m<<"Are you sure you want to exit the game?";
     ei.cancel = (m() != m.pick_yes);
 }
 int main()

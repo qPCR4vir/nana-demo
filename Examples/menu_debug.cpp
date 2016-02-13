@@ -11,8 +11,8 @@ int main(int argc, char **argv)
     pl.div("<vertical <menu weight=25>>");
     pl.field("menu") << mn; 
 
-    mn.push_back(L"test");
-    mn.at(0).append(L"open modal window", [&fm](nana::menu::item_proxy& ip)
+    mn.push_back("test");
+    mn.at(0).append("open modal window", [&fm](nana::menu::item_proxy& ip)
     {
         nana::form fm2(fm);
         fm2.show();

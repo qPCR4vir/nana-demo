@@ -19,7 +19,7 @@ int main()
 	using SubDirectories = filesystem::directory_iterator;
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
-	fm.caption(L"Nana C++ Library - Treebox-nana::filesystem example.");
+	fm.caption("Nana C++ Library - Treebox-nana::filesystem example.");
 
 	nana::treebox tree{ fm,{ 10, 10, 380, 480 } };
 
@@ -28,7 +28,8 @@ int main()
 	for (const auto& dir : SubDirectories{ rootstr })
 	{
 		if (! filesystem::is_directory(dir) ) continue;
-		tree.insert(node, dir.path().filename() , dir.path().filename());
+		tree.insert(node, dir.path().filename().generic_u8string() , 
+			              dir.path().filename().generic_u8string());
 		break;
 	}
 
@@ -37,7 +38,7 @@ int main()
 		if (!arg.operated) return; //If this is contracted.
 
 		//Windows supports the path separator '/'
-		auto Path = tree.make_key_path(arg.item, L"/") + L"/";
+		auto Path = tree.make_key_path(arg.item, "/") + "/";
 
 		//avoids frequent useless refreshing
 		tree.auto_draw(false);
@@ -47,7 +48,8 @@ int main()
 		{
 			if (!filesystem::is_directory(dir)) continue; //If it is not a directory.
 
-			auto child = tree.insert(arg.item, dir.path().filename(), dir.path().filename());
+			auto child = tree.insert(arg.item, dir.path().filename().generic_u8string(), 
+				                               dir.path().filename().generic_u8string());
 			if (child.empty()) continue;
 
 			//Find a directory in child directory, if there is a directory,
@@ -57,7 +59,8 @@ int main()
 			for (const auto& dr : SubDirectories{ dir.path() })
 			{
 				if (!filesystem::is_directory(dr)) continue; //If it is not a directory.
-				tree.insert(child, dr.path().filename(), dr.path().filename());
+				tree.insert(child, dr.path().filename().generic_u8string(), 
+					               dr.path().filename().generic_u8string());
 				break;
 			}
 		}
