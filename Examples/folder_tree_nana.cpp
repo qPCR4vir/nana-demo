@@ -16,7 +16,7 @@
 int main()
 {
 	using namespace nana;
-	using namespace experimental;
+	//using namespace nana::experimental;
 	using SubDirectories = filesystem::directory_iterator;
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
@@ -29,7 +29,7 @@ int main()
 	for ( const auto& dir : SubDirectories{ rootstr })
 	{
 		if (!filesystem::is_directory(dir)) continue;
-		tree.insert(node, dir.path().filename(), dir.path().filename());
+		tree.insert(node, dir.path().filename().u8string(), dir.path().filename().u8string());
 		break;
 	}
 
@@ -48,17 +48,17 @@ int main()
 		{
 			if (!filesystem::is_directory(dir)) continue; //If it is not a directory.
 
-			auto child = tree.insert(arg.item, dir.path().filename(), dir.path().filename());
+			auto child = tree.insert(arg.item, dir.path().filename().u8string(), dir.path().filename().u8string());
 			if (child.empty()) continue;
 
 			//Find a directory in child directory, if there is a directory,
 			//insert it into the child, just insert one node to indicate the
 			//node has a child and an arrow symbol will be?displayed in the
 			//front of the node.
-			for (const auto& dr : SubDirectories{ Path + dir.path().filename() })
+			for (const auto& dr : SubDirectories{  dir.path() })
 			{
 				if (!filesystem::is_directory(dr)) continue; //If it is not a directory.
-				tree.insert(child, dr.path().filename(), dr.path().filename());
+				tree.insert(child, dr.path().filename().u8string(), dr.path().filename().u8string());
 				break;
 			}
 		}

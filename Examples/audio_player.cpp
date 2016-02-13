@@ -7,6 +7,8 @@
 
 int main()
 {
+#ifdef NANA_ENABLE_AUDIO
+
     nana::audio::player player("../Examples/audio1.wav");
     nana::threads::pool pool(1); //Only 1 thread.
 
@@ -31,4 +33,5 @@ int main()
     fm.show();
 
     exec();
+#endif	//NANA_ENABLE_AUDIO
 }

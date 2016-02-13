@@ -4,7 +4,7 @@
 
 struct person
 {
-    nana::string name;
+    std::string name;
     bool         gender;
     unsigned     age;
 };
@@ -12,23 +12,23 @@ struct person
 nana::listbox::oresolver& operator << ( nana::listbox::oresolver& or , const person& pr)
 {
 	or << pr.name;
-	or << (pr.gender ? STR("Male") : STR("Female"));
+	or << (pr.gender ?  ("Male") :  ("Female"));
 	or << pr.age;  
 	return or ;
 }
-std::wostream & operator << (std::wostream& or , const person& pr)
+std::ostream & operator << (std::ostream& or , const person& pr)
 {
 	or << pr.name;
-	or << (pr.gender ? STR("Male") : STR("Female"));
+	or << (pr.gender ?  ("Male") :  ("Female"));
 	or << pr.age;
 	return or ;
 }
 nana::listbox::iresolver& operator >> ( nana::listbox::iresolver& or , person& pr)
 {
 	or >> pr.name;
-	nana::string gender;
+	std::string gender;
 	or >> gender;
-	pr.gender = gender == STR("Male") ;
+	pr.gender = gender ==  ("Male") ;
 	or >> pr.age;  
 	return or ;
 }
@@ -44,28 +44,28 @@ int main()
 
 	auto cat = lb.at(0);
 	if (cat.begin() == cat.end())
-		std::wcout << STR("true ");
+		std::wcout <<  ("true ");
 	else 		
-		std::wcout << STR("false ");
+		std::wcout <<  ("false ");
 
 	std::wcout << "\n";
 
-	lb.append_header(STR("Name"), 100);
-	lb.append_header(STR("Gender"), 60);
-	lb.append_header(STR("Age"), 60);
+	lb.append_header( ("Name"), 100);
+	lb.append_header( ("Gender"), 60);
+	lb.append_header( ("Age"), 60);
 
 	//lb.resolver(resolver()); //Pass the user defined resolver to the listbox
 
 	person pr;
-	pr.name = STR("Peter");
+	pr.name =  ("Peter");
 	pr.gender = true;
 	pr.age = 10;
 	lb.at(0).append (pr); //person to item. resolver::decode() is required
 
 	person prr;
 	lb.at(0).at(0).resolve_to( prr); //item to person. resolver::encode() is required
-	std::wcout << pr << "\n";
-	std::wcout << prr << "\n";
+	std::cout << pr << "\n";
+	std::cout << prr << "\n";
 	fm.show();
 	exec();
 }

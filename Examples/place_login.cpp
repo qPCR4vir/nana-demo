@@ -11,11 +11,11 @@
         form fm;
         textbox usr  {fm},   
                 pswd {fm};
-        button  login {fm, STR("Login")}, 
-                cancel{fm, STR("Cancel")};
+        button  login {fm, "Login"}, 
+                cancel{fm, "Cancel"};
 
-        usr .tip_string(STR("User:")    ).multi_lines(false);
-        pswd.tip_string(STR("Password:")).multi_lines(false).mask('*');
+        usr .tip_string("User:"    ).multi_lines(false);
+        pswd.tip_string("Password:").multi_lines(false).mask('*');
 
                 // Define a place for the form.
         place plc {fm};
