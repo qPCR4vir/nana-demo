@@ -15,7 +15,6 @@
 #include <nana/gui/widgets/listbox.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 #include <nana/gui/widgets/checkbox.hpp>
-#include <nana/filesystem/file_iterator.hpp>
 #include <nana/gui/widgets/date_chooser.hpp>
 #include <nana/gui/widgets/textbox.hpp>
 #include <nana/gui/widgets/categorize.hpp>
@@ -23,6 +22,41 @@
 #include <nana/gui/tooltip.hpp>
 #include <memory>
 #include <vector>
+
+#ifdef __has_include
+#  if __has_include(<filesystem>)
+#    include <filesystem>
+#  else
+#    include <nana/filesystem/filesystem.hpp>
+namespace std {
+	namespace experimental {
+		using namespace nana::experimental::v1;
+	}
+}
+#  endif
+#elif defined(STD_FILESYSTEM_NOT_SUPPORTED)
+#    include <nana/filesystem/filesystem.hpp>
+namespace std {
+	namespace experimental {
+		using namespace nana::experimental::v1;
+	}
+}
+#else
+#    include <filesystem>
+#endif
+
+ namespace filesystem = std::experimental::filesystem;
+
+#if defined(NANA_WINDOWS)
+constexpr auto root = "C:";
+constexpr auto rootstr = "C:\\";
+constexpr auto rootname = "Local Drive(C:)";
+#elif defined(NANA_LINUX)
+constexpr auto root = "/";
+constexpr auto rootstr = "/";
+constexpr auto rootname = "Root/";
+#endif
+
 
 namespace demo
 {
@@ -39,17 +73,17 @@ namespace demo
 			place_.div("< <list> |30% <check margin=5> >");
 
 			listbox_.create(*this);
-			listbox_.append_header(STR("Supported compilers"), 200);
-			auto cat = listbox_.append(STR("Nana.C++03"));
-			cat.push_back(STR("GCC 3.4 and later"));
-			cat.push_back(STR("Visual C++ 2003 and later"));
+			listbox_.append_header( ("Supported compilers"), 200);
+			auto cat = listbox_.append( ("Nana.C++03"));
+			cat.push_back( ("GCC 3.4 and later"));
+			cat.push_back( ("Visual C++ 2003 and later"));
 
-			cat = listbox_.append(STR("Nana.C++11"));
-			cat.push_back(STR("GCC 4.6 and later"));
-			cat.push_back(STR("Visual C++ 2012 and later"));
+			cat = listbox_.append( ("Nana.C++11"));
+			cat.push_back( ("GCC 4.6 and later"));
+			cat.push_back( ("Visual C++ 2012 and later"));
 
 			checkbox_.create(*this);
-			checkbox_.caption(STR("Checkable Listbox"));
+			checkbox_.caption( ("Checkable Listbox"));
 			checkbox_.events().click([this]()
 				{
 					this->listbox_.checkable(this->checkbox_.checked());
@@ -78,19 +112,16 @@ namespace demo
 			treebox_.create(*this);
 			place_.field("tree")<<treebox_;
 
-#if defined(NANA_WINDOWS)
-			item_proxy node = treebox_.insert(STR("C:"), STR("Local Drive(C:)"));
-			nana::filesystem::file_iterator i(STR("C:\\")), end;
-#elif defined(NANA_LINUX)
-			//Use a whitespace for the root key string under Linux
-			item_proxy node = treebox_.insert(STR(" "), STR("Root"));
-			nana::filesystem::file_iterator i(STR("/")), end;
-#endif
+ 
+			item_proxy node = treebox_.insert( root, rootname);
+			filesystem::directory_iterator i(rootstr), end;
+ 
 			for(; i != end; ++i)
 			{
-				if(false == i->directory) continue;
+				if(!filesystem::is_directory(*i)  ) continue;
 
-				treebox_.insert(node, i->name, i->name);
+				treebox_.insert(node,  i->path().filename().generic_u8string(),
+					                   i->path().filename().generic_u8string());
 				break;
 			}
             treebox_.events().expanded([this](const arg_treebox& a){_m_expand(a.widget, a.item, a.operated);});
@@ -101,31 +132,33 @@ namespace demo
 		{
 			if(!exp) return; //If this is contracted.
 
-			nana::string path = treebox_.make_key_path(node, STR("/")) + STR("/");
+			std::string path = treebox_.make_key_path(node,  ("/")) +  ("/");
 			//Trim the head of whitespace, more portable, because the root
 			//under Linux is a whitespace
-			nana::string::size_type path_start_pos = path.find_first_not_of(STR(" "));
-			if(path_start_pos != nana::string::npos)
+			std::string::size_type path_start_pos = path.find_first_not_of( (" "));
+			if(path_start_pos != std::string::npos)
 				path.erase(0, path_start_pos);
 
 			//Walk in the path directory for sub directories.
-			nana::filesystem::file_iterator i(path), end;
+			filesystem::directory_iterator i(path), end;
 			for(; i != end; ++i)
 			{
-				if(false == i->directory) continue; //If it is not a directory.
+				if (!filesystem::is_directory(*i))  continue; //If it is not a directory.
 
-				item_proxy child = treebox_.insert(node, i->name, i->name);
-				if(child.empty()) continue;
+				item_proxy child = treebox_.insert(node, i->path().filename().generic_u8string(),
+					                                     i->path().filename().generic_u8string());
+				if ( child.empty() ) continue;
             
 				//Find a directory in child directory, if there is a directory,
 				//insert it into the child, just insert one node to indicate the
 				//node has a child and an arrow symbol will be displayed in the
 				//front of the node.
-				nana::filesystem::file_iterator u(path + i->name);
+				filesystem::directory_iterator u(i->path());
 				for(; u != end; ++u)
 				{
-					if(false == u->directory) continue; //If it is not a directory.
-					treebox_.insert(child, u->name, u->name);
+					if (!filesystem::is_directory(*u))  continue; //If it is not a directory.
+					treebox_.insert(child, u->path().filename().generic_u8string(),
+						                   u->path().filename().generic_u8string());
 					break;
 				}
 			}
@@ -144,7 +177,7 @@ namespace demo
 		{
 			date_.create(*this, nana::rectangle(10, 10, 260, 200));
 			textbox_.create(*this, nana::rectangle(280, 10, 170, 23));
-			textbox_.tip_string(STR("Input a date:"));
+			textbox_.tip_string( ("Input a date:"));
 
             date_.events().dbl_click([this]()
             {
@@ -168,10 +201,10 @@ namespace demo
 
 			place_.div("<weight=5><vertical <weight=5>< weight=150 gap=5 check vertical> <bottom_cat vertical gap=5 weight=50>><weight=5>");
 
-			const nana::string str[6] = {
-					STR("Airbus"), STR("AHTOHOB"),
-					STR("Boeing"), STR("Bombardier"),
-					STR("Cessna"), STR("EMBRAER")};
+			const std::string str[6] = {
+					 ("Airbus"),  ("AHTOHOB"),
+					 ("Boeing"),  ("Bombardier"),
+					 ("Cessna"),  ("EMBRAER")};
 					
 			for(int i = 0; i < 6; ++i)
 			{
@@ -187,48 +220,48 @@ namespace demo
 				p->events().click([this]()
 					{
 						std::size_t index = this->group_.checked();
-						nana::string str = this->box_[index]->caption();
+						std::string str = this->box_[index]->caption();
 
-						this->label_.caption(STR("You have selected ") + str);
-						this->categorize_.caption(STR("Manufacturer\\" + str));
+						this->label_.caption( ("You have selected ") + str);
+						this->categorize_.caption( ("Manufacturer\\" + str));
 					});	
 			}
 			
 			label_.create(*this);
-			label_.caption(STR("Select an airplane manufacturer"));
+			label_.caption( ("Select an airplane manufacturer"));
 
 			categorize_.create(*this);
 
 			place_.field("bottom_cat")<< label_ << categorize_ ;
 
-			std::map<nana::string, std::vector<nana::string>> map;
+			std::map<std::string, std::vector<std::string>> map;
 			auto p = &(map[str[0]]);
-			p->push_back(STR("320"));
-			p->push_back(STR("330"));
+			p->push_back( ("320"));
+			p->push_back( ("330"));
 			p = &(map[str[1]]);
-			p->push_back(STR("An-124"));
-			p->push_back(STR("An-225"));
+			p->push_back( ("An-124"));
+			p->push_back( ("An-225"));
 			p = &(map[str[2]]);
-			p->push_back(STR("737"));
-			p->push_back(STR("747"));
-			p->push_back(STR("757"));
-			p->push_back(STR("767"));
-			p->push_back(STR("777"));
-			p->push_back(STR("787"));
+			p->push_back( ("737"));
+			p->push_back( ("747"));
+			p->push_back( ("757"));
+			p->push_back( ("767"));
+			p->push_back( ("777"));
+			p->push_back( ("787"));
 			p = &(map[str[3]]);
-			p->push_back(STR("CRJ"));
-			p->push_back(STR("Dash 8"));
+			p->push_back( ("CRJ"));
+			p->push_back( ("Dash 8"));
 			p = &(map[str[4]]);
-			p->push_back(STR("C-170"));
-			p->push_back(STR("C-172"));
+			p->push_back( ("C-170"));
+			p->push_back( ("C-172"));
 
 			p = &(map[str[5]]);
-			p->push_back(STR("ERJ-145"));
-			p->push_back(STR("E-195"));
+			p->push_back( ("ERJ-145"));
+			p->push_back( ("E-195"));
 
 			for(auto & mstr: str)
 			{
-				categorize_.caption(STR("Manufacturer"));
+				categorize_.caption( ("Manufacturer"));
 				categorize_.insert(mstr, 0);
 				for(auto & astr : map[mstr])
 					categorize_.childset(astr, 0);
@@ -249,7 +282,7 @@ namespace demo
 		widget_show()
 			: form(API::make_center(500, 400), appear::decorate<appear::sizable>())
 		{
-			this->caption(STR("This is a demo of Nana C++ Library"));
+			this->caption( ("This is a demo of Nana C++ Library"));
 			place_.bind(*this);
 			place_.div( "vertical <weight=40% <weight=10><vertical <weight=40 buttons    margin=8 gap=10>"
                         "                                          <weight=40 comboxs    margin=8 gap=10>"
@@ -267,9 +300,9 @@ namespace demo
 
 			this->events().unload([this](const arg_unload& ei)
 				{
-					msgbox mb(this->handle(), STR("Question"), msgbox::yes_no);
+					msgbox mb(this->handle(),  ("Question"), msgbox::yes_no);
 					mb.icon(mb.icon_question);
-					mb<<STR("Are you sure you want to exit the demo?");
+					mb<< ("Are you sure you want to exit the demo?");
 					ei.cancel = (mb.pick_no == mb());
 				});
 
@@ -279,9 +312,9 @@ namespace demo
 		void _m_init_buttons()
 		{
 
-			msgbox mb(*this, STR("Msgbox"));
+			msgbox mb(*this,  ("Msgbox"));
 			mb.icon(mb.icon_information);
-			mb<<STR("Button Clicked");
+			mb<< ("Button Clicked");
 			for(int i = 0; i < 3; ++i)
 			{
 				auto p = std::make_shared<button>(*this);
@@ -291,19 +324,19 @@ namespace demo
 			}
 			
 			auto ptr = buttons_[0];
-			ptr->caption(STR("Normal Button"));
+			ptr->caption( ("Normal Button"));
 
 			ptr = buttons_[1];
 			//Nana does not support ICON under Linux now
 #if defined(NANA_WINDOWS)
-			ptr->icon(STR("../Examples/image.ico"));
+			ptr->icon( nana::paint::image("../Examples/image.ico"));
 #else
-			ptr->icon(STR("../Examples/image.bmp"));
+			ptr->icon(nana::paint::image("../Examples/image.bmp"));
 #endif
-			ptr->caption(STR("Button with An Image"));
+			ptr->caption( ("Button with An Image"));
 
 			ptr = buttons_[2];
-			ptr->caption(STR("Pushed Button"));
+			ptr->caption( ("Pushed Button"));
 			ptr->enable_pushed(true);
 		}
 
@@ -314,19 +347,19 @@ namespace demo
 				auto p = std::make_shared<combox>(*this);
 				comboxs_.push_back(p);
 				place_.field("comboxs")<<*p; //place_.room(*p, 3, 1);
-				p->push_back(STR("Item 0"));
-				p->push_back(STR("Item 1"));
+				p->push_back( ("Item 0"));
+				p->push_back( ("Item 1"));
 			}
 
-			msgbox mb(*this, STR("Item Selected"));
+			msgbox mb(*this,  ("Item Selected"));
 			mb.icon(mb.icon_information);
 
 			auto ptr = comboxs_[0];
 			ptr->editable(true);
-			ptr->caption(STR("This is an editable combox"));
+			ptr->caption( ("This is an editable combox"));
 			ptr->events().selected( [this, mb](const nana::arg_combox& acmb) mutable
 			{
-				mb<<STR("The item ")<<acmb.widget.option()<<STR(" is selected in editable combox");
+				mb<< ("The item ")<<acmb.widget.option()<< (" is selected in editable combox");
 				mb();
 				//Clear the buffer, otherwise the mb shows the text generated in
 				//the last selected event.
@@ -334,10 +367,10 @@ namespace demo
 			});
 
 			ptr = comboxs_[1];
-			ptr->caption(STR("This is an uneditable combox"));
+			ptr->caption( ("This is an uneditable combox"));
 			ptr->events().selected ( [this, mb](const nana::arg_combox& acmb) mutable
 			{
-				mb<<STR("The item ")<<acmb.widget.option()<<STR(" is selected in uneditable combox");
+				mb<< ("The item ")<<acmb.widget.option()<< (" is selected in uneditable combox");
 				mb();
 				//Clear the buffer, otherwise the mb shows the text generated in
 				//the last selected event.
@@ -355,16 +388,16 @@ namespace demo
 			}
 
 			auto wd = labels_[0];
-			wd->caption(STR("This is a normal label"));
+			wd->caption( ("This is a normal label"));
 
 			wd = labels_[1];
 			wd->format(true);
-			wd->caption(STR("This is a <bold, color=0xFF0000, font=\"Consolas\">formatted label</>"));
+			wd->caption( ("This is a <bold, color=0xFF0000, font=\"Consolas\">formatted label</>"));
 		}
 
 		void _m_init_progresses()
 		{
-			const nana::string tipstr[] = {STR("Unknwon in progress"), STR("Known in progress")};
+			const std::string tipstr[] = { ("Unknwon in progress"),  ("Known in progress")};
 			for(int i = 0; i < 2; ++i)
 			{
 				auto p = std::make_shared<progress>(*this);
@@ -399,19 +432,19 @@ namespace demo
 			tabbar_.create(*this);
 			place_.field("tab")<<tabbar_;
 
-			tabbar_.push_back(STR("listbox"));
+			tabbar_.push_back( ("listbox"));
 			tabpages_.push_back(std::make_shared<tab_page_listbox>(*this));
-			tabbar_.push_back(STR("treebox"));
+			tabbar_.push_back( ("treebox"));
 			tabpages_.push_back(std::make_shared<tab_page_treebox>(*this));
-			tabbar_.push_back(STR("date_chooser"));
+			tabbar_.push_back( ("date_chooser"));
 			tabpages_.push_back(std::make_shared<tab_page_datechooser>(*this));
-			tabbar_.push_back(STR("radio_group"));
+			tabbar_.push_back( ("radio_group"));
 			tabpages_.push_back(std::make_shared<tab_page_radiogroup>(*this));
 
 			std::size_t index = 0;
 			for(auto & i : tabpages_)
 			{
-				tabbar_.relate(index++, *i);
+				tabbar_.attach(index++, *i);
 				place_.field("tab_frame").fasten(*i);	//Fasten the tab pages
 			}
 		}
@@ -424,7 +457,7 @@ namespace demo
 		std::vector<std::shared_ptr<combox>> comboxs_;
 		std::vector<std::shared_ptr<label>>	labels_;
 		std::vector<std::shared_ptr<progress>> progresses_;
-		tabbar<nana::string> tabbar_;
+		tabbar<std::string> tabbar_;
 		std::vector<std::shared_ptr<panel<false>>> tabpages_;
 		
 	};//end class widget_show

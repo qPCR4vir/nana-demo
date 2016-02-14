@@ -1,6 +1,27 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
-#include <filesystem>
+
+#ifdef __has_include
+#  if __has_include(<filesystem>)
+#    include <filesystem>
+#  else
+#    include <nana/filesystem/filesystem.hpp>
+     namespace std { namespace experimental {
+		using namespace nana::experimental::v1;
+	}
+}
+#  endif
+#elif defined(STD_FILESYSTEM_NOT_SUPPORTED)
+#    include <nana/filesystem/filesystem.hpp>
+namespace std {
+	namespace experimental {
+		using namespace nana::experimental::v1;
+	}
+}
+#else
+#    include <filesystem>
+#endif
+
 
 #if defined(NANA_WINDOWS)
 	constexpr auto root = "C:";
