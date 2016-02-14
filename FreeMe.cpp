@@ -257,7 +257,7 @@ class junk_sweeper
 	using self_type = junk_sweeper ;
 
  public:
-	 using file_iterator = nana::filesystem::directory_iterator; // ::file_iterator file_iterator;
+	 using file_iterator = nana::experimental::filesystem::directory_iterator; // ::file_iterator file_iterator;
 	 using file_info_type =  file_iterator::value_type       ;
 
 	junk_sweeper() {}
@@ -297,12 +297,12 @@ class junk_sweeper
 
 				if (file.second)
 				{
-					// nana::filesystem::rmdir(file.first.c_(L), true);
+					// nana::experimental::filesystem::rmdir(file.first.c_(L), true);
 					std::wcout << (L"Deleting directory: ") << file.first << (L"\n");
 				}
 				else
 				{
-					// nana::filesystem::rmfile(file.first.c_(L));
+					// nana::experimental::filesystem::rmfile(file.first.c_(L));
 					std::wcout << (L"Deleting file: ") << file.first << (L"\n");
 				}
 				msnger.active();            // inc progresbar
@@ -345,7 +345,7 @@ class junk_sweeper
 				files.insert(files.end(), hlp.files.begin(), hlp.files.end());
 			}
 			else
-				bytes += nana::filesystem::filesize(file.c_(L));
+				bytes += nana::experimental::filesystem::filesize(file.c_(L));
 			
 			files.push_back(std::make_pair(file, v.directory));
 			msnger_.active();

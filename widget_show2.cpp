@@ -76,14 +76,10 @@ namespace demo
 			treebox_.create(*this);
 			place_.field("tree")<<treebox_;
 
-#if defined(NANA_WINDOWS)
+
 			item_proxy node = treebox_.insert(STR("C:"), STR("Local Drive(C:)"));
-			nana::filesystem::file_iterator i(STR("C:\\")), end;
-#elif defined(NANA_LINUX)
-			//Use a whitespace for the root key string under Linux
-			item_proxy node = treebox_.insert(STR(" "), STR("Root"));
-			nana::filesystem::file_iterator i(STR("/")), end;
-#endif
+			filesystem::file_iterator i(STR("C:\\")), end;
+
 			for(; i != end; ++i)
 			{
 				if(false == i->directory) continue;
@@ -107,7 +103,7 @@ namespace demo
 				path.erase(0, path_start_pos);
 
 			//Walk in the path directory for sub directories.
-			nana::filesystem::file_iterator i(path), end;
+			filesystem::file_iterator i(path), end;
 			for(; i != end; ++i)
 			{
 				if(false == i->directory) continue; //If it is not a directory.
@@ -119,7 +115,7 @@ namespace demo
 				//insert it into the child, just insert one node to indicate the
 				//node has a child and an arrow symbol will be displayed in the
 				//front of the node.
-				nana::filesystem::file_iterator u(path + i->name);
+				filesystem::file_iterator u(path + i->name);
 				for(; u != end; ++u)
 				{
 					if(false == u->directory) continue; //If it is not a directory.
