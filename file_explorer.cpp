@@ -515,7 +515,7 @@ private:
 		while(!beg_node.empty() && (beg_node != nodes_.home) && (beg_node != nodes_.filesystem))
 			beg_node = beg_node.owner();
 			
-		auto head = nana::filesystem::path_user();
+		auto head = filesystem::path_user();
 		if(path.size() >= head.size() && (path.substr(0, head.size()) == head))
 		{//This is HOME
 			path_.caption( ("HOME"));
@@ -630,7 +630,7 @@ private:
 			}
 				
 			bool if_exist;
-			if(false == nana::filesystem::mkdir(fb_.addr_.filesystem + path, if_exist))
+			if(false == filesystem::mkdir(fb_.addr_.filesystem + path, if_exist))
 			{
 				if(if_exist)
 					mb<< ("The folder is existing, please rename it.");
@@ -715,11 +715,11 @@ private:
 					tar = addr_.filesystem + file;
 
 				bool good = true;
-				nana::filesystem::attribute attr;
-				if(nana::filesystem::file_attrib(tar, attr) == false)
+				filesystem::attribute attr;
+				if(filesystem::file_attrib(tar, attr) == false)
 				{
 					if(_m_append_def_extension(tar))
-						good = nana::filesystem::file_attrib(tar, attr);
+						good = filesystem::file_attrib(tar, attr);
 					else
 						good = false;
 				}

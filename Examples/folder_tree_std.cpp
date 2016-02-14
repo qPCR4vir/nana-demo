@@ -40,7 +40,7 @@ int main()
 	using SubDirectories = filesystem::directory_iterator;
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
-	fm.caption("Nana C++ Library - Treebox-nana::filesystem example.");
+	fm.caption("Nana C++ Library - Treebox-nana::experimental::filesystem example.");
 
 	nana::treebox tree{ fm,{ 10, 10, 380, 480 } };
 
