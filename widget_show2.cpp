@@ -15,7 +15,6 @@
 #include <nana/gui/widgets/listbox.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 #include <nana/gui/widgets/checkbox.hpp>
-#include <nana/filesystem/file_iterator.hpp>
 #include <nana/gui/widgets/date_chooser.hpp>
 #include <nana/gui/widgets/textbox.hpp>
 #include <nana/gui/widgets/categorize.hpp>
@@ -24,36 +23,78 @@
 #include <memory>
 #include <vector>
 
+#ifdef __has_include
+#  if __has_include(<filesystem>)
+#    include <filesystem>
+#  else
+#    include <nana/filesystem/filesystem.hpp>
+namespace std {
+	namespace experimental {
+		using namespace nana::experimental::v1;
+	}
+}
+#  endif
+#elif defined(STD_FILESYSTEM_NOT_SUPPORTED)
+#    include <nana/filesystem/filesystem.hpp>
+namespace std {
+	namespace experimental {
+		using namespace nana::experimental::v1;
+	}
+}
+#else
+#    include <filesystem>
+#endif
+
+
+#if defined(NANA_WINDOWS)
+constexpr auto root = "C:";
+constexpr auto rootstr = "C:\\";
+constexpr auto rootname = "Local Drive(C:)";
+#elif defined(NANA_LINUX)
+constexpr auto root = "/";
+constexpr auto rootstr = "/";
+constexpr auto rootname = "Root/";
+#endif
+
+
+
+
 namespace demo
 {
 	using namespace nana;
+	namespace filesystem = std::experimental::filesystem;
 
 	class tab_page_listbox 	: public panel<false>
 	{
 		place       place_      {*this} ;
 		listbox		listbox_    {*this} ;
-		checkbox	checkbox_   {*this, STR("Checkable Listbox")} ;
+		checkbox	checkbox_   {*this, "Checkable Listbox"} ;
 	public:
 		tab_page_listbox(window wd)	: panel<false>(wd)
 		{
 			place_.div("< <list> |30% <check margin=5> >");
 
-			listbox_.append_header(STR("Supported compilers"), 200);             // A new column
-			listbox_.append_header(STR("Version"), 100);                         // Another column
+			listbox_.append_header("Supported compilers", 200);        // A new column  --> listbx.headers().emplace_back()
+			listbox_.append_header("Version", 100);                    // Another column
 
-			auto cat=listbox_.append(STR("Nana.C++03 [abandoned]"));                         // A new category
-            cat.append( {nana::string(STR("GCC  ")) , nana::string(STR(" 3.4 and later")) });                 // A new item
-            cat.append( {nana::string(STR("Visual C++  ")) , nana::string(STR(" 2003 and later")) });         // Another item
+			auto cat=listbox_.append("Nana.C++03 [abandoned]");        // cat_proxy, A new category --> listbx.categories().emplace_back(), or shortcut: listb.emplace_back() : a listbox is, among others, a container of categories)
+            cat.append( {"GCC  "        , " 3.4 and later"  });        // A new item. cat.items().emplace_back(), or shortcut: cat.emplace_back(): a categiry is, among others, a container of items
+            cat.append( {"Visual C++  " , " 2003 and later" });        // Another item
 
-			cat=listbox_.append(STR("Nana.C++11"));                                         // Another category
-            cat.append( {nana::string(STR("GCC  ")) , nana::string(STR(" 4.6 and later")) });                 // A new item
-            cat.append( {nana::string(STR("Visual C++  ")) , nana::string(STR(" 2013 and later")) });         // Another item
-            cat.append( {nana::string(STR("Clang  ")) , nana::string(STR(" ?")) });                           // Another item
+			cat=listbox_.append("Nana.C++11");                         // Another category
+            cat.append( {"GCC  "," 4.6 and later" });                  // A new item
+            cat.append( {"Visual C++  ", " 2013 and later" });         // Another item
+            cat.append( {"Clang  " , " ?" });                          // Another item
 
-			cat=listbox_.append(STR("Nana.C++14 :-)"));                                         // Another category
-            cat.append( {nana::string(STR("GCC  ")) , nana::string(STR(" 4.8? and later")) });                 // A new item
-            cat.append( {nana::string(STR("Visual C++  ")) , nana::string(STR(" 2015 and later")) });         // Another item
-            cat.append( {nana::string(STR("Clang  ")) , nana::string(STR(" ?")) });                           // Another item
+			cat=listbox_.append("Nana.C++14 :-)");                     // Another category
+            cat.append( {"GCC  ", " 4.8? and later" });                // A new item
+            cat.append( {"Visual C++  ", " 2015 and later" });         // Another item
+            cat.append( {"Clang  ", " ?" });                           // Another item
+
+			cat=listbox_.append("Nana.C++17 :-)");                      // Another category
+            cat.append( {"GCC  ", " 6? and later" });                   // A new item
+            cat.append( {"Visual C++  ", " 2015 Update 2 and later" }); // Another item
+            cat.append( {"Clang  ", " ?" });                            // Another item
 
             checkbox_.events().click([this](){ listbox_.checkable(checkbox_.checked()); });
 
@@ -62,83 +103,80 @@ namespace demo
 		}
 	};
 
-	class tab_page_treebox
-		: public panel<false>
+	class tab_page_treebox 		: public panel<false>
 	{
+		place   place_   {*this};
+		treebox treebox_ {*this};
 	public:
 		typedef treebox::item_proxy item_proxy;
 
-		tab_page_treebox(window wd)
+		tab_page_treebox(window wd) 
 			: panel<false>(wd)
 		{
-			place_.bind(*this);
 			place_.div("<tree>");
-			treebox_.create(*this);
-			place_.field("tree")<<treebox_;
+			place_["tree"]<<treebox_;
 
+			item_proxy root_node = treebox_.insert(root, rootname);
 
-			item_proxy node = treebox_.insert(STR("C:"), STR("Local Drive(C:)"));
-			filesystem::file_iterator i(STR("C:\\")), end;
-
-			for(; i != end; ++i)
+			// find first directory --> use std::find ?
+			for (const auto& dir : filesystem::directory_iterator{ rootstr })
 			{
-				if(false == i->directory) continue;
-
-				treebox_.insert(node, i->name, i->name);
+				if (!filesystem::is_directory(dir)) continue;
+				std::string fname = dir.path().filename().generic_u8string();
+				treebox_.insert(root_node, fname, fname);
 				break;
 			}
+
             treebox_.events().expanded([this](const arg_treebox& a){_m_expand(a.widget, a.item, a.operated);});
-//( [&]( const nana::arg_treebox &tbox_arg_info ) { if (tbox_arg_info.operated) RefreshList(tbox_arg_info.item); });
 		}
 	private:
 		void _m_expand(nana::window, item_proxy node, bool exp)
 		{
 			if(!exp) return; //If this is contracted.
 
-			nana::string path = treebox_.make_key_path(node, STR("/")) + STR("/");
+			std::string path = treebox_.make_key_path(node, "/") + "/";
 			//Trim the head of whitespace, more portable, because the root
 			//under Linux is a whitespace
-			nana::string::size_type path_start_pos = path.find_first_not_of(STR(" "));
-			if(path_start_pos != nana::string::npos)
+			std::string::size_type path_start_pos = path.find_first_not_of(" ");
+			if(path_start_pos != std::string::npos)
 				path.erase(0, path_start_pos);
+			//avoids frequent useless refreshing
+			treebox_.auto_draw(false);
 
 			//Walk in the path directory for sub directories.
-			filesystem::file_iterator i(path), end;
-			for(; i != end; ++i)
+			for (const auto& dir : filesystem::directory_iterator{ path })
 			{
-				if(false == i->directory) continue; //If it is not a directory.
+				if (!filesystem::is_directory(dir)) continue;
+				std::string fname = dir.path().filename().generic_u8string();
+				auto child = treebox_.insert(node, fname, fname);
+				if (child.empty()) continue;
 
-				item_proxy child = treebox_.insert(node, i->name, i->name);
-				if(child.empty()) continue;
-            
 				//Find a directory in child directory, if there is a directory,
 				//insert it into the child, just insert one node to indicate the
 				//node has a child and an arrow symbol will be displayed in the
-				//front of the node.
-				filesystem::file_iterator u(path + i->name);
-				for(; u != end; ++u)
+				//front of the node.   use std::find_first ??
+				for (const auto& sdir : filesystem::directory_iterator{ dir.path() })
 				{
-					if(false == u->directory) continue; //If it is not a directory.
-					treebox_.insert(child, u->name, u->name);
+					if (!filesystem::is_directory(sdir)) continue; //If it is not a directory.
+					
+					std::string fname = sdir.path().filename().generic_u8string();
+					treebox_.insert(child, fname, fname);
 					break;
 				}
 			}
+			treebox_.auto_draw(true);
 		}
-	private:
-		place place_;
-		treebox treebox_;
 	};
 
-	class tab_page_datechooser
-		: public panel<false>
+	class tab_page_datechooser		: public panel<false>
 	{
-	public:
+		date_chooser  date_    { *this, nana::rectangle(10, 10, 260, 200) };
+		textbox	      textbox_ { *this, nana::rectangle(280, 10, 170, 23) };
+	 public:
 		tab_page_datechooser(window wd)
 			: panel<false>(wd)
 		{
-			date_.create(*this, nana::rectangle(10, 10, 260, 200));
-			textbox_.create(*this, nana::rectangle(280, 10, 170, 23));
-			textbox_.tip_string(STR("Input a date:"));
+			textbox_.tip_string("Input a date:");
 
             date_.events().dbl_click([this]()
             {
@@ -146,28 +184,40 @@ namespace demo
                 textbox_.reset(charset(std::to_string(dt.year) + "-" + std::to_string(dt.month)+ "-" + std::to_string(dt.day)));
             });
 		}
-	private:
-		date_chooser date_;
-		textbox	textbox_;
 	};
 	
-	class tab_page_radiogroup
-		: public panel<false>
+	class tab_page_radiogroup 	: public panel<false>
 	{
+		place           place_     { *this };
+		radio_group     group_  ;     //  use a group ??
+		label           label_     { *this, "Select an airplane manufacturer" };
+		categorize<int> categorize_{ *this };
+		std::vector<std::shared_ptr<checkbox>> box_;
 	public:
 		tab_page_radiogroup(window wd)
 			:	panel<false>(wd)
 		{
-			place_.bind(*this);
+			place_.div(R"(
+                          <weight=5><vertical < weight=5 >
+                                              < weight=150 gap=5 check      vertical> 
+                                              < weight=50  gap=5 bottom_cat vertical>   >
+                          <weight=5>    
+                         )");
 
-			place_.div("<weight=5><vertical <weight=5>< weight=150 gap=5 check vertical> <bottom_cat vertical gap=5 weight=50>><weight=5>");
-
-			const nana::string str[6] = {
-					STR("Airbus"), STR("AHTOHOB"),
-					STR("Boeing"), STR("Bombardier"),
-					STR("Cessna"), STR("EMBRAER")};
+			const std::string str[6] = { "Airbus", "AHTOHOB",
+					                     "Boeing", "Bombardier",
+                                         "Cessna", "EMBRAER"     };
+			std::map<std::string, std::vector<std::string>> airplanes
+			{
+				{ "Airbus"    ,{ "320" , "330" } },
+				{ "AHTOHOB"   ,{ "An-124" , "An-225" } },
+				{ "Boeing"    ,{ "737", "747", "757", "767", "777", "787" } },
+				{ "Bombardier",{ "CRJ" , "Dash 8" } },
+				{ "Cessna"    ,{ "C-170" , "C-172" } },
+				{ "EMBRAER"   ,{ "ERJ-145" , "E-195" } }
+			};
 					
-			for(int i = 0; i < 6; ++i)
+			for(const auto& airplane : airplanes)
 			{
 				auto p = std::make_shared<checkbox>(*this);
 				box_.push_back(p);
@@ -175,84 +225,48 @@ namespace demo
 				//Add the checkbox to the radio group. The radio group does not
 				//manage the life of checkboxs.
 				group_.add(*p);
-				place_.field("check")<< *p ;
+				place_["check"]<< *p ;
 
-				p->caption(str[i]);
+				p->caption(airplane.first);
 				p->events().click([this]()
 					{
 						std::size_t index = this->group_.checked();
-						nana::string str = this->box_[index]->caption();
+						std::string str = this->box_[index]->caption();
 
-						this->label_.caption(STR("You have selected ") + str);
-						this->categorize_.caption(STR("Manufacturer\\" + str));
+						this->label_.caption( "You have selected " + str);
+						this->categorize_.caption("Manufacturer\\" + str);
 					});	
 			}
-			
-			label_.create(*this);
-			label_.caption(STR("Select an airplane manufacturer"));
 
-			categorize_.create(*this);
+			place_["bottom_cat"] << label_ << categorize_ ;
 
-			place_.field("bottom_cat")<< label_ << categorize_ ;
-
-			std::map<nana::string, std::vector<nana::string>> map;
-			auto p = &(map[str[0]]);
-			p->push_back(STR("320"));
-			p->push_back(STR("330"));
-			p = &(map[str[1]]);
-			p->push_back(STR("An-124"));
-			p->push_back(STR("An-225"));
-			p = &(map[str[2]]);
-			p->push_back(STR("737"));
-			p->push_back(STR("747"));
-			p->push_back(STR("757"));
-			p->push_back(STR("767"));
-			p->push_back(STR("777"));
-			p->push_back(STR("787"));
-			p = &(map[str[3]]);
-			p->push_back(STR("CRJ"));
-			p->push_back(STR("Dash 8"));
-			p = &(map[str[4]]);
-			p->push_back(STR("C-170"));
-			p->push_back(STR("C-172"));
-
-			p = &(map[str[5]]);
-			p->push_back(STR("ERJ-145"));
-			p->push_back(STR("E-195"));
-
-			for(auto & mstr: str)
+			for(auto & mstr: airplanes)
 			{
-				categorize_.caption(STR("Manufacturer"));
-				categorize_.insert(mstr, 0);
-				for(auto & astr : map[mstr])
+				categorize_.caption("Manufacturer");
+				categorize_.insert(mstr.first, 0);
+				for(auto & astr : mstr.second)
 					categorize_.childset(astr, 0);
 			}
 		}
-	private:
-		place place_;
-		radio_group group_;
-		std::vector<std::shared_ptr<checkbox>> box_;
-		label label_;
-		categorize<int> categorize_;
 	};
 
 	class widget_show	: public form
 	{
-        place        place_{*this} ;    //A layout management
+        place        place_ {*this} ;    //A layout management
 		timer        timer_ ;
-        button       b_n  {*this, STR("Normal Button")} ,
-                     b_i  {*this, STR("Button with An Image")} ,
-                     b_p  {*this, STR("Pushed Button")} ;
-		combox       cb_e {*this, STR("Normal Button")} ,
-                     cb_u {*this, STR("This is an uneditable combox")} ;
-		label      	 lab  {*this};
+        button       b_n    {*this,  ("Normal Button")} ,
+                     b_i    {*this,  ("Button with An Image")} ,
+                     b_p    {*this,  ("Pushed Button")} ;
+		combox       cb_e   {*this,  ("Normal Button")} ,
+                     cb_u   {*this,  ("This is an uneditable combox")} ;
+		label      	 lab    {*this};
 		progress     progr_k{*this},
                      progr_u{*this} ;
-		tabbar<nana::string> tabbar_{*this};
-        tab_page_listbox     tp_l{*this} ;
-        tab_page_treebox     tp_t{*this} ;
-        tab_page_datechooser tp_d{*this} ;
-        tab_page_radiogroup  tp_r{*this} ;
+		tabbar<std::string> tabbar_{*this} ;
+        tab_page_listbox     tp_l  {*this} ;
+        tab_page_treebox     tp_t  {*this} ;
+        tab_page_datechooser tp_d  {*this} ;
+        tab_page_radiogroup  tp_r  {*this} ;
 
 		std::vector<std::shared_ptr<panel<false>>> tabpages_;
 
@@ -260,7 +274,7 @@ namespace demo
 		widget_show()
 			: form(API::make_center(500, 400), appear::decorate<appear::sizable>())
 		{
-			this->caption(STR("This is a demo of Nana C++ Library"));
+			this->caption(("This is a demo of Nana C++ Library"));
 			place_.div( "vertical <weight=40% <weight=10><vertical <weight=40 buttons    margin=8 gap=10>"
                         "                                          <weight=40 comboxs    margin=8 gap=10>"
                         "                                          <weight=40 labels     margin=8 gap=10>"
@@ -277,8 +291,8 @@ namespace demo
 
 			this->events().unload([this](const arg_unload& ei)
 				{
-					msgbox mb(*this, STR("Question"), msgbox::yes_no);
-					mb.icon(mb.icon_question) << STR("Are you sure you want to exit the demo?");
+					msgbox mb(*this,  ("Question"), msgbox::yes_no);
+					mb.icon(mb.icon_question) <<  ("Are you sure you want to exit the demo?");
 					ei.cancel = ( mb() == mb.pick_no );
 				});
 
@@ -287,41 +301,35 @@ namespace demo
 	private:
 		void _m_init_buttons()
 		{
-			msgbox mb(*this, STR("Msgbox"));
-			mb.icon(mb.icon_information)<<STR("Button Clicked");
+			msgbox mb{ *this,  "Msgbox" };
+			mb.icon(mb.icon_information) << "Button Clicked";
 
 			place_["buttons"] << b_n << b_i << b_p ; 
 			b_n.events().click(mb);
 			b_i.events().click(mb);
 			b_p.events().click(mb);
 
-			//Nana does not support ICON under Linux now
-#if defined(NANA_WINDOWS)
-			//b_i.icon(STR("../Examples/image.ico"));
-			b_i.icon(STR("../Examples/image.bmp"));
-#else
-			b_i.icon(STR("../Examples/image.bmp"));
-#endif
+			b_i.icon( paint::image("../Examples/image.bmp"));
 
 			b_p.enable_pushed(true);
 		}
 
 		void _m_init_comboxs()
 		{
-			place_.field("comboxs") << cb_e << cb_u ;  
+			place_["comboxs"] << cb_e << cb_u ;  
 
-			cb_e.push_back(STR("Item 0"));
-			cb_e.push_back(STR("Item 1"));
-			cb_u.push_back(STR("Item 0"));
-			cb_u.push_back(STR("Item 1"));
+			cb_e.push_back( ("Item 0"));
+			cb_e.push_back( ("Item 1"));
+			cb_u.push_back( ("Item 0"));
+			cb_u.push_back( ("Item 1"));
 
-			msgbox mb(*this, STR("Item Selected"));
+			msgbox mb(*this,  ("Item Selected"));
 			mb.icon(mb.icon_information);
 
 			cb_e.editable(true);
 			cb_e.events().selected( [this, mb](const nana::arg_combox& acmb) mutable
 			{
-				mb<<STR("The item ")<<acmb.widget.option()<<STR(" is selected in editable combox");
+				mb << ("The item ") << acmb.widget.option() << (" is selected in editable combox");
 				mb();
 				//Clear the buffer, otherwise the mb shows the text generated in
 				//the last selected event.
@@ -330,7 +338,7 @@ namespace demo
 
 			cb_u.events().selected ( [this, mb](const nana::arg_combox& acmb) mutable
 			{
-				mb<<STR("The item ")<<acmb.widget.option()<<STR(" is selected in uneditable combox");
+				mb << ("The item ") << acmb.widget.option() <<  (" is selected in uneditable combox");
 				mb();
 				mb.clear();
 			});
@@ -338,10 +346,10 @@ namespace demo
 
 		void _m_init_labels()
 		{
-			place_.field("labels") << STR("This is a normal label") << lab;  
+			place_.field("labels") <<  ("This is a normal label") << lab;  
 
 			lab.format(true);
-			lab.caption(STR("This is a <bold, color=0xFF0000, font=\"Consolas\">formatted label</>"));
+			lab.caption( R"(This is a <bold, color=0xFF0000, font="Consolas">formatted label</>)");
 		}
 
 		void _m_init_progresses()
@@ -349,10 +357,10 @@ namespace demo
 			place_.field("progresses")<< progr_u << progr_k;  
 
             //One progress is unknown mode, the other is known mode.
-			progr_u.tooltip(STR("Unknwon in progress"));
+			progr_u.tooltip( ("Unknwon in progress"));
             progr_u.unknown(true);	
             
-			progr_k.tooltip(STR("Knwon in progress"));
+			progr_k.tooltip( ("Knwon in progress"));
 			progr_k.unknown(false);	 
 
 			timer_.elapse([this](const nana::arg_elapse& a)
@@ -378,17 +386,10 @@ namespace demo
                                      .fasten(tp_r);
 			std::size_t index = 0;
 
-			tabbar_.push_back(STR("listbox"));
-			tabbar_.relate(index++, tp_l);
-
-			tabbar_.push_back(STR("treebox"));
-			tabbar_.relate(index++, tp_t);
-
-			tabbar_.push_back(STR("date_chooser"));
-			tabbar_.relate(index++, tp_d);
-
-			tabbar_.push_back(STR("radio_group"));
-			tabbar_.relate(index++, tp_r);
+			tabbar_.append ("listbox",      tp_l)
+				   .append ("treebox",      tp_t)
+				   .append ("date_chooser", tp_d)
+				   .append ("treebox",      tp_r);
 		}
 	};//end class widget_show
 	
