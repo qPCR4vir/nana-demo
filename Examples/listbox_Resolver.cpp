@@ -9,28 +9,28 @@ struct person
     unsigned     age;
 };
 
-nana::listbox::oresolver& operator << ( nana::listbox::oresolver& or , const person& pr)
+nana::listbox::oresolver& operator << ( nana::listbox::oresolver& orr , const person& pr)
 {
-	or << pr.name;
-	or << (pr.gender ?  ("Male") :  ("Female"));
-	or << pr.age;  
-	return or ;
+	orr << pr.name;
+	orr << (pr.gender ?  ("Male") :  ("Female"));
+	orr << pr.age;  
+	return orr ;
 }
-std::ostream & operator << (std::ostream& or , const person& pr)
+std::ostream & operator << (std::ostream& orr , const person& pr)
 {
-	or << pr.name;
-	or << (pr.gender ?  ("Male") :  ("Female"));
-	or << pr.age;
-	return or ;
+	orr << pr.name;
+	orr << (pr.gender ?  ("Male") :  ("Female"));
+	orr << pr.age;
+	return orr ;
 }
-nana::listbox::iresolver& operator >> ( nana::listbox::iresolver& or , person& pr)
+nana::listbox::iresolver& operator >> ( nana::listbox::iresolver& orr , person& pr)
 {
-	or >> pr.name;
+	orr >> pr.name;
 	std::string gender;
-	or >> gender;
+	orr >> gender;
 	pr.gender = gender ==  ("Male") ;
-	or >> pr.age;  
-	return or ;
+	orr >> pr.age;  
+	return orr ;
 }
 
 
