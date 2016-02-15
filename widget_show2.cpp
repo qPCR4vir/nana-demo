@@ -282,12 +282,12 @@ namespace demo
 		{
 			this->caption(("This is a demo of Nana C++ Library"));
 			place_.div( R"(vertical
-                                   <weight=40% min=270 <weight=10> <simples gap=3 margin=5> >
+                                   <weight=30% min=260 <weight=10> <simples gap=3 margin=5> >
                                    <weight=20 tab >
                                    <tab_frame>        )"      );
 
 			place_["simples"] << simple_;
-			simple_.div("vertical all   min=270 gap=3 margin=5");
+			simple_.div("vertical all   min=260 gap=3 margin=5");
 			simple_["all"]<< buttons_ << comboxes_ << labels_ << progreses_ ;
 
 
