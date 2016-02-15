@@ -18,6 +18,7 @@
 #include <nana/gui/widgets/date_chooser.hpp>
 #include <nana/gui/widgets/textbox.hpp>
 #include <nana/gui/widgets/categorize.hpp>
+#include <nana/gui/widgets/group.hpp>
 #include <nana/gui/timer.hpp>
 #include <nana/gui/tooltip.hpp>
 #include <memory>
@@ -254,14 +255,19 @@ namespace demo
 	{
         place        place_ {*this} ;    //A layout management
 		timer        timer_ ;
-        button       b_n    {*this,  ("Normal Button")} ,
-                     b_i    {*this,  ("Button with An Image")} ,
-                     b_p    {*this,  ("Pushed Button")} ;
-		combox       cb_e   {*this,  ("Normal Button")} ,
-                     cb_u   {*this,  ("This is an uneditable combox")} ;
-		label      	 lab    {*this};
-		progress     progr_k{*this},
-                     progr_u{*this} ;
+		group        simple_    {*this,  "Simple <bold=true, color=0xff0000>widgets</>", true /*formated*/} ,
+                     buttons_   {simple_,  "Buttons"},
+				     comboxes_  {simple_,  "Comboxes"},
+				     labels_    {simple_,  "Labels"},
+				     progreses_ {simple_,  "Progres bars"};
+        button       b_n    {buttons_,  ("Normal Button")} ,
+                     b_i    {buttons_,  ("Button with An Image")} ,
+                     b_p    {buttons_,  ("Pushed Button")} ;
+		combox       cb_e   {comboxes_,  ("Normal combox")} ,
+                     cb_u   {comboxes_,  ("This is an uneditable combox")} ;
+		label      	 lab    {labels_};
+		progress     progr_k{progreses_},
+                     progr_u{progreses_} ;
 		tabbar<std::string> tabbar_{*this} ;
         tab_page_listbox     tp_l  {*this} ;
         tab_page_treebox     tp_t  {*this} ;
@@ -272,16 +278,18 @@ namespace demo
 
 	public:
 		widget_show()
-			: form(API::make_center(500, 400), appear::decorate<appear::sizable>())
+			: form(API::make_center(500, 600), appear::decorate<appear::sizable>())
 		{
 			this->caption(("This is a demo of Nana C++ Library"));
-			place_.div( "vertical <weight=40% <weight=10><vertical <weight=40 buttons    margin=8 gap=10>"
-                        "                                          <weight=40 comboxs    margin=8 gap=10>"
-                        "                                          <weight=40 labels     margin=8 gap=10>"
-                        "                                          <weight=40 progresses margin=8 gap=10>"
-                        "                      > >   "
-                        "         <weight=20 tab >   "
-                        "         <tab_frame>        "      );
+			place_.div( R"(vertical
+                                   <weight=40% min=270 <weight=10> <simples gap=3 margin=5> >
+                                   <weight=20 tab >
+                                   <tab_frame>        )"      );
+
+			place_["simples"] << simple_;
+			simple_.div("vertical all   min=270 gap=3 margin=5");
+			simple_["all"]<< buttons_ << comboxes_ << labels_ << progreses_ ;
+
 
 			_m_init_buttons();
 			_m_init_comboxs();
@@ -301,10 +309,12 @@ namespace demo
 	private:
 		void _m_init_buttons()
 		{
+			buttons_.div("buttons min=25 gap=5 margin=3");
+			buttons_["buttons"] << b_n << b_i << b_p ;
+
 			msgbox mb{ *this,  "Msgbox" };
 			mb.icon(mb.icon_information) << "Button Clicked";
 
-			place_["buttons"] << b_n << b_i << b_p ; 
 			b_n.events().click(mb);
 			b_i.events().click(mb);
 			b_p.events().click(mb);
@@ -316,7 +326,8 @@ namespace demo
 
 		void _m_init_comboxs()
 		{
-			place_["comboxs"] << cb_e << cb_u ;  
+			comboxes_.div("buttons  min=25 gap=5 margin=3");
+			comboxes_["buttons"] << cb_e << cb_u ;
 
 			cb_e.push_back( ("Item 0"));
 			cb_e.push_back( ("Item 1"));
@@ -346,7 +357,8 @@ namespace demo
 
 		void _m_init_labels()
 		{
-			place_.field("labels") <<  ("This is a normal label") << lab;  
+			labels_.div("buttons gap=5 min=25 margin=3");
+			labels_["buttons"] <<  ("This is a normal label") << lab;  //			place_.field("labels") <<  ("This is a normal label") << lab;
 
 			lab.format(true);
 			lab.caption( R"(This is a <bold, color=0xFF0000, font="Consolas">formatted label</>)");
@@ -354,7 +366,8 @@ namespace demo
 
 		void _m_init_progresses()
 		{
-			place_.field("progresses")<< progr_u << progr_k;  
+			progreses_.div("buttons gap=5 min=25 margin=3");
+			progreses_["buttons"] <<  progr_u << progr_k;    //	place_.field("progresses")<< progr_u << progr_k;
 
             //One progress is unknown mode, the other is known mode.
 			progr_u.tooltip( ("Unknwon in progress"));
@@ -384,12 +397,11 @@ namespace demo
                                      .fasten(tp_t)
                                      .fasten(tp_d)
                                      .fasten(tp_r);
-			std::size_t index = 0;
 
 			tabbar_.append ("listbox",      tp_l)
 				   .append ("treebox",      tp_t)
-				   .append ("date_chooser", tp_d)
-				   .append ("treebox",      tp_r);
+				   .append ("date chooser", tp_d)
+				   .append ("radio group",      tp_r);
 		}
 	};//end class widget_show
 	
