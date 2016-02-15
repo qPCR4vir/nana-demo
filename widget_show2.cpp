@@ -191,6 +191,7 @@ namespace demo
 	{
 		place           place_     { *this };
 		radio_group     group_  ;     //  use a group ??
+		group           rgr_       { *this, "Manufacturers" };
 		label           label_     { *this, "Select an airplane manufacturer" };
 		categorize<int> categorize_{ *this };
 		std::vector<std::shared_ptr<checkbox>> box_;
@@ -200,11 +201,12 @@ namespace demo
 		{
 			place_.div(R"(
                           <weight=5><vertical < weight=5 >
-                                              < weight=150 gap=5 check      vertical> 
+                                              < weight=150 <check   gap=5     vertical> <real_gr margin=10 max=130> >
                                               < weight=50  gap=5 bottom_cat vertical>   >
                           <weight=5>    
                          )");
-
+			rgr_.radio_mode(true);
+            place_["real_gr"]<<rgr_ ;
 			const std::string str[6] = { "Airbus", "AHTOHOB",
 					                     "Boeing", "Bombardier",
                                          "Cessna", "EMBRAER"     };
@@ -217,11 +219,18 @@ namespace demo
 				{ "Cessna"    ,{ "C-170" , "C-172" } },
 				{ "EMBRAER"   ,{ "ERJ-145" , "E-195" } }
 			};
-					
+
 			for(const auto& airplane : airplanes)
 			{
+				rgr_.add_option(airplane.first).events().checked([this](const arg_checkbox& msg) {
+							std::string str = msg.widget->caption()   ;
+							this->label_.caption( std::string("You have selected ") + str);
+							this->categorize_.caption(std::string("Manufacturer\\") + str);
+				      });
+
 				auto p = std::make_shared<checkbox>(*this);
 				box_.push_back(p);
+
 
 				//Add the checkbox to the radio group. The radio group does not
 				//manage the life of checkboxs.
@@ -234,8 +243,8 @@ namespace demo
 						std::size_t index = this->group_.checked();
 						std::string str = this->box_[index]->caption();
 
-						this->label_.caption( "You have selected " + str);
-						this->categorize_.caption("Manufacturer\\" + str);
+						this->label_.caption( std::string("You have selected ") + str);
+						this->categorize_.caption(std::string("Manufacturer\\") + str);
 					});	
 			}
 
