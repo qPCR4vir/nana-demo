@@ -18,8 +18,10 @@
 #include <mutex>
 
 #include <nana/gui.hpp>
-#include <windows.h>
+
 #ifdef NANA_WINDOWS
+#include <windows.h>
+
 
 class subclass
 {
