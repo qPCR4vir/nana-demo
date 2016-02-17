@@ -1,37 +1,7 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
+#include <nana/filesystem/filesystem_selector.hpp>
 
-#ifdef __has_include
-#  if __has_include(<filesystem>)
-#    include <filesystem>
-#  else
-#    include <nana/filesystem/filesystem.hpp>
-     namespace std { namespace experimental {
-		using namespace nana::experimental::v1;
-	}
-}
-#  endif
-#elif defined(STD_FILESYSTEM_NOT_SUPPORTED)
-#    include <nana/filesystem/filesystem.hpp>
-namespace std {
-	namespace experimental {
-		using namespace nana::experimental::v1;
-	}
-}
-#else
-#    include <filesystem>
-#endif
-
-
-#if defined(NANA_WINDOWS)
-	constexpr auto root = "C:";
-	constexpr auto rootstr = "C:\\";
-	constexpr auto rootname = "Local Drive(C:)";
-#elif defined(NANA_LINUX)
-	constexpr auto root = "/";
-	constexpr auto rootstr = "/";
-	constexpr auto rootname = "Root/";
-#endif
 
 int main()
 {
@@ -44,9 +14,9 @@ int main()
 
 	nana::treebox tree{ fm,{ 10, 10, 380, 480 } };
 
-	auto node = tree.insert(root, rootname);
+	auto node = tree.insert(def_root, def_rootname);
 
-	for (const auto& dir : SubDirectories{ rootstr })
+	for (const auto& dir : SubDirectories{ def_rootstr })
 	{
 		if (! filesystem::is_directory(dir) ) continue;
 		tree.insert(node, dir.path().filename().generic_u8string() , 
