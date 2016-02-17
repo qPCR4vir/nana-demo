@@ -20,9 +20,11 @@
 #include <nana/gui.hpp>
 
 #ifdef NANA_WINDOWS
-#include <windows.h>
-
-
+#include <Windows.h>
+#include <Winuser.h>
+BOOL WINAPI AddClipboardFormatListener(
+		_In_ HWND hwnd
+);
 class subclass
 {
 	struct msg_pro
@@ -192,6 +194,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, char*, int)
 {
 	using namespace nana;
 
+
 	form fm;
 	fm.caption(("fm"));
 
@@ -216,8 +219,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, char*, int)
 
 
 	HWND wd = reinterpret_cast<HWND>(API::root(fm));
+#if defined(_MSC_VER)
 	AddClipboardFormatListener(wd);	//To receive the WM_CLIPBOARDUPDATE.
-
+#else
+	::OutputDebugStringA("It seems that MinGW-w64 have problems with this: http://mingw-w64-public.narkive.com/1NqIVSS6/addclipboardformatlistener-missing-from-libuser32-a . Try uncommenting this.\n");
+#endif
 	fm.show();
 
 	exec();
