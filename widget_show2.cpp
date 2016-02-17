@@ -24,40 +24,8 @@
 #include <memory>
 #include <vector>
 
-#ifdef __has_include
-#  if __has_include(<filesystem>)
-#    include <filesystem>
-#  else
-#    include <nana/filesystem/filesystem.hpp>
-namespace std {
-	namespace experimental {
-		using namespace nana::experimental::v1;
-	}
-}
-#  endif
-#elif defined(STD_FILESYSTEM_NOT_SUPPORTED)
-#    include <nana/filesystem/filesystem.hpp>
-namespace std {
-	namespace experimental {
-		using namespace nana::experimental::v1;
-	}
-}
-#else
-#    include <filesystem>
-#endif
-
-
-#if defined(NANA_WINDOWS)
-constexpr auto root = "C:";
-constexpr auto rootstr = "C:\\";
-constexpr auto rootname = "Local Drive(C:)";
-#elif defined(NANA_LINUX)
-constexpr auto root = "/";
-constexpr auto rootstr = "/";
-constexpr auto rootname = "Root/";
-#endif
-
-
+#include <nana/filesystem/filesystem_selector.hpp>
+#include <nana/filesystem/filesystem_ext.hpp>
 
 
 namespace demo
@@ -117,10 +85,10 @@ namespace demo
 			place_.div("<tree>");
 			place_["tree"]<<treebox_;
 
-			item_proxy root_node = treebox_.insert(root, rootname);
+			item_proxy root_node = treebox_.insert(def_root, def_rootname);
 
 			// find first directory --> use std::find ?
-			for (const auto& dir : filesystem::directory_iterator{ rootstr })
+			for (const auto& dir : filesystem::directory_iterator{ def_rootstr })
 			{
 				if (!filesystem::is_directory(dir)) continue;
 				std::string fname = dir.path().filename().generic_u8string();
