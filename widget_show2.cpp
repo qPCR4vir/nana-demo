@@ -32,6 +32,7 @@ namespace demo
 {
 	using namespace nana;
 	namespace filesystem = std::experimental::filesystem;
+	using namespace nana::experimental::filesystem::ext;
 
 	class tab_page_listbox 	: public panel<false>
 	{

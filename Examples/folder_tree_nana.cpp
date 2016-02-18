@@ -10,6 +10,8 @@ int main()
 	using namespace nana;
 	using namespace nana::experimental;
 	using SubDirectories = filesystem::directory_iterator;
+	using namespace nana::experimental::filesystem::ext;
+
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
 	fm.caption("Nana C++ Library - Treebox-nana::experimental::filesystem example.");
