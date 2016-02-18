@@ -9,7 +9,7 @@ int main()
 {
 	using namespace nana;
 	using namespace nana::experimental;
-	using SubDirectories = filesystem::directory_iterator;
+//	using SubDirectories = filesystem::directory_iterator;
 	using namespace nana::experimental::filesystem::ext;
 	using dir_it = directory_only_iterator<filesystem::directory_iterator>;
 
@@ -44,25 +44,30 @@ int main()
 		tree.auto_draw(false);
 
 		//Walk in the path directory for sub directories.
-		for (const auto& dir : SubDirectories{ Path })
+		for (const auto& dir : dir_it{ Path })
 		{
-			if (!filesystem::is_directory(dir)) continue; //If it is not a directory.
+			if ( !filesystem::is_directory(dir.status() )) continue; //If it is not a directory.
 
-			auto child = tree.insert(arg.item, dir.path().filename().generic_u8string(),
-				dir.path().filename().generic_u8string());
+			std::string dir_name=dir.path().filename().generic_u8string();
+
+			auto child = tree.insert(arg.item, dir_name, dir_name);
 			if (child.empty()) continue;
 
 			//Find a directory in child directory, if there is a directory,
 			//insert it into the child, just insert one node to indicate the
 			//node has a child and an arrow symbol will be?displayed in the
 			//front of the node.
-			for (const auto& dr : SubDirectories{  dir.path() })
-			{
-				if (!filesystem::is_directory(dr)) continue; //If it is not a directory.
-				tree.insert(child, dr.path().filename().generic_u8string(),
-					dr.path().filename().generic_u8string());
-				break;
-			}
+			std::string sdir_name=dir_it(dir.path())->path().filename().generic_u8string();
+
+			tree.insert(child,sdir_name, sdir_name);
+
+//			for (const auto& dr : SubDirectories{  dir.path() })
+//			{
+//				if (!filesystem::is_directory(dr)) continue; //If it is not a directory.
+//				tree.insert(child, dr.path().filename().generic_u8string(),
+//					dr.path().filename().generic_u8string());
+//				break;
+//			}
 		}
 		tree.auto_draw(true);
 	});
