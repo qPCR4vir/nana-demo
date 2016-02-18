@@ -4,6 +4,9 @@
  *	The demo requires Nana 1.0 and C++11 compiler
  *	Screenshot at http://sourceforge.net/projects/stdex
  */
+#include <memory>
+#include <vector>
+
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
@@ -20,47 +23,14 @@
 #include <nana/gui/widgets/categorize.hpp>
 #include <nana/gui/timer.hpp>
 #include <nana/gui/tooltip.hpp>
-#include <memory>
-#include <vector>
-
-#ifdef __has_include
-#  if __has_include(<filesystem>)
-#    include <filesystem>
-#  else
-#    include <nana/filesystem/filesystem.hpp>
-namespace std {
-	namespace experimental {
-		using namespace nana::experimental::v1;
-	}
-}
-#  endif
-#elif defined(STD_FILESYSTEM_NOT_SUPPORTED)
-#    include <nana/filesystem/filesystem.hpp>
-namespace std {
-	namespace experimental {
-		using namespace nana::experimental::v1;
-	}
-}
-#else
-#    include <filesystem>
-#endif
-
- namespace filesystem = std::experimental::filesystem;
-
-#if defined(NANA_WINDOWS)
-constexpr auto root = "C:";
-constexpr auto rootstr = "C:\\";
-constexpr auto rootname = "Local Drive(C:)";
-#elif defined(NANA_LINUX)
-constexpr auto root = "/";
-constexpr auto rootstr = "/";
-constexpr auto rootname = "Root/";
-#endif
-
+#include <nana/filesystem/filesystem_selector.hpp>
+#include <nana/filesystem/filesystem_ext.hpp>
 
 namespace demo
 {
 	using namespace nana;
+	using namespace std::experimental::filesystem;
+	using namespace nana::experimental::filesystem::ext;
 
 	class tab_page_listbox
 		: public panel<false>
@@ -113,12 +83,12 @@ namespace demo
 			place_.field("tree")<<treebox_;
 
  
-			item_proxy node = treebox_.insert( root, rootname);
-			filesystem::directory_iterator i(rootstr), end;
+			item_proxy node = treebox_.insert( def_root, def_rootname);
+			directory_iterator i(def_rootstr), end;
  
 			for(; i != end; ++i)
 			{
-				if(!filesystem::is_directory(*i)  ) continue;
+				if(!is_directory(*i)  ) continue;
 
 				treebox_.insert(node,  i->path().filename().generic_u8string(),
 					                   i->path().filename().generic_u8string());
@@ -140,10 +110,10 @@ namespace demo
 				path.erase(0, path_start_pos);
 
 			//Walk in the path directory for sub directories.
-			filesystem::directory_iterator i(path), end;
+			directory_iterator i(path), end;
 			for(; i != end; ++i)
 			{
-				if (!filesystem::is_directory(*i))  continue; //If it is not a directory.
+				if (!is_directory(*i))  continue; //If it is not a directory.
 
 				item_proxy child = treebox_.insert(node, i->path().filename().generic_u8string(),
 					                                     i->path().filename().generic_u8string());
@@ -153,10 +123,10 @@ namespace demo
 				//insert it into the child, just insert one node to indicate the
 				//node has a child and an arrow symbol will be displayed in the
 				//front of the node.
-				filesystem::directory_iterator u(i->path());
+				directory_iterator u(i->path());
 				for(; u != end; ++u)
 				{
-					if (!filesystem::is_directory(*u))  continue; //If it is not a directory.
+					if (!is_directory(*u))  continue; //If it is not a directory.
 					treebox_.insert(child, u->path().filename().generic_u8string(),
 						                   u->path().filename().generic_u8string());
 					break;
