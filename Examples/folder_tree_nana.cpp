@@ -11,6 +11,7 @@ int main()
 	using namespace nana::experimental;
 	using SubDirectories = filesystem::directory_iterator;
 	using namespace nana::experimental::filesystem::ext;
+	using dir_it = directory_only_iterator<filesystem::directory_iterator>;
 
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
@@ -20,13 +21,17 @@ int main()
     
 	auto node = tree.insert(def_root, def_rootname);
 
-	for (const auto& dir : SubDirectories{ def_rootstr })
-	{
-		if (!filesystem::is_directory(dir)) continue;
-		tree.insert(node, dir.path().filename().generic_u8string(),
-			dir.path().filename().generic_u8string());
-		break;
-	}
+	dir_it sub_root{def_rootstr};
+	std::string dir_name=sub_root->path().filename().generic_u8string();
+	tree.insert(node, dir_name,dir_name);
+
+//	for (const auto& dir : SubDirectories{ def_rootstr })
+//	{
+//		if (!filesystem::is_directory(dir)) continue;
+//		tree.insert(node, dir.path().filename().generic_u8string(),
+//			dir.path().filename().generic_u8string());
+//		break;
+//	}
 
 	tree.events().expanded([&tree](const arg_treebox& arg)
 	{
