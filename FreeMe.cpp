@@ -345,7 +345,7 @@ class junk_sweeper
 				files.insert(files.end(), hlp.files.begin(), hlp.files.end());
 			}
 			else
-				bytes += nana::experimental::filesystem::filesize(file.c_(L));
+				bytes += nana::experimental::filesystem::filesize(file.c_str());
 			
 			files.push_back(std::make_pair(file, v.directory));
 			msnger_.active();
@@ -532,7 +532,7 @@ private:
 
 		std::stringstream ss;
 		ss<<capsize;
-		std::string cap = ss.(L);
+		std::string cap = ss.str();
 
 		std::string::size_type dotpos = cap.find('.');
 		if(dotpos != cap.npos)

@@ -66,7 +66,7 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 		state.operation = "+";
 		return;
 	}
-	else if( "\u00b1" == d) // 0xB1    u8"\261"
+	else if( u8"\u00b1" == d) // 0xB1    u8"\261"
 	{
 		auto s = state.result.caption();
 		if(s.size())
@@ -193,7 +193,7 @@ void go()
 
 		std::string Key;
 		if (key == 'm')
-			Key = "\u00b1";  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
+			Key = u8"\u00b1";  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
 			                 // http://daniel-hug.github.io/characters/
 		else
 			Key = std::string(1, key);
