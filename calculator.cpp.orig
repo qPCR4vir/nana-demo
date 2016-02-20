@@ -75,11 +75,15 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 		state.operation = "+";
 		return;
 	}
+<<<<<<< HEAD
+	else if( u8"\u00b1" == d) // 0xB1    u8"\261"
+=======
 #if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
 	else if (to_utf8(L"\u00b1") == d) // 0xB1    u8"\261"
 #else
-	else if( u8"\u00b1" == d)
+	else if (u8"\261" == d)
 #endif
+>>>>>>> 0ab169b... fix UTF8 issue of calculator under VS2013
 	{
 		auto s = state.result.caption();
 		if(s.size())
@@ -207,14 +211,19 @@ int main()
 	{
 		std::string Key;
 		if (key == 'm')
+<<<<<<< HEAD
+			Key = u8"\u00b1";  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
+			                 // http://daniel-hug.github.io/characters/
+=======
 		{
 			// http://daniel-hug.github.io/characters/
 #if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
 			Key = to_utf8(L"\u00b1");  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
 #else
-			Key = u8"\u00b1";
+			Key = u8"\261";
 #endif
 		}
+>>>>>>> 0ab169b... fix UTF8 issue of calculator under VS2013
 		else
 			Key = std::string(1, key);
 
