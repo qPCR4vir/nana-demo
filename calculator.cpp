@@ -9,6 +9,7 @@
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
+#include <forward_list>
 
 using namespace nana;
 
@@ -16,16 +17,24 @@ struct stateinfo
 {
 	enum class state{init, operated, assigned};
 
-	state	opstate {state::init};
-	std::string    operation {"+"};
-	double  oprand  {0};
-	double  outcome {0};
+	state	opstate{ state::init };
+#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VC2013
+	std::string    operation;
+#else
+	std::string    operation{"+"};
+#endif
+	double  oprand{ 0 };
+	double  outcome{ 0 };
 	label & procedure;
 	label & result;
 
 	stateinfo(label& proc, label& resl)
 		: procedure(proc), result(resl)
-	{}
+	{
+#if defined(_MSC_VER) && (_MSC_VER < 1900)
+		operation = "+";
+#endif
+	}
 };
 
 void numkey_pressed(stateinfo& state, const arg_click& arg)
@@ -66,7 +75,11 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 		state.operation = "+";
 		return;
 	}
-	else if( "\u00b1" == d) // 0xB1    u8"\261"
+#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
+	else if (to_utf8(L"\u00b1") == d) // 0xB1    u8"\261"
+#else
+	else if (u8"\261" == d)
+#endif
 	{
 		auto s = state.result.caption();
 		if(s.size())
@@ -162,7 +175,8 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 	state.result.caption(outstr);
 }
 
-void go()
+
+int main()
 {
 	form fm;
 	fm.caption(("Calculator"));
@@ -179,49 +193,55 @@ void go()
 	result.text_align(nana::align::right);
 	result.typeface(nana::paint::font("", 14, true));
 
-	place.field("procedure")<<procedure;
-	place.field("result")<<result;
+	place["procedure"] << procedure;
+	place["result"] << result;
 
 	stateinfo state(procedure, result);
-	std::vector<std::unique_ptr<nana::button>> op_keys;
+
+	std::forward_list<button> op_keys;
 
 	char keys[] = "Cm%/789X456-123+0.="; // \261
 	nana::paint::font keyfont("", 10, true);
-	//constexpr char k[]{ u8"\261" };
-	for(auto key : keys)
-	{
 
+	for (auto key : keys)
+	{
 		std::string Key;
 		if (key == 'm')
-			Key = "\u00b1";  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
-			                 // http://daniel-hug.github.io/characters/
+		{
+			// http://daniel-hug.github.io/characters/
+#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
+			Key = to_utf8(L"\u00b1");  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
+#else
+			Key = u8"\261";
+#endif
+		}
 		else
 			Key = std::string(1, key);
 
-		op_keys.emplace_back(new button(fm));
-		op_keys.back()->caption( Key);
-		op_keys.back()->typeface(keyfont);
+		op_keys.emplace_front(fm.handle());
+		auto & key_btn = op_keys.front();
 
-		if('=' == key)
+		key_btn.caption(Key);
+		key_btn.typeface(keyfont);
+
+		if ('=' == key)
 		{
-			op_keys.back()->bgcolor ( color_rgb(  0x7ACC));
-			op_keys.back()->fgcolor ( color_rgb(0xFFFFFF));
+			key_btn.bgcolor(color_rgb(0x7ACC));
+			key_btn.fgcolor(color_rgb(0xFFFFFF));
 		}
-		place.field("opkeys") << *op_keys.back();
+		place["opkeys"] << key_btn;
 
 		//Make event answer for keys.
-		if((L'0' <= key && key <= L'9') || (L'.' == key))
-			op_keys.back()->events().click.connect(std::bind(numkey_pressed, std::ref(state), std::placeholders::_1));
-		else
-			op_keys.back()->events().click.connect(std::bind(opkey_pressed, std::ref(state), std::placeholders::_1));
+		key_btn.events().click([key, &state](const arg_click& arg)
+		{
+			if (('0' <= key && key <= '9') || ('.' == key))
+				numkey_pressed(state, arg);
+			else
+				opkey_pressed(state, arg);
+		});
 	}
 
 	place.collocate();
 	fm.show();
 	exec();
-}
-
-int main()
-{
-    go();
 }
