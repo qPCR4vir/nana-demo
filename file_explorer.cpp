@@ -4,9 +4,6 @@
 
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
-#include <nana/filesystem/filesystem.hpp>
-#include <nana/filesystem/filesystem_selector.hpp>
-#include <nana/filesystem/filesystem_ext.hpp>
     #include <nana/gui/widgets/label.hpp>
 	#include <nana/gui/widgets/button.hpp>
 	#include <nana/gui/widgets/listbox.hpp>
@@ -22,13 +19,95 @@
 #include <nana/gui/widgets/panel.hpp>
 #include <iostream> 
 #include <vector>
+//#define NANA_FILESYSTEM_FORCE 
+#include <nana/filesystem/filesystem_ext.hpp>
 
-//template <class item>
-//struct data_node
+
+// The model / data known how to build a data_node from the path or from the value in the d_node atached to the t_node.
+// The tree know how to build the path, and how to build a t_node from d_node
+
+
+//using namespace nana;
+using namespace nana::experimental::filesystem::ext;
+using dir_it = directory_only_iterator;
+
+template <class V, 
+          class C_I, ///< any oder container of value_type with begin, end, != and ++()
+		  class C_N  ///< any oder container of data_node  with begin, end, != and ++() 
+          >
+struct data_node
+{
+	using value_type = V;
+	using cont_it_t = C_I;
+	using cont_nd_t = C_I;
+
+	value_type   value;
+	C_I          items;   // any oder container of value_type with begin, end, != and ++() 
+	C_N          nodes;   // any oder container of data_node  with begin, end, != and ++() 
+	std::string  separator;
+ 
+	data_node(std::string path, std::string  separator ="/")
+		: value{ path }, 
+		  separator(separator)/*,
+		  items{ path },
+		  nodes{ path }*/ {}
+};
+
+
+// "globals functions"
+ std::string            key(/* value_type*/)   { return{} };
+ std::string            title(/* value_type*/) { return{} };
+
+
+struct dir_node 
+{
+	using value_type = std::experimental::filesystem::directory_entry;
+	using cont_it_t  = std::experimental::filesystem::directory_iterator ;
+	using cont_nd_t  = directory_only_iterator;
+	
+	value_type     value;
+	cont_it_t      items;
+	cont_nd_t      nodes;
+	static const std::string separator ;
+
+	dir_node(std::experimental::filesystem::path path) 
+		: items    { path }, 
+		  //separator{ "/"  },     /*  std::experimental::filesystem::path::preferred_separator  */
+		  value    { path },
+		  nodes    { path }   {}
+};
+const std::string dir_node::separator{ "/" };
+
+//struct d_node : data_node<std::experimental::filesystem::directory_entry, 
+//	                      std::experimental::filesystem::directory_entry,
+//	                      directory_only_iterator> 
 //{
-//	std::vector<item> items;
-//    std::vector<data_node> nodes;
+//	using B_T = data_node<std::experimental::filesystem::directory_entry,
+//		                  std::experimental::filesystem::directory_entry,
+//		                  directory_only_iterator>
+//
+//	dir_node(std::experimental::filesystem::path path)
+//		: B_T{ path }
+//	{ 
+//		dir{ path },
+//		nodes{ path } {}
 //};
+
+
+std::string            key  (const dir_node& dn) { return dn.value.path().filename().generic_u8string(); };
+std::string            title(const dir_node& dn) { return key(dn); };  
+
+
+std::string            key(const dir_it& d) { return d->path().filename().generic_u8string(); };
+std::string            title(const dir_it& d) { return key(d); };  
+
+
+nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const dir_node& item)
+{
+	ores << key
+}
+
+
 //template <class it>
 //struct data_it
 //{
@@ -36,7 +115,7 @@
 //	std::vector<data_node> nodes;
 //};
 
-template <class node>
+template <class d_node>   // some data_node -like template
 class explorer :public nana::form
 {
 	nana::place	           place_ {*this};
@@ -48,7 +127,7 @@ class explorer :public nana::form
 	                       status_{*this};
 	nana::toolbar          tools_ {*this},
 	                       nav_   {*this};
-	std::string            div_=
+	std::string            div_    =
 		R"(
 				vertical <weight=23 menu>
                          <weight=23 path>
@@ -60,8 +139,8 @@ class explorer :public nana::form
 
            )";
 public:
-	using tnode = nana::treebox::item_proxy;
-	explorer(node& root, nana::rectangle r={nana::point{50,50},nana::size{800,900}}, std::string titel={})
+	using t_node = nana::treebox::item_proxy;
+	explorer(d_node& root, nana::rectangle r={nana::point{50,50},nana::size{800,900}}, std::string titel={})
 	:form{r}
 	{
 		place_.div(div_.c_str());
@@ -78,17 +157,28 @@ public:
 
 		tnode tree_root = add_root(root);
 		tree_.events().selected( [this](const nana::arg_treebox &tb_msg)
-								 { if (tb_msg.operated)
-								   {
-									   refresh_list(tb_msg.item);
-									   refresh_path(tb_msg.item);
-								   }
+								 { if (tb_msg.operated) return;
+								    
+		                            d_node d{ tree.make_key_path(tb_msg.item, d_node::separator) + d_node::separator };
+									 
+
+									refresh_tnode(d);
+									refresh_list(d.items);
+									refresh_path(title(d));
+								   
 								 });
 		tree_root.select(true)  ;
 	}
-	tnode add_root (node & root);
-	void  refresh_list(tnode& sel_node);
+	tnode add_root(d_node & root)
+	{
+		tree_.insert(key(root), title(root));
+	}
+	void  refresh_list(tnode& sel_node)
+	{
+		for (auto &i : sel_node.value<d_node:: >();
+	}
 	void  refresh_path(tnode& sel_node);
+	void  refresh_tnode(tnode& sel_node);
 private:
 
 };
