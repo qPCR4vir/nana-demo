@@ -52,16 +52,32 @@
 namespace fs = std::experimental::filesystem;
 using namespace nana::experimental::filesystem::ext;
 
-inline directory_only_iterator children(const fs::directory_entry& f) { return directory_only_iterator{ f.path() }; }
-inline fs::directory_iterator  l_items (const fs::directory_entry& f) { return fs::directory_iterator { f.path() }; }
-inline std::string             f_name  (const fs::directory_entry& f) { return f.path().filename().generic_u8string(); }
+//inline directory_only_iterator children(const fs::directory_entry& f) { return directory_only_iterator{ f.path() }; }
+//inline fs::directory_iterator  l_items (const fs::directory_entry& f) { return fs::directory_iterator { f.path() }; }
+//inline std::string             f_name  (const fs::directory_entry& f) { return f.path().filename().generic_u8string(); }
 
 
 using d_node            = fs::directory_entry ;
 using d_item            = fs::directory_entry ;
-using ctn_node_children = decltype (*children);
-using ctn_list_items    = decltype (*l_items);
-using ft_node_title     = decltype (*f_name);
+using ct_n_children     = directory_only_iterator;
+using ct_l_items        = fs::directory_iterator ;
+
+auto children = [](const d_node& f)->ct_n_children//& 
+				{ 
+					return ct_n_children{ f.path() };
+				};   // ct_n_children& f1(const d_node&);
+auto l_items  = [](const d_node& f)->ct_l_items//&    
+				{ 
+					return ct_l_items   { f.path() };
+				};   // ct_l_items&  f2(const d_node&);
+auto f_name   = [](const d_node& f) 
+				{ 
+					return  f.path().filename().generic_u8string(); 
+				};     // std::string  f3(const d_node&);
+
+using f_node_children = decltype (children);
+using f_list_items    = decltype (l_items);
+using f_node_title    = decltype (f_name);
 
 std::string pretty_file_size(std::size_t bytes)
 {
@@ -148,9 +164,9 @@ class explorer :public nana::form
 	nana::toolbar          tools_ {*this},
 	                       nav_   {*this};
 
-	ft_node_title          *node_to_title;
-	ctn_node_children	   *node_children;
-	ctn_list_items         &list_items;
+	f_node_title           &node_to_title;
+	f_node_children	       &node_children;
+	f_list_items           &list_items;
 
 	std::string            div_    =
 		R"(
@@ -171,13 +187,13 @@ public:
  
 	using t_node = nana::treebox::item_proxy;
 	explorer ( /*d_node& root,*/ 
-		       ft_node_title fnt,
-		       ctn_node_children ctnc,
-		       ctn_list_items    ctni,
+		       f_node_title fnt,
+		       f_node_children ctnc,
+		       f_list_items    ctni,
 		       std::vector<std::pair<std::string, unsigned>> columns,
 		       nana::rectangle r= nana::rectangle{ nana::point{50,10}, nana::size{900,600} },
 		       std::string titel={} )
-	:form{r}, node_to_title{fnt}, node_children{ ctnc }, list_items{ *ctni }
+	:form{r}, node_to_title{fnt}, node_children{ ctnc }, list_items{ ctni }
 	{
 		place_.div(div_.c_str());
 		place_["menu"]  << menu_ ;
@@ -193,7 +209,8 @@ public:
 		//t_node tree_root = add_root(root);
 		tree_.events().selected( [this](const nana::arg_treebox &tb_msg)
 								 { 
-									if (tb_msg.operated) return;
+									if (!tb_msg.operated  ) return;
+
 								    
 		                            //d_node d{ tree_.make_key_path(tb_msg.item, "/" /*nana::to_utf8(fs::path::preferred_separator)*/ ) 
 									//	        + "/" /*d_node::separator*/ };
@@ -231,7 +248,7 @@ public:
 	{
 		auto r= tree_.insert(node_to_title(root), node_to_title(root));
 		r.value(root);
-		refresh_tnode(r);
+		signal_child(r);
 		return r;
 	}
 
@@ -239,7 +256,7 @@ public:
 	{
 		auto r = tree_.insert(root, root);
 		r.value(d_node(root));
-		refresh_tnode(r);
+		signal_child(r);
 		return r;
 	}
 
@@ -247,8 +264,29 @@ public:
 	{
 		auto r = tree_.insert(k, t);
 		r.value(root);
-		refresh_tnode(r);
+		signal_child(r);
 		return r;
+	}
+
+	void signal_child(t_node& node)
+	{
+		auto& d_n = node.value<d_node>();
+		const auto& d_c = node_children(d_n);
+		auto& c1 = begin(d_c);		
+		clear_children(node);
+		if (c1 != end(d_c))
+		{
+			auto name = node_to_title(*c1);
+			auto tn = tree_.insert(node, name, name);
+			if (!tn.empty())  
+			   tn.value(*c1);
+		}
+	}
+
+	void clear_children(t_node& sel_node)
+	{
+		while (!sel_node.child().empty())
+			tree_.erase(sel_node.child());
 	}
 
 	void  refresh_list(t_node& sel_node)
@@ -261,27 +299,15 @@ public:
 	void  refresh_path(t_node& sel_node) {};
 	void  refresh_tnode(t_node& sel_node) 
 	{
-		if (!sel_node.child().empty())
-			tree_.erase(sel_node.child());
-
-		for (auto &n : node_children(sel_node.value<d_node>()))
+		clear_children(sel_node);
+		const auto& d_c = node_children(sel_node.value<d_node>());
+		for (auto &n : d_c) 
 		{
 			auto name = node_to_title(n);
 			auto tn = tree_.insert(sel_node, name, name);
 			if (tn.empty()) continue;
 			tn.value(n);
-			// auto tn=sel_node.append(name, name, n);  // why don't works?
-			auto &ncc = node_children(n);
-			auto &c1 = begin(ncc);
-
-			if (c1 != end(ncc))
-			{
-				auto c_name = node_to_title(*c1);
-				auto ctn = tree_.insert(tn, c_name, c_name);
-				if (!ctn.empty())  
-				   ctn.value(*c1);
-			    // sel_node.append(c_name, c_name, *c1);  // why don't works?
-			}
+			signal_child(tn);
 		}
 	};
 
