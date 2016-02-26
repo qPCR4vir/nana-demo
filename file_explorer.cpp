@@ -34,11 +34,14 @@
 // https://msdn.microsoft.com/en-us/library/hh874694%28v=vs.140%29.aspx      ---  C++ 14, the <filesystem> header VS2015
 // https://msdn.microsoft.com/en-us/library/hh874694%28v=vs.120%29.aspx     --- <filesystem> header VS2013
 
+// test
+//#define STD_put_time_NOT_SUPPORTED
+//#define NANA_FILESYSTEM_FORCE
+
 #include <vector>
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
-#include <iomanip>
 
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/panel.hpp>
@@ -48,8 +51,6 @@
 #include <nana/gui/widgets/categorize.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/toolbar.hpp>
-
-//#define NANA_FILESYSTEM_FORCE
 #include <nana/filesystem/filesystem_ext.hpp>
 
 namespace fs = std::experimental::filesystem;
