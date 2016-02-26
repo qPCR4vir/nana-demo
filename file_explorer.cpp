@@ -34,7 +34,6 @@
 	#include <nana/gui/widgets/listbox.hpp>
 	#include <nana/gui/widgets/categorize.hpp>
 	#include <nana/gui/widgets/textbox.hpp>
-	#include <nana/gui/widgets/treebox.hpp>
 	#include <nana/gui/widgets/combox.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/toolbar.hpp>
@@ -113,7 +112,7 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_nod
 		auto ftime = fs::last_write_time(item.path());
 		std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
 		std::stringstream tm;
-		tm << std::put_time(std::localtime(&cftime), "%Y-%m-%d %H-%M-%S");
+		tm << std::put_time(std::localtime(&cftime), "%Y-%m-%d, %H:%M:%S");
 		ores << tm.str();
 	}
 	catch (...) {
@@ -179,20 +178,20 @@ class explorer :public nana::form
                                          > 
                          >
                          <weight=23 status>  
-
            )";
 
-
 public:
- 
+	bool      			   force_refresh{false};
+	std::string            fake_item{"Sorry, this is a fake item!"};
+
 	using t_node = nana::treebox::item_proxy;
 	explorer ( /*d_node& root,*/ 
-		       f_node_title fnt,
-		       f_node_children ctnc,
-		       f_list_items    ctni,
+		       f_node_title     fnt,
+		       f_node_children  ctnc,
+		       f_list_items     ctni,
 		       std::vector<std::pair<std::string, unsigned>> columns,
 		       nana::rectangle r= nana::rectangle{ nana::point{50,10}, nana::size{900,600} },
-		       std::string titel={} )
+		       std::string title={} )
 	:form{r}, node_to_title{fnt}, node_children{ ctnc }, list_items{ ctni }
 	{
 		place_.div(div_.c_str());
@@ -211,7 +210,6 @@ public:
 								 { 
 									if (!tb_msg.operated  ) return;
 
-								    
 		                            //d_node d{ tree_.make_key_path(tb_msg.item, "/" /*nana::to_utf8(fs::path::preferred_separator)*/ ) 
 									//	        + "/" /*d_node::separator*/ };
 									
@@ -219,7 +217,7 @@ public:
 									list_.auto_draw(false);
 									//path_.auto_draw(false);
 
-									refresh_tnode(tb_msg.item);
+									refresh_tnode(tb_msg.item, 	force_refresh);
 									refresh_list(tb_msg.item);
 									refresh_path(tb_msg.item);
 	
@@ -231,7 +229,7 @@ public:
 		tree_.events().expanded([this](const nana::arg_treebox &tb_msg)
 								{
 									tree_.auto_draw(false);
-									refresh_tnode(tb_msg.item);
+									refresh_tnode(tb_msg.item, force_refresh);
 									tree_.auto_draw(true);
 								});
 
@@ -241,7 +239,6 @@ public:
 
 		for (auto & col : columns)
 			list_.append_header(col.first, col.second);
-
 	}
 
 	t_node add_root(d_node & root)
@@ -260,7 +257,7 @@ public:
 		return r;
 	}
 
-	t_node add_root(std::string & k, std::string t, d_node & root)
+	t_node add_root(std::string k, std::string t, d_node && root)   // revise ref types
 	{
 		auto r = tree_.insert(k, t);
 		r.value(root);
@@ -270,17 +267,13 @@ public:
 
 	void signal_child(t_node& node)
 	{
-		auto& d_n = node.value<d_node>();
-		const ct_n_children& d_c = node_children(d_n);
-		auto& c1 = begin(d_c);		
+		if (!force_refresh && !node.child().empty()) return;
 		clear_children(node);
-		if (c1 != end(d_c))
-		{
-			auto name = node_to_title(*c1);
-			auto tn = tree_.insert(node, name, name);
-			if (!tn.empty())  
-			   tn.value(*c1);
-		}
+		auto& data = node.value<d_node>();
+		const ct_n_children& d_c = node_children(data);
+		const auto& child_1 = begin(d_c);
+		if (child_1 != end(d_c))
+			tree_.insert(node, fake_item, "");
 	}
 
 	void clear_children(t_node& sel_node)
@@ -298,8 +291,9 @@ public:
 	}
 
 	void  refresh_path(t_node& sel_node) {};
-	void  refresh_tnode(t_node& sel_node) 
+	void  refresh_tnode(t_node& sel_node, bool force)
 	{
+		if (!force && !sel_node.child().empty() && sel_node.child().key()!=fake_item ) return;
 		clear_children(sel_node);
 		const ct_n_children& d_c = node_children(sel_node.value<d_node>());
 		for (auto &n : d_c) 
@@ -372,10 +366,11 @@ struct dir_node
 	static const std::string separator;
 
 	dir_node(std::experimental::filesystem::path path)
-		: items{ path },
+		: value{ path }, items{ path }, nodes { path }
+	{}
 		//separator{ "/"  },     /*  std::experimental::filesystem::path::preferred_separator  */
-		value{ path },
-		nodes{ path } {}
+
+
 };
 const std::string dir_node::separator{ "/" };
 
@@ -1181,7 +1176,7 @@ int main()
 		         l_items,
 				 { { ("Name"), 190 }, { ("Modified"), 145 }, { ("Type"), 80 }, { ("Size"), 70 }  });
 
-	fb.add_root( std::string(def_root), std::string(def_rootname), d_node{ def_rootstr }).select(true);
+	fb.add_root( def_root, def_rootname, d_node{ def_rootstr }).select(true);
 
     fb.show();
     nana::exec();
