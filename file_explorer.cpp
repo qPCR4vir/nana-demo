@@ -271,7 +271,7 @@ public:
 	void signal_child(t_node& node)
 	{
 		auto& d_n = node.value<d_node>();
-		const auto& d_c = node_children(d_n);
+		const ct_n_children& d_c = node_children(d_n);
 		auto& c1 = begin(d_c);		
 		clear_children(node);
 		if (c1 != end(d_c))
@@ -292,7 +292,8 @@ public:
 	void  refresh_list(t_node& sel_node)
 	{
 		list_.clear();
-		for (auto &i : list_items( sel_node.value<d_node>()) ) 
+		const ct_l_items& items = list_items(sel_node.value<d_node>());
+		for (auto &i : items) 
 			list_.at(0).append(i, true);
 	}
 
@@ -300,7 +301,7 @@ public:
 	void  refresh_tnode(t_node& sel_node) 
 	{
 		clear_children(sel_node);
-		const auto& d_c = node_children(sel_node.value<d_node>());
+		const ct_n_children& d_c = node_children(sel_node.value<d_node>());
 		for (auto &n : d_c) 
 		{
 			auto name = node_to_title(n);
