@@ -1,6 +1,7 @@
 /**
 *  @file nana-demo\file_explorer.cpp
-*  @brief a super widget to browse/explore a tree and the items in each node, with the example of a file system
+*  @brief a super widget treelistpathview to browse/explore a tree and the items in each node,
+*  with the example of a file system
 *
 *  The design of a general tree-list explorer widget is not simple because of the many different possibilities 
 *  of relation of the "original" data and the data directly in the GUI tree items (nodes), list items, etc.  (where it live primarly) 
@@ -17,35 +18,38 @@
 *  and a function to extract a title from it and another function to generate the children nodes. 
 *  When refreshing the list corresponding to a tree node it directly uses that reference and a third function 
 *  to create the list items and then generate the text in the list columns using again a resolver.
+*  In other word, there are situations when one navigate the data using the GUI (and only access the data when required)
+*  or when one uses some internal data that the GUI constantly access.
 * 
-*  In the second case, the GUI can conserve only a text, generates a path for each tree item and from there 
-*  generate the children and the list items.
+*  In some cases, the GUI can conserve only a text, generates a path for each tree item and from there
+*  generate the children and the list items. Or it can conserve a pointer to the data directly.
+*
+*  Unfortunately most case will be intermediary situations. We will try to implement in parallel the general
+*  treelistpathview widget and an example of use of it for file explorer. We will use as original data directly
+*  the OS, and the GUI will have only an small part of the data.
+*
 */
-
 
 // http://cpprocks.com/introduction-to-tr2-filesystem-library-in-vs2012/
 // https://msdn.microsoft.com/en-us/library/hh874694%28v=vs.140%29.aspx      ---  C++ 14, the <filesystem> header VS2015
 // https://msdn.microsoft.com/en-us/library/hh874694%28v=vs.120%29.aspx     --- <filesystem> header VS2013
 
-#include <nana/gui/wvl.hpp>
-#include <nana/gui/widgets/treebox.hpp>
-    #include <nana/gui/widgets/label.hpp>
-	#include <nana/gui/widgets/button.hpp>
-	#include <nana/gui/widgets/listbox.hpp>
-	#include <nana/gui/widgets/categorize.hpp>
-	#include <nana/gui/widgets/textbox.hpp>
-	#include <nana/gui/widgets/combox.hpp>
-#include <nana/gui/widgets/menubar.hpp>
-#include <nana/gui/widgets/toolbar.hpp>
-	#include <nana/gui/place.hpp>
-	#include <stdexcept>
-	#include <algorithm>
-#include <nana/gui/widgets/panel.hpp>
-#include <iostream> 
 #include <vector>
+#include <stdexcept>
+#include <algorithm>
+#include <iostream>
 #include <iomanip>
 
-//#define NANA_FILESYSTEM_FORCE 
+#include <nana/gui/wvl.hpp>
+#include <nana/gui/widgets/panel.hpp>
+#include <nana/gui/place.hpp>
+#include <nana/gui/widgets/treebox.hpp>
+#include <nana/gui/widgets/listbox.hpp>
+#include <nana/gui/widgets/categorize.hpp>
+#include <nana/gui/widgets/menubar.hpp>
+#include <nana/gui/widgets/toolbar.hpp>
+
+//#define NANA_FILESYSTEM_FORCE
 #include <nana/filesystem/filesystem_ext.hpp>
 
 namespace fs = std::experimental::filesystem;
@@ -55,7 +59,7 @@ using namespace nana::experimental::filesystem::ext;
 //inline fs::directory_iterator  l_items (const fs::directory_entry& f) { return fs::directory_iterator { f.path() }; }
 //inline std::string             f_name  (const fs::directory_entry& f) { return f.path().filename().generic_u8string(); }
 
-
+// the following types could be converted into types parametrs for a generic treelistpathview explorer
 using d_node            = fs::directory_entry ;
 using d_item            = fs::directory_entry ;
 using ct_n_children     = directory_only_iterator;
@@ -78,46 +82,10 @@ using f_node_children = decltype (children);
 using f_list_items    = decltype (l_items);
 using f_node_title    = decltype (f_name);
 
-std::string pretty_file_size(std::size_t bytes)
-{
-	const char * ustr[] = { " KB", " MB", " GB", " TB" };
-	std::stringstream ss;
-	if (bytes >= 1024)
-	{
-		double cap = bytes / 1024.0;
-		std::size_t uid = 0;
-		while ((cap >= 1024.0) && (uid < sizeof(ustr) / sizeof(char *)))
-		{
-			cap /= 1024.0;
-			++uid;
-		}
-		ss << cap;
-		auto s = ss.str();
-		auto pos = s.find('.');
-		if (pos != s.npos)
-		{
-			if (pos + 2 < s.size())
-				s.erase(pos + 2);
-		}
-		return s + ustr[uid];
-	}
-	ss << bytes << " Bytes";
-	return ss.str();
-}
-
 nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_node& item)
 {
 	ores << f_name(item);
-	try {
-		auto ftime = fs::last_write_time(item.path());
-		std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
-		std::stringstream tm;
-		tm << std::put_time(std::localtime(&cftime), "%Y-%m-%d, %H:%M:%S");
-		ores << tm.str();
-	}
-	catch (...) {
-		ores << "";
-	}
+    ores << pretty_file_date(item);//.path()
 
 	if (fs::is_directory(item))
 		ores << ("Directory") << "";
@@ -127,12 +95,8 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_nod
 			ores << item.path().extension();
 		else
 			ores << ("File");
-		try {
-		       ores << pretty_file_size(fs::file_size (item));
-		}
-		catch (...) {
-			ores << "";
-		}
+
+        ores << pretty_file_size(item);
 	}
 
 	return ores;
