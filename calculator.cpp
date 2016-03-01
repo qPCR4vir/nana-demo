@@ -18,7 +18,7 @@ using namespace nana;
 #if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
 	const std::string plus_minus(to_utf8(L"\u00b1")  ;   // 0xB1    u8"\261"
 #else
-	const std::string plus_minus( u8"\u00b1" )
+	const std::string plus_minus( u8"\u00b1" );
 #endif
 
 struct stateinfo
