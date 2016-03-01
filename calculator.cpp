@@ -25,11 +25,12 @@ struct stateinfo
 {
 	enum class state{init, operated, assigned};
 
-	state	opstate{ state::init };
-	double  oprand { 0 };
-	double  outcome{ 0 };
-	label & procedure;
-	label & result;
+	state	       opstate{ state::init };
+    std::string    operation;
+	double         oprand { 0 };
+	double         outcome{ 0 };
+	label        & procedure;
+	label        & result;
 
 	stateinfo(label& proc, label& resl)
 		: procedure(proc), result(resl),  operation("+")
