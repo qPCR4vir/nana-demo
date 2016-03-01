@@ -25,20 +25,16 @@
 
 using namespace nana;
 
-class notepad_form
-    : public form
+class notepad_form     : public form
 {
-    place   place_;
-    menubar menubar_;
-    textbox textbox_;
+    place   place_  {*this};
+    menubar menubar_{*this};
+    textbox textbox_{*this};
 
 public:
     notepad_form()
     {
         caption("Simple Notepad - Nana C++ Library");
-        menubar_.create(*this);
-
-        textbox_.create(*this);
         textbox_.borderless(true);
         API::effects_edge_nimbus(textbox_, effects::edge_nimbus::none);
         textbox_.enable_dropfiles(true);
@@ -50,10 +46,9 @@ public:
 
         _m_make_menus();
 
-        place_.bind(*this);
         place_.div("vert<menubar weight=28><textbox>");
-        place_.field("menubar") << menubar_;
-        place_.field("textbox") << textbox_;
+        place_["menubar"] << menubar_;
+        place_["textbox"] << textbox_;
         place_.collocate();
 
         events().unload([this](const arg_unload& arg){
@@ -147,58 +142,4 @@ int main()
     exec();
 }
 
-/**
-Simple Notepad
-
-_m_pick_file()
-We start with a private member function _m_pick_file(), this function is to tell user to select a file.
-
-return (fbox.show() ? fbox.file() : std::string());
-
-If user clicks "cancel" button or closes the dialog by clicking 'X' close button, fbox.show() returns false for no file selection.
-
-_m_ask_save()
-This function will have asked user to save the text to a file by the time the text is closed.
-
-if(textbox_.edited())
-
-Determines whether the text has been edited. If there are modifications to the text, then it
-
-auto fs = textbox_.filename();
-
-When the textbox opens a file or saves a text to a file, the textbox will keep the filename. If fs is empty, the program asks user to select a file to save the text.
-
-_m_ask_save() has a return type, that is bool type. And it returns false if and only if the user cancel the selection.
-
-notepad_form()
-In the default of constructor, we need create the menubar and textbox, and set the layout for the form.
-
-textbox_.borderless(true);
-API::effects_edge_nimbus(textbox_, effects::edge_nimbus::none);
-
-Disables the border and edge numbus effect of the textbox.
-
-textbox_.events().mouse_dropfiles([this](const arg_drppfiles& arg)
-{
-    if (arg.files.size() && _m_ask_save())
-        textbox_.load(arg.files.at(0).data());
-});
-
-Sets a Drag'n Drop event for the textbox, it allows user to open a file by dragging the file outside of the program and dropping the file inside the program. 
-The call of _m_ask_save() here is to try to ask user to save the edited text.
-
-events().unload([this](const arg_unload& arg){
-    if (!_m_ask_save())
-        arg.cancel = true;
-});
-
-Sets an unload event for the form, it enables program to ask user to save the edited text when closing the program, and if user cancels the messagebox, the program stops closing.
-
-_m_make_menus()
-Sets menus for the menubar.
-
-int main()
-Creates the form of notpad.
-
-*/
 

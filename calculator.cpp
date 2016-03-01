@@ -1,5 +1,6 @@
-/*
- *	Nana Calculator
+/**
+ *  \file calculator.cpp
+ *  \brief Nana Calculator
  *	Nana 1.3 and C++11 is required.
  *	This is a demo for Nana C++ Library.
  *	It creates an intermediate level graphical calculator with few code.
@@ -13,28 +14,26 @@
 
 using namespace nana;
 
+// workaround insufficiency in VS2013.
+#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
+	const std::string plus_minus(to_utf8(L"\u00b1")  ;   // 0xB1    u8"\261"
+#else
+	const std::string plus_minus( u8"\u00b1" )
+#endif
+
 struct stateinfo
 {
 	enum class state{init, operated, assigned};
 
 	state	opstate{ state::init };
-#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VC2013
-	std::string    operation;
-#else
-	std::string    operation{"+"};
-#endif
-	double  oprand{ 0 };
+	double  oprand { 0 };
 	double  outcome{ 0 };
 	label & procedure;
 	label & result;
 
 	stateinfo(label& proc, label& resl)
-		: procedure(proc), result(resl)
-	{
-#if defined(_MSC_VER) && (_MSC_VER < 1900)
-		operation = "+";
-#endif
-	}
+		: procedure(proc), result(resl),  operation("+")
+	{	}
 };
 
 void numkey_pressed(stateinfo& state, const arg_click& arg)
@@ -75,11 +74,7 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 		state.operation = "+";
 		return;
 	}
-#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
-	else if (to_utf8(L"\u00b1") == d) // 0xB1    u8"\261"
-#else
-	else if( u8"\u00b1" == d)
-#endif
+	else if( plus_minus == d)
 	{
 		auto s = state.result.caption();
 		if(s.size())
@@ -149,18 +144,10 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 
 	switch(pre_operation[0])
 	{
-	case '+':
-		state.outcome += state.oprand;
-		break;
-	case '-':
-		state.outcome -= state.oprand;
-		break;
-	case 'X':
-		state.outcome *= state.oprand;
-		break;
-	case '/':
-		state.outcome /= state.oprand;
-		break;
+	case '+': 	state.outcome += state.oprand; 		break;
+	case '-':	state.outcome -= state.oprand;		break;
+	case 'X':	state.outcome *= state.oprand;		break;
+	case '/':	state.outcome /= state.oprand;		break;
 	}
 
 	state.procedure.caption(proc);
@@ -171,7 +158,7 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 	
 	if(outstr.size() && (outstr.back() == '.'))
 		outstr.pop_back();
-	if(outstr.size() == 0) outstr += '0';
+	if( outstr.empty() ) outstr += '0';
 	state.result.caption(outstr);
 }
 
@@ -184,7 +171,7 @@ int main()
 	//Use class place to layout the widgets.
 	place place(fm);
 	place.div(	"vert<procedure weight=10%><result weight=15%>"
-		"<weight=2><opkeys margin=2 grid=[4, 5] gap=2 collapse(0,4,2,1)>");
+                "<weight=2><opkeys margin=2 grid=[4, 5] gap=2 collapse(0,4,2,1)>");
 
 	label procedure(fm), result(fm);
 
@@ -207,15 +194,8 @@ int main()
 	{
 		std::string Key;
 		if (key == 'm')
-		{
-			// http://daniel-hug.github.io/characters/
-#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
-			Key = to_utf8(L"\u00b1");  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
-#else
-			Key = u8"\u00b1";
-#endif
-		}
-		else
+			Key = plus_minus);  
+    	else
 			Key = std::string(1, key);
 
 		op_keys.emplace_front(fm.handle());
