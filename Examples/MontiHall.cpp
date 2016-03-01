@@ -25,7 +25,7 @@ class monty_hall
     monty_hall mh; 
     mh.show(); 
     nana::exec(); 
- }
+ } 
 
 monty_hall::monty_hall() 
       : nana::form(  nana::API::make_center(400, 150) , appear::decorate<appear::taskbar>()   ) 
@@ -38,7 +38,6 @@ monty_hall::monty_hall()
 
   label_.create(*this, nana::rectangle(nana::size(400, 100))); 
   label_.caption(text); 
-
   std::string door_name[3] = 
                             { ("Door No.&1"),  ("Door No.&2"),  ("Door No.&3")}; 
   for(int i = 0; i < 3; ++i) 
@@ -57,9 +56,7 @@ monty_hall::monty_hall()
          if(door_[index] == ei.window_handle) 
             break; 
      } 
-     _m_play(index); 
-}
-
+     _m_play(index);        }
 void monty_hall::_m_play(int door) 
 { 
    switch(state_) 
@@ -73,18 +70,14 @@ void monty_hall::_m_play(int door)
                      label_.caption(door_has_car_ == door ? 
                                         ("Yes, you win the new Car!!") :  ("Sign, you are lost!")); 
                      state_ = state_over; 
-                break; 
-      } 
-   }
-
+                break;           }    }
 void monty_hall::_m_remove_door(int exclude) 
 { 
      std::vector<int> doors; 
      for(int i = 0; i < 3; ++i) 
      { 
          if(i != exclude) 
-             doors.push_back(i); 
-     } 
+             doors.push_back(i);        } 
      unsigned ts = (nana::system::timestamp() / 1000) % 2; 
      if(door_has_car_ == doors[ts]) 
          ts = (ts ? 0: 1); 
