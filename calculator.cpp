@@ -33,7 +33,7 @@ struct stateinfo
 	label        & result;
 
 	stateinfo(label& proc, label& resl)
-		: procedure(proc), result(resl),  operation("+")
+		: operation("+"),  procedure(proc), result(resl)
 	{	}
 };
 
@@ -195,7 +195,7 @@ int main()
 	{
 		std::string Key;
 		if (key == 'm')
-			Key = plus_minus);  
+			Key = plus_minus;  
     	else
 			Key = std::string(1, key);
 
