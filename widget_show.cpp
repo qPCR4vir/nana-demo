@@ -436,7 +436,7 @@ namespace demo
 	{
 		widget_show wdshow;
 		wdshow.show();
-		exec();
+		exec(1,[](){},1,&wdshow);
 	}
 }
 
