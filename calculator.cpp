@@ -11,6 +11,16 @@
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
 #include <forward_list>
+#include <map>
+#include "../nana/include/nana/gui/detail/general_events.hpp"
+#include "../nana/include/nana/basic_types.hpp"
+#include "../nana/include/nana/paint/graphics.hpp"
+#include "../nana/include/nana/gui/widgets/button.hpp"
+#include "../nana/include/nana/gui/wvl.hpp"
+#include <iostream>
+#include <chrono>
+
+#include <thread>
 
 using namespace nana;
 
@@ -163,6 +173,17 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 	state.result.caption(outstr);
 }
 
+void click(widget& w)
+{
+	arg_click arg;
+	arg.window_handle=w.handle();
+	w.events().click.emit(arg);
+}
+void Wait(unsigned wait=0)
+{
+	if (wait)
+		std::this_thread::sleep_for(std::chrono::seconds{ wait } );
+}
 
 int main()
 {
@@ -187,9 +208,10 @@ int main()
 	stateinfo state(procedure, result);
 
 	std::forward_list<button> op_keys;
+	std::map<char,button*> bts;
 
 	char keys[] = "Cm%/789X456-123+0.="; // \261
-	nana::paint::font keyfont("", 10, true);
+	paint::font keyfont("", 10, true);
 
 	for (auto key : keys)
 	{
@@ -201,6 +223,7 @@ int main()
 
 		op_keys.emplace_front(fm.handle());
 		auto & key_btn = op_keys.front();
+		bts[key]=&key_btn;
 
 		key_btn.caption(Key);
 		key_btn.typeface(keyfont);
@@ -224,5 +247,23 @@ int main()
 
 	place.collocate();
 	fm.show();
-	exec();
+	exec(5, [&bts, &result ]()
+	{
+		click(*bts['2']); Wait( 1);
+		click(*bts['+']); Wait( 1);
+		click(*bts['2']); Wait( 1);
+
+		click(*bts['=']);
+
+
+		std::cout << "The result of 2 + 2 is: " << result.caption() << "\n";
+		int r=std::stoi(result.caption());
+
+		//char c; std::cin >> c;
+
+		if ( r != 4 )
+			exit(r?r:1);
+
+		//API::exit();
+	}, 5, &fm);
 }
