@@ -12,11 +12,9 @@
 #include <nana/gui/place.hpp>
 #include <forward_list>
 #include <map>
-#include "../nana/include/nana/gui/detail/general_events.hpp"
-#include "../nana/include/nana/basic_types.hpp"
-#include "../nana/include/nana/paint/graphics.hpp"
-#include "../nana/include/nana/gui/widgets/button.hpp"
-#include "../nana/include/nana/gui/wvl.hpp"
+
+#include <nana/paint/graphics.hpp"
+
 #include <iostream>
 #include <chrono>
 

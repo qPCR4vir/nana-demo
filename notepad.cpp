@@ -24,9 +24,7 @@
 #include <nana/gui/filebox.hpp>
 #include <thread>
 #include <iostream>
-#include "../nana/include/nana/gui/wvl.hpp"
-#include "../nana/include/nana/deploy.hpp"
-#include "../nana/include/nana/gui/widgets/textbox.hpp"
+
 
 using namespace nana;
 

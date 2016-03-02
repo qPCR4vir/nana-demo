@@ -2,9 +2,9 @@
 #include <nana/gui/widgets/button.hpp>
 
 #include <iostream>
-#include "../../nana/include/nana/gui/detail/general_events.hpp"
-#include "../../nana/include/nana/gui/basis.hpp"
-#include "../../nana/include/nana/gui/wvl.hpp"
+
+
+
 
 void clicked(const nana::arg_click & eventinfo)
 {
