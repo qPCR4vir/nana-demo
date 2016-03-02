@@ -13,7 +13,7 @@
 #include <forward_list>
 #include <map>
 
-#include <nana/paint/graphics.hpp"
+//#include <nana/paint/graphics.hpp"
 
 #include <iostream>
 #include <chrono>
