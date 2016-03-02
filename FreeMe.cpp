@@ -13,9 +13,9 @@
  */
 
 // http://nanapro.sourceforge.net/help/tutorials/thefreeme.htm
+#ifdef NANA_WINDOWS
+#ifdef BUILD_FreeMe
 
-#ifndef PATH_CREATOR_HPP
-#define PATH_CREATOR_HPP
 #include <nana/gui/wvl.hpp>
 #include <shlobj.h>
 #include <windows.h>
@@ -205,7 +205,7 @@ namespace path
 	};
 }
 
-#endif
+
 
 /*
  *	The FreeMe - A sample of Nana C++ Library
@@ -589,3 +589,5 @@ int  main( )
 
 	return 0;
 }
+#endif // BUILD_FreeMe
+#endif // NANA_WINDOWS
