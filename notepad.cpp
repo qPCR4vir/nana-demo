@@ -22,6 +22,11 @@
 #include <nana/gui/place.hpp>
 #include <nana/gui/msgbox.hpp>
 #include <nana/gui/filebox.hpp>
+#include <thread>
+#include <iostream>
+#include "../nana/include/nana/gui/wvl.hpp"
+#include "../nana/include/nana/deploy.hpp"
+#include "../nana/include/nana/gui/widgets/textbox.hpp"
 
 using namespace nana;
 
@@ -56,6 +61,8 @@ public:
                 arg.cancel = true;
         });
     }
+
+    textbox& get_tb(){return textbox_;}
 private:
     std::string _m_pick_file(bool is_open) const
     {
@@ -134,12 +141,33 @@ private:
     }
 
 };
+void Wait(unsigned wait=0)
+{
+    if (wait)
+        std::this_thread::sleep_for(std::chrono::seconds{ wait } );
+}
 
 int main()
 {
     notepad_form npform;
     npform.show();
-    exec();
+    exec(
+           2, [&npform]()
+    {
+        /*
+        arg_keyboard k;
+        k.shift=k.ctrl=false;
+        k.evt_code=event_code::key_char;
+        k.window_handle = npform.get_tb().handle();
+        for (char c : nana::to_nstring( "Testing our notepad"))
+        {
+            k.key=c;
+            std::cout<<c;
+            npform.get_tb().events().key_char.emit(k); Wait(1);
+        }
+        */
+    },1,&npform
+    );
 }
 
 
