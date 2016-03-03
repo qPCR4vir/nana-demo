@@ -15,7 +15,7 @@ int main()
     }
     catch (...) 
     {
-        cout << "Exception occurred" << std::endl; 
+        std::cout << "Exception occurred" << std::endl; 
     }
     std::cout << "After fm " << std::endl; 
     //fm.events().click(clicked);
