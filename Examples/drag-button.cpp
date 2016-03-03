@@ -15,5 +15,5 @@ int main()
     dg.target(btn);   //move the btn
 
     fm.show();
-    exec(1, [](){},1,&fm);
+	exec(&fm, 2, 3, [&btn]() {click(btn); });
 }

@@ -8,5 +8,5 @@ int main()
     label   lb(fm, rectangle(fm.size()));
     lb.caption("Hello, World");
     fm.show();
-    exec(1, [](){},1,&fm);
+    exec(&fm);
 }

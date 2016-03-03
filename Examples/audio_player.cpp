@@ -20,7 +20,6 @@ int main()
     btn     .caption("Play the audio");
     btn_wait.caption("Play and wait 5 min !!!!");
 
-    //C++11
     btn.events().click(pool_push(pool, [&]()
                            {
                                player.play();
@@ -32,6 +31,9 @@ int main()
 
     fm.show();
 
-    exec();
+    exec(&fm,1,5,[&btn]()
+	{
+		click(btn);
+	});
 #endif	//NANA_ENABLE_AUDIO
 }

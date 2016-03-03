@@ -19,12 +19,12 @@ int main()
     form fm;
     fm.events().click(clicked);
     fm.show();
-	exec(2, [&fm]()
+	exec( &fm, 2, 1, [&fm]()
 		{
 			std::cout << "3 times automatic click. \n";
-			fm.events().click.emit(nana::arg_click{});
-			fm.events().click.emit(nana::arg_click{});
-			fm.events().click.emit(nana::arg_click{});
+			click(fm);
+			click(fm);
+			click(fm);
 
 			nana::arg_mouse m;
 			m.window_handle=fm;
@@ -42,5 +42,5 @@ int main()
 
 			//fm.close();
 
-	     }, 1, &fm);
+	     });
 }

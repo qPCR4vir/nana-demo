@@ -171,17 +171,6 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 	state.result.caption(outstr);
 }
 
-void click(widget& w)
-{
-	arg_click arg;
-	arg.window_handle=w.handle();
-	w.events().click.emit(arg);
-}
-void Wait(unsigned wait=0)
-{
-	if (wait)
-		std::this_thread::sleep_for(std::chrono::seconds{ wait } );
-}
 
 int main()
 {
@@ -245,7 +234,7 @@ int main()
 
 	place.collocate();
 	fm.show();
-	exec(5, [&bts, &result ]()
+	exec(&fm, 1, 1, [&bts, &result ]()
 	{
 		click(*bts['2']); Wait( 1);
 		click(*bts['+']); Wait( 1);
@@ -263,5 +252,5 @@ int main()
 			exit(r?r:1);
 
 		//API::exit();
-	}, 5, &fm);
+	});
 }

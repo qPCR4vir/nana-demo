@@ -12,13 +12,13 @@ int main()
 
     // this will attemp to use   
     // item_proxy cat_proxy::append (T &&t, bool set_value=false) 
-    // to add a value any of wchar_t[4]  = "int"
-	// lb.at(0).append(STR("int"));
+    // to add a value any of char[4]  = "int"
+	
     lb.at(0).append({"int"});
     lb.at(0).append({"double"});
 
-	lb.anyobj(0, 0, 10);     ///    \todo this crash   lb.anyobj(0, 0, 10);   
-	lb.anyobj(0, 1, 0.1);   ///    \todo this crash  
+	lb.anyobj(0, 0, 10);    
+	lb.anyobj(0, 1, 0.1);   
 
 	int * pi = lb.anyobj<int>(0, 0); 	  // it returns a nullptr if there is not an int object specified.
     std::cout << "Index: (0,0) -> int value: " << *pi << std::endl; 
@@ -27,5 +27,5 @@ int main()
     std::cout << "Index: (0,1) -> double value: " << *pd; 
 
 	fm.show();
-	exec(1, [](){},1,&fm);
+	exec(&fm);
 }

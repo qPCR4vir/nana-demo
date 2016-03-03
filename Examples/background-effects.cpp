@@ -3,6 +3,7 @@
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
+#include <iostream>
 
 int main()
 {
@@ -11,6 +12,7 @@ int main()
     form fm;
 
     button btn(fm, "Normal Button");
+	btn.events().click([]() {std::cout << "Normal Button clicked."; });
 
     button btn0(fm, "Basic Mode");
 
@@ -56,5 +58,5 @@ int main()
     });
     dw.update();
 
-    exec(1, [](){},1,&fm);
+	exec(&fm, 1, 2, [&btn]() {click(btn); });
 }

@@ -20,5 +20,11 @@ int main()
        // use the arg info
 	child.events().selected ( [](const arg_combox &ar_cbx){ std::cout<<ar_cbx.widget.caption()<<std::endl; });
 	fm.show();
-	exec(1, [](){},1,&fm);
+	exec(&fm, 3, 5, [&child]() 
+	{
+		click(child);
+		child.option(3);
+		child.events().selected.emit(arg_combox{ child });
+
+	});
 }

@@ -149,8 +149,7 @@ int main()
 {
     notepad_form npform;
     npform.show();
-    exec(
-           2, [&npform]()
+    exec(&npform, 2,2, [&npform]()
     {
         /*
         arg_keyboard k;
@@ -164,8 +163,7 @@ int main()
             npform.get_tb().events().key_char.emit(k); Wait(1);
         }
         */
-    },1,&npform
-    );
+    }  );
 }
 
 
