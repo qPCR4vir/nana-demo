@@ -27,5 +27,5 @@ int main()
     std::cout << "Index: (0,1) -> double value: " << *pd; 
 
 	fm.show();
-	exec();
+	exec(1, [](){},1,&fm);
 }
