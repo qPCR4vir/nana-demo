@@ -9,12 +9,16 @@ int main()
     try {
     form fm;
     }
-    catch (std::exception e)
+    catch (std::exception& e)
     {
             std::cout << e.what() << std::endl; 
     }
-    std::cout << "After fm  << std::endl; 
+    catch (...) 
+    {
+        cout << "Exception occurred" << std::endl; 
+    }
+    std::cout << "After fm " << std::endl; 
     //fm.events().click(clicked);
     //fm.show();
-    //std::cout << "After fm.show()  << std::endl;  
+    //std::cout << "After fm.show() " << std::endl;  
 }
