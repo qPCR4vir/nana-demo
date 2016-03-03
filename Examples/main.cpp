@@ -7,7 +7,7 @@ int main()
     using namespace nana;
     std::cout << "Hello main... and nana/gui/wvl.hpp " << std::endl;    
     try {
-    form fm;
+    //form fm;
     }
     catch (std::exception& e)
     {
