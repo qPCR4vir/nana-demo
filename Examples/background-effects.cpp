@@ -56,5 +56,5 @@ int main()
     });
     dw.update();
 
-    exec();
+    exec(1, [](){},1,&fm);
 }
