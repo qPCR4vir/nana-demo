@@ -12,6 +12,7 @@ int main()
             //fm.events().click(clicked);
             fm.show();
             std::cout << "After fm.show() " << std::endl;  
+            exec();
     }
     catch (std::exception& e)
     {
