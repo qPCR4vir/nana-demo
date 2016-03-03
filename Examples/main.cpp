@@ -19,6 +19,6 @@ int main()
     }
     std::cout << "After fm " << std::endl; 
     //fm.events().click(clicked);
-    //fm.show();
-    //std::cout << "After fm.show() " << std::endl;  
+    fm.show();
+    std::cout << "After fm.show() " << std::endl;  
 }
