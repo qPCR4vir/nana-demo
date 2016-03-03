@@ -21,5 +21,5 @@ int main()
     ani.looped(true);
     ani.play();
 
-    exec();
+    exec(1, [](){},1,&fm);
 }
