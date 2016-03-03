@@ -12,7 +12,7 @@ int main()
             //fm.events().click(clicked);
             fm.show();
             std::cout << "After fm.show() " << std::endl;  
-            exec();
+            exec(1, [](){},1,&fm);
     }
     catch (std::exception& e)
     {
