@@ -24,7 +24,7 @@ class monty_hall
  { 
     monty_hall mh; 
     mh.show(); 
-    nana::exec(); 
+    nana::exec(1, [](){},1,&mh);
  } 
 
 monty_hall::monty_hall() 
