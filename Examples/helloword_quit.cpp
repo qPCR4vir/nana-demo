@@ -9,7 +9,10 @@ int main()
      fm.caption("Hello World");
      button btn(fm, nana::rectangle(20, 20, 150, 30));
      btn.caption("Quit");
-     btn.events().click(API::exit);
+     btn.events().click(API::exit_all);
      fm.show();
-     exec();
+	 exec(&fm, 2, 1, [&btn]()
+	 {
+		 click(btn);
+	 });
  }

@@ -12,6 +12,7 @@
 #include <nana/gui/place.hpp>
 #include <forward_list>
 #include <map>
+#include <cassert>
 
 //#include <nana/paint/graphics.hpp"
 
@@ -234,7 +235,7 @@ int main()
 
 	place.collocate();
 	fm.show();
-	exec(&fm, 1, 1, [&bts, &result ]()
+	exec(&fm, 1, 100, [&bts, &result ]()
 	{
 		click(*bts['2']); Wait( 1);
 		click(*bts['+']); Wait( 1);
@@ -250,7 +251,7 @@ int main()
 
 		if ( r != 4 )
 			exit(r?r:1);
-
+		//assert(r != 4);
 		//API::exit();
 	});
 }
