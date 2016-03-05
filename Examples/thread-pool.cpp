@@ -26,9 +26,7 @@ int main()
     pool.wait_for_signal(); //Wait until the signal is triggered. The wait might be finished
                             //before finish of foo2, because the signal is made before pushing foo2.
 
-    std::cout<<"Press a char: "<<std::endl;
-    char a;
-    std::cin>> a;
+	nana::Wait(3);
 
 }
 
