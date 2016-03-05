@@ -31,7 +31,7 @@ int main()
 
     fm.show();
 
-    exec(&fm,1,5,[&btn]()
+    exec(1,5,[&btn]()
 	{
 		click(btn);
 	});

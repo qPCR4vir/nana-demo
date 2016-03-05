@@ -387,7 +387,7 @@ namespace demo
 	{
 		widget_show wdshow;
 		wdshow.show();
-		exec(&wdshow);
+		exec();
 	}
 }
 

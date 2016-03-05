@@ -70,7 +70,7 @@ int main()
 
 	fm.show();
 
-	::nana::exec(&fm, 1, 1, [&b1, &out, &grp_right]()
+	::nana::exec(1, 1, [&b1, &out, &grp_right]()
 	{
 		click(b1);
 		click(b1);

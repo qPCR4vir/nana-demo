@@ -20,5 +20,5 @@ int main()
     btn.caption("Open a new form"); 
     btn.events().click(Click); 
     fm.show(); 
-	exec(&fm, 1, 2, [&btn]() {click(btn); });
+	exec(1, 2, [&btn]() {click(btn); });
 } 

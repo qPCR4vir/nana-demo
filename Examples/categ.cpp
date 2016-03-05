@@ -67,5 +67,5 @@
 			; // Please refer to compatibility-issue for more details
 
 		fm.show();
-		exec(&fm);
+		exec();
 	}

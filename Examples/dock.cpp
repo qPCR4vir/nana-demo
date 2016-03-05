@@ -48,5 +48,5 @@ int main()
 	plc.collocate();
 
 	fm.show();
-	exec(&fm, 2, 3, [&btn]() {click(btn); });
+	exec( 2, 3, [&btn]() {click(btn); });
 }

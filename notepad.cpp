@@ -149,7 +149,7 @@ int main()
 {
     notepad_form npform;
     npform.show();
-    exec(&npform, 2,2, [&npform]()
+    exec( 2,2, [&npform]()
     {
         /*
         arg_keyboard k;

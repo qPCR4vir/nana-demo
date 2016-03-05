@@ -11,7 +11,7 @@ int main()
      btn.caption("Quit");
      btn.events().click(API::exit_all);
      fm.show();
-	 exec(&fm, 2, 1, [&btn]()
+	 exec( 2, 1, [&btn]()
 	 {
 		 click(btn);
 	 });

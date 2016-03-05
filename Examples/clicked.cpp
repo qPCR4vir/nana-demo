@@ -19,7 +19,7 @@ int main()
     form fm;
     fm.events().click(clicked);
     fm.show();
-	exec( &fm, 2, 1, [&fm]()
+	exec( 2, 1, [&fm]()
 		{
 			std::cout << "3 times automatic click. \n";
 			click(fm);

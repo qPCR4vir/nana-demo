@@ -1144,7 +1144,7 @@ int main()
 	fb.add_root( def_root, def_rootname, d_node{ def_rootstr }).select(true);
 
     fb.show();
-    nana::exec(&fb);
+    nana::exec();
     //char a;
     //std::cin >> a;
 }

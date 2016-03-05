@@ -54,7 +54,7 @@ int main()
 	});
 
 	fm.show();
-	exec(&fm, 2, 1, [&node]() 
+	exec( 2, 1, [&node]() 
 	{
 		node.expand(true);
 	});

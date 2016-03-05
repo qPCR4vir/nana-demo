@@ -32,5 +32,5 @@ int main()
 	btn.events().mouse_down( menu_popuper( mobj, btn, nana::point(100, 36),   mouse::any_button ));
 
 	fm.show();
-	exec(&fm, 1, 2, [&btn]() {click(btn); });
+	exec( 1, 2, [&btn]() {click(btn); });
 }

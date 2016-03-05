@@ -89,5 +89,5 @@ int main()
     framework fw; 
     fw.set(&bar); 
     fw.work(); 
-    nana::exec(&bar);
+    nana::exec();
 } 

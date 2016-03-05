@@ -126,6 +126,6 @@ int main()
 
 	fm.show();
 
-	::nana::exec(&fm);
+	::nana::exec();
 }
 /// 

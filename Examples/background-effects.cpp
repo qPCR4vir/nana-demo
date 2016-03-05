@@ -59,5 +59,5 @@ int main()
     });
     dw.update();
 
-	exec(&fm, 1, 1, [&btn,&lb0]() {click(btn); click(lb0); });
+	exec( 1, 1, [&btn,&lb0]() {click(btn); click(lb0); });
 }
