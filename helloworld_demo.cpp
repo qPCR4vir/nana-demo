@@ -46,5 +46,5 @@ int main()
      fm_place.collocate();                      // and collocate all in place
 
      fm.show();
-     exec(&fm);
+     exec();
  }
