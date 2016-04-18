@@ -24,7 +24,7 @@ int main()
 	{
 		click(child);
 		child.option(3);
-		child.events().selected.emit(arg_combox{ child });
+		child.events().selected.emit(arg_combox{ child }, child);
 
 	});
 }
