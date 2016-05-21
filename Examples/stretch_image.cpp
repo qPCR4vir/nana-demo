@@ -1,3 +1,4 @@
+//Required Nana version: 1.4
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/drawing.hpp>
 #include <nana/paint/image_process_selector.hpp>
@@ -15,7 +16,7 @@ std::ostream& operator<< (std::ostream& os, const nana::size& z)
 }
 std::ostream& operator<< (std::ostream& os, const rectangle& r)
 {
-	return os << "rect{" << point(r) << "," << size(r) << "}";
+	return os << "rect{" << r.position() << "," << r.dimension() << "}";
 }
 
 
