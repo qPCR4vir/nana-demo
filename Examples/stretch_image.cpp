@@ -15,7 +15,7 @@ std::ostream& operator<< (std::ostream& os, const nana::size& z)
 }
 std::ostream& operator<< (std::ostream& os, const rectangle& r)
 {
-	return os << "rect{" << point(r) << "," << size(r) << "}";
+	return os << "rect{" << r.position() << "," << r.dimension() << "}";
 }
 
 
