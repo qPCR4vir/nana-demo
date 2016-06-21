@@ -157,7 +157,7 @@ public:
 		       std::vector<std::pair<std::string, unsigned>> columns,
 		       nana::rectangle r= nana::rectangle{ nana::point{50,10}, nana::size{900,600} },
 		       std::string title={} )
-	:form{r}, node_to_title{fnt}, node_children{ ctnc }, list_items{ ctni }, face_item("Sorray, this is a fake item")
+	:form{r}, node_to_title{fnt}, node_children{ ctnc }, list_items{ ctni }, fake_item("Sorray, this is a fake item")
 	{
 		place_.div(div_.c_str());
 		place_["menu"]  << menu_ ;
