@@ -18,7 +18,7 @@ option(NANA_CMAKE_LIBJPEG_FROM_OS "Use libjpeg from operating system." ON)
 option(NANA_CMAKE_ENABLE_AUDIO "Enable class audio::play for PCM playback." OFF)
 option(NANA_CMAKE_VERBOSE_PREPROCESSOR "Show annoying debug messages during compilation." OFF)
 option(NANA_CMAKE_STOP_VERBOSE_PREPROCESSOR "Stop compilation after showing the annoying debug messages." ON)
-option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" ON)
+# option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" ON)
 
 # The ISO C++ File System Technical Specification (ISO-TS, or STD) is optional.
 #              http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4100.pdf
@@ -178,9 +178,12 @@ list(APPEND NANA_LINKS   ${nana_lib_PATH} )
 # TODO: move this nana-demo section to the nana demo repository, and here only include that cmake file
 
 set (demos    calculator helloworld_demo notepad widget_show widget_show2      )
-if (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
-    list(APPEND demos  file_explorer)
-endif (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
+
+
+# if (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
+#    list(APPEND demos  file_explorer)
+# endif (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
+
 # Pending:      FreeMe
 
 foreach ( demo ${demos})
@@ -226,7 +229,7 @@ endif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 # enable static linkage
 if (CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND NOT MINGW)
     #set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -libstdc++fs -pthread")
+    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -pthread")
 
 endif ()
 
