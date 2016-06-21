@@ -177,7 +177,7 @@ list(APPEND NANA_LINKS   ${nana_lib_PATH} )
 
 # TODO: move this nana-demo section to the nana demo repository, and here only include that cmake file
 
-set (demos    calculator helloworld_demo notepad widget_show widget_show2      )
+set (demos    calculator notepad widget_show widget_show2)
 
 
 # if (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
