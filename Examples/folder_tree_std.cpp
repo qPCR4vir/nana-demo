@@ -1,6 +1,5 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
-#include <nana/filesystem/filesystem_selector.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
 
 int main()

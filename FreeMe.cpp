@@ -225,9 +225,7 @@ namespace path
 #include <nana/gui/widgets/progress.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
-//#include <nana/filesystem/file_iterator.hpp>
-//#include <nana/filesystem/fs_utility.hpp>
-#include <nana/filesystem/filesystem.hpp>
+#include <nana/filesystem/filesystem_ext.hpp>
 
 #include <thread>
 #include <vector>
@@ -257,7 +255,7 @@ class junk_sweeper
 	using self_type = junk_sweeper ;
 
  public:
-	 using file_iterator = nana::experimental::filesystem::directory_iterator; // ::file_iterator file_iterator;
+	 using file_iterator = std::experimental::filesystem::directory_iterator; // ::file_iterator file_iterator;
 	 using file_info_type =  file_iterator::value_type       ;
 
 	junk_sweeper() {}

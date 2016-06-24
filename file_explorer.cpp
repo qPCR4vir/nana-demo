@@ -321,8 +321,8 @@ std::string            title(/* value_type*/) { return{}; };
 
 struct dir_node
 {
-	using value_type = std::experimental::filesystem::directory_entry;
-	using cont_it_t = std::experimental::filesystem::directory_iterator;
+	using value_type = fs::directory_entry;
+	using cont_it_t = fs::directory_iterator;
 	using cont_nd_t = fs_ext::directory_only_iterator;
 
 	value_type     value;
@@ -330,7 +330,7 @@ struct dir_node
 	cont_nd_t      nodes;
 	static const std::string separator;
 
-	dir_node(std::experimental::filesystem::path path)
+	dir_node(fs::path path)
 		: value{ path }, items{ path }, nodes { path }
 	{}
 		//separator{ "/"  },     /*  std::experimental::filesystem::path::preferred_separator  */

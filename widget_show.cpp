@@ -23,7 +23,6 @@
 #include <nana/gui/widgets/categorize.hpp>
 #include <nana/gui/timer.hpp>
 #include <nana/gui/tooltip.hpp>
-#include <nana/filesystem/filesystem_selector.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
 
 namespace demo

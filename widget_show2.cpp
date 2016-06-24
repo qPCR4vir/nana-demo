@@ -24,7 +24,6 @@
 #include <memory>
 #include <vector>
 
-#include <nana/filesystem/filesystem_selector.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
 
 
