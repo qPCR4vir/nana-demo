@@ -7,16 +7,17 @@
 int main()
 {
 	using namespace nana;
-	using namespace nana::experimental::filesystem::ext;
-	using dir_it = directory_only_iterator; 
+	namespace fs = std::experimental::filesystem;
+	namespace fs_ext = nana::filesystem_ext;
+	using dir_it = fs_ext::directory_only_iterator;
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
 	fm.caption("Nana C++ Library - Treebox-nana::experimental::filesystem example.");
 	nana::treebox tree{ fm, { 10, 10, 380, 480 } };
     
-	auto node = tree.insert(def_root, def_rootname);
+	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
 
-	dir_it sub_root{def_rootstr};
+	dir_it sub_root{ fs_ext::def_rootstr};
 	auto p = sub_root->path();
 	std::string dir_name=p.filename().generic_u8string();
 	tree.insert(node, dir_name,dir_name);

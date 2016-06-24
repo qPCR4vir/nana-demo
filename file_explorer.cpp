@@ -51,10 +51,10 @@
 #include <nana/gui/widgets/categorize.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/toolbar.hpp>
-#include <nana/filesystem/filesystem_ext.hpp>
+#include <nana/filesystem/filesystem_ext.hpp>  // #include <nana/filesystem/filesystem_selector.hpp>
 
-namespace fs = std::experimental::filesystem;
-using namespace nana::experimental::filesystem::ext;
+namespace fs     = std::experimental::filesystem;
+namespace fs_ext = nana::filesystem_ext;
 
 //inline directory_only_iterator children(const fs::directory_entry& f) { return directory_only_iterator{ f.path() }; }
 //inline fs::directory_iterator  l_items (const fs::directory_entry& f) { return fs::directory_iterator { f.path() }; }
@@ -63,7 +63,7 @@ using namespace nana::experimental::filesystem::ext;
 // the following types could be converted into types parametrs for a generic treelistpathview explorer
 using d_node            = fs::directory_entry ;
 using d_item            = fs::directory_entry ;
-using ct_n_children     = directory_only_iterator;
+using ct_n_children     = fs_ext::directory_only_iterator;
 using ct_l_items        = fs::directory_iterator ;
 
 auto children = [](const d_node& f)->ct_n_children//& 
@@ -86,7 +86,7 @@ using f_node_title    = decltype (f_name);
 nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_node& item)
 {
 	ores << f_name(item);
-    ores << pretty_file_date(item);//.path()
+    ores << fs_ext::pretty_file_date(item);//.path()
 
 	if (fs::is_directory(item))
 		ores << ("Directory") << "";
@@ -97,7 +97,7 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_nod
 		else
 			ores << ("File");
 
-        ores << pretty_file_size(item);
+        ores << fs_ext::pretty_file_size(item);
 	}
 
 	return ores;
@@ -289,7 +289,7 @@ public:
 
 //using namespace nana;
 
-using dir_it = directory_only_iterator;
+using dir_it = fs_ext::directory_only_iterator;
 
 template <class V,
 class C_I, ///< any oder container of value_type with begin, end, != and ++()
@@ -323,7 +323,7 @@ struct dir_node
 {
 	using value_type = std::experimental::filesystem::directory_entry;
 	using cont_it_t = std::experimental::filesystem::directory_iterator;
-	using cont_nd_t = directory_only_iterator;
+	using cont_nd_t = fs_ext::directory_only_iterator;
 
 	value_type     value;
 	cont_it_t      items;
@@ -1134,14 +1134,14 @@ std::string            title(const dir_it& d) { return key(d); };
 
 int main()
 {
-    using namespace nana;
+    // using namespace nana;
 	// d_node d{ def_rootstr };
 	explorer fb( f_name, 
 		         children, 
 		         l_items,
 				 { { ("Name"), 190 }, { ("Modified"), 145 }, { ("Type"), 80 }, { ("Size"), 70 }  });
 
-	fb.add_root( def_root, def_rootname, d_node{ def_rootstr }).select(true);
+	fb.add_root(fs_ext::def_root, fs_ext::def_rootname, d_node{ fs_ext::def_rootstr }).select(true);
 
     fb.show();
     nana::exec();

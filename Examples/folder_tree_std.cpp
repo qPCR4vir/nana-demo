@@ -6,9 +6,9 @@
 int main()
 {
 	using namespace nana;
-	using namespace nana::experimental::filesystem::ext;
-	using namespace std::experimental;
-	using SubDirectories = filesystem::directory_iterator;
+	namespace fs = std::experimental::filesystem;
+	namespace fs_ext = nana::filesystem_ext;
+	using SubDirectories = fs::directory_iterator;
 
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
@@ -16,11 +16,11 @@ int main()
 
 	nana::treebox tree{ fm,{ 10, 10, 380, 480 } };
 
-	auto node = tree.insert(def_root, def_rootname);
+	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
 
-	for (const auto& dir : SubDirectories{ def_rootstr })
+	for (const auto& dir : SubDirectories{ fs_ext::def_rootstr })
 	{
-		if (! filesystem::is_directory(dir) ) continue;
+		if (! fs::is_directory(dir) ) continue;
 		tree.insert(node, dir.path().filename().generic_u8string() , 
 			              dir.path().filename().generic_u8string());
 		break;
@@ -39,7 +39,7 @@ int main()
 		//Walk in the path directory for sub directories.
 		for (const auto& dir : SubDirectories{ Path })
 		{
-			if (!filesystem::is_directory(dir)) continue; //If it is not a directory.
+			if (!fs::is_directory(dir)) continue; //If it is not a directory.
 
 			auto child = tree.insert(arg.item, dir.path().filename().generic_u8string(), 
 				                               dir.path().filename().generic_u8string());
@@ -51,7 +51,7 @@ int main()
 			//front of the node.
 			for (const auto& dr : SubDirectories{ dir.path() })
 			{
-				if (!filesystem::is_directory(dr)) continue; //If it is not a directory.
+				if (!fs::is_directory(dr)) continue; //If it is not a directory.
 				tree.insert(child, dr.path().filename().generic_u8string(), 
 					               dr.path().filename().generic_u8string());
 				break;

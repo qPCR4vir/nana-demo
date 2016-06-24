@@ -29,8 +29,8 @@
 namespace demo
 {
 	using namespace nana;
-	using namespace std::experimental::filesystem;
-	using namespace nana::experimental::filesystem::ext;
+	namespace fs = std::experimental::filesystem;
+	namespace fs_ext = nana::filesystem_ext;
 
 	class tab_page_listbox
 		: public panel<false>
@@ -83,8 +83,8 @@ namespace demo
 			place_.field("tree")<<treebox_;
 
  
-			item_proxy node = treebox_.insert( def_root, def_rootname);
-			directory_iterator i(def_rootstr), end;
+			item_proxy node = treebox_.insert(fs_ext::def_root, fs_ext::def_rootname);
+			fs::directory_iterator i(fs_ext::def_rootstr), end;
  
 			for(; i != end; ++i)
 			{
@@ -110,10 +110,10 @@ namespace demo
 				path.erase(0, path_start_pos);
 
 			//Walk in the path directory for sub directories.
-			directory_iterator i(path), end;
+			fs::directory_iterator i(path), end;
 			for(; i != end; ++i)
 			{
-				if (!is_directory(*i))  continue; //If it is not a directory.
+				if (!fs::is_directory(*i))  continue; //If it is not a directory.
 
 				item_proxy child = treebox_.insert(node, i->path().filename().generic_u8string(),
 					                                     i->path().filename().generic_u8string());
@@ -123,10 +123,10 @@ namespace demo
 				//insert it into the child, just insert one node to indicate the
 				//node has a child and an arrow symbol will be displayed in the
 				//front of the node.
-				directory_iterator u(i->path());
+				fs::directory_iterator u(i->path());
 				for(; u != end; ++u)
 				{
-					if (!is_directory(*u))  continue; //If it is not a directory.
+					if (!fs::is_directory(*u))  continue; //If it is not a directory.
 					treebox_.insert(child, u->path().filename().generic_u8string(),
 						                   u->path().filename().generic_u8string());
 					break;
