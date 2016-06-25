@@ -1,6 +1,6 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
-#define NANA_FILESYSTEM_FORCE 
+//#define NANA_FILESYSTEM_FORCE 
 #include <nana/filesystem/filesystem_ext.hpp>
 
 
