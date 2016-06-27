@@ -288,7 +288,7 @@ endfunction(set_nana_test)
 
 set_nana_test(demos_dir demos)
 set_nana_test(examples_dir examples)
-install(DIRECTORY ${examples_dir} DESTINATION . )
+install(DIRECTORY ${examples_dir} DESTINATION ${examples_dir} )
 
 
 
