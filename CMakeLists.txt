@@ -10,21 +10,17 @@ cmake_minimum_required(VERSION 2.8)
 project(nana_demos)
 set(NANA_LINKS)
 
-find_library(nana_lib nana "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/lib" "${CMAKE_CURRENT_SOURCE_DIR}/../nana/lib")
+find_library(nana_lib nana "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/lib"
+                           "${CMAKE_CURRENT_SOURCE_DIR}/../nana/lib"      )
 message("nana_lib= " ${nana_lib})
-message("nana_lib_PATH= " ${nana_lib_PATH})
-message("CMAKE_CURRENT_SOURCE_DIR../nana_lib/lib"= "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/lib")
 list(APPEND NANA_LINKS  "${NANA_LINKS} ../nana_lib/lib/libnana.a" )
-set(CMAKE_EXE_LINKER_FLAGS  ../nana_lib/lib/libnana.a)
+set(CMAKE_EXE_LINKER_FLAGS ${nana_lib})
 
-find_path(nana_include nana/config.hpp "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/include" "${CMAKE_CURRENT_SOURCE_DIR}/../nana/include" DOC  "Nana Include directory")
+find_path(nana_include nana/config.hpp "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/include"
+                                       "${CMAKE_CURRENT_SOURCE_DIR}/../nana/include"
+                                      DOC  "Nana Include directory")
 message("nana_include= " ${nana_include})
-message("nana_include_PATH= " ${nana_include_PATH})
-include_directories(nana_include)
-
-find_path(nana_incl "../nana/include")
-include_directories(nana_incl_PATH)
-
+include_directories(${nana_include})
 
 
 # Nana uses some build systems: MS-VS solution, MAKE, bakefile, codeblock, etc. manually optimized.
