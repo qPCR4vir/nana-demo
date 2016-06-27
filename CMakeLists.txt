@@ -8,13 +8,13 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(nana_demos)
-set(NANA_LINKS)
+# set(NANA_LINKS)
 
 find_library(nana_lib nana "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/lib"
                            "${CMAKE_CURRENT_SOURCE_DIR}/../nana/lib"      )
 message("nana_lib= " ${nana_lib})
-list(APPEND NANA_LINKS  "${NANA_LINKS} ../nana_lib/lib/libnana.a" )
-set(CMAKE_EXE_LINKER_FLAGS "-l${nana_lib}")
+# list(APPEND NANA_LINKS  "${NANA_LINKS} ../nana_lib/lib/libnana.a" )
+# set(CMAKE_EXE_LINKER_FLAGS "-l${nana_lib}")
 
 find_path(nana_include nana/config.hpp "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/include"
                                        "${CMAKE_CURRENT_SOURCE_DIR}/../nana/include"
@@ -99,7 +99,7 @@ endif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 # enable static linkage
 if (CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND NOT MINGW)    # GNU || CLang not MinGW
     #set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++  -pthread")
+    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++  -pthread")
     
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.3)
 	                                                                     # IS_GNUCXX < 5.3
@@ -138,9 +138,9 @@ elseif (NANA_CMAKE_FIND_BOOST_FILESYSTEM OR NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
 	if (Boost_FOUND)
       add_definitions(-DNANA_BOOST_FILESYSTEM_AVAILABLE)
 	  include_directories(SYSTEM "${Boost_INCLUDE_DIR}")
-	  #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${Boost_LIBRARIES}")
-	  set(NANA_LINKS "${NANA_LINKS} ${Boost_LIBRARIES}")    ######  FIRST !!!!!!!!!!!!!!!!!    add   is not first
-	  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Boost_LIBRARIES}")
+	  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${Boost_LIBRARIES}")
+	  # set(NANA_LINKS "${NANA_LINKS} ${Boost_LIBRARIES}")    ######  FIRST !!!!!!!!!!!!!!!!!    add   is not first
+	  # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Boost_LIBRARIES}")
 	endif (Boost_FOUND)
 	
 	set(Boost_USE_STATIC_LIBS ON)
@@ -193,7 +193,7 @@ function(set_nana_test dir files)
 	foreach ( test ${${files}})
 		add_executable(${test} "${${dir}}${test}.cpp")
 		set_property( TARGET ${test} PROPERTY CXX_STANDARD 14 )
-		target_link_libraries(${test})
+		target_link_libraries(${test} ${nana_lib})
 		#if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
 			#add_custom_command( TARGET  ${test} POST_BUILD COMMAND  ${test} )
 			#add_custom_target(do_always_${test} ALL COMMAND ${test})
