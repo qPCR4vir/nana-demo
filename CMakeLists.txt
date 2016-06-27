@@ -14,7 +14,7 @@ find_library(nana_lib nana "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/lib"
                            "${CMAKE_CURRENT_SOURCE_DIR}/../nana/lib"      )
 message("nana_lib= " ${nana_lib})
 list(APPEND NANA_LINKS  "${NANA_LINKS} ../nana_lib/lib/libnana.a" )
-set(CMAKE_EXE_LINKER_FLAGS ${nana_lib})
+set(CMAKE_EXE_LINKER_FLAGS "-l${nana_lib}")
 
 find_path(nana_include nana/config.hpp "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/include"
                                        "${CMAKE_CURRENT_SOURCE_DIR}/../nana/include"
