@@ -281,13 +281,14 @@ function(set_nana_test dir files)
 			#add_custom_target(do_always_${test} ALL COMMAND ${test})
 			#add_test(${test} COMMAND ${test})
 		#endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
-		install(TARGETS ${test} RUNTIME DESTINATION  "./")
+		install(TARGETS ${test} RUNTIME DESTINATION bin)
 		message("... to build:  ${${dir}}${test}.cpp" )
 	endforeach( test ${${files}})
 endfunction(set_nana_test)
 
 set_nana_test(demos_dir demos)
 set_nana_test(examples_dir examples)
+install(DIRECTORY ${examples_dir} DESTINATION . )
 
 
 
