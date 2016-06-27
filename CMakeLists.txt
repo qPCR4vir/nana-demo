@@ -22,6 +22,15 @@ find_path(nana_include nana/config.hpp "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/
 message("nana_include= " ${nana_include})
 include_directories(${nana_include})
 
+option(NANA_CMAKE_ENABLE_MINGW_STD_THREADS_WITH_MEGANZ "replaced boost.thread with meganz's mingw-std-threads." OFF)
+option(NANA_CMAKE_ENABLE_PNG "Enable the use of PNG" OFF)
+option(NANA_CMAKE_LIBPNG_FROM_OS "Use libpng from operating system." ON)
+option(NANA_CMAKE_ENABLE_JPEG "Enable the use of JPEG" OFF)
+option(NANA_CMAKE_LIBJPEG_FROM_OS "Use libjpeg from operating system." ON)
+option(NANA_CMAKE_ENABLE_AUDIO "Enable class audio::play for PCM playback." OFF)
+option(NANA_CMAKE_VERBOSE_PREPROCESSOR "Show annoying debug messages during compilation." ON)
+option(NANA_CMAKE_STOP_VERBOSE_PREPROCESSOR "Stop compilation after showing the annoying debug messages." ON)
+option(NANA_CMAKE_AUTOMATIC_GUI_TESTING "Activate automatic GUI testing?" OFF)
 
 # Nana uses some build systems: MS-VS solution, MAKE, bakefile, codeblock, etc. manually optimized.
 # In the future CMake could be the prefered, and maybe will be used to generate the others and the central nana repo
@@ -61,16 +70,41 @@ add_definitions(-DNANA_IGNORE_CONF)
 ########### OS
 
 if(WIN32)
-    # set(BUILD_FreeMe ON)  #"Build FreeMe only on Windows."
+    add_definitions(-DWIN32)
+    #Global MSVC definitions. You may prefer the hand-tuned sln and projects from the nana repository.
+    if(MSVC)
+        option(WIN32_USE_MP "Set to ON to build nana with the /MP option (Visual Studio 2005 and above)." ON)
+        # ??
+        if(WIN32_USE_MP)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+        endif(WIN32_USE_MP)
+    endif(MSVC)
+
     if(MINGW)
+        if(NANA_CMAKE_ENABLE_MINGW_STD_THREADS_WITH_MEGANZ)
+            add_definitions(-DSTD_THREAD_NOT_SUPPORTED)
+            add_definitions(-DNANA_ENABLE_MINGW_STD_THREADS_WITH_MEGANZ)
+        endif(NANA_CMAKE_ENABLE_MINGW_STD_THREADS_WITH_MEGANZ)
     endif(MINGW)
 endif(WIN32)
 
 if(APPLE)
+    add_definitions(-DAPPLE)
+    include_directories(/opt/X11/include/)
+    set(NANA_LINKS "${NANA_LINKS} -L/opt/X11/lib/ -liconv")
+    set(ENABLE_AUDIO OFF)
 elseif(UNIX)
+    add_definitions(-Dlinux)
+    message("added -D linux")
 endif(APPLE)
 
 if(UNIX)
+    set(NANA_LINKS "${NANA_LINKS} -lX11")
+    find_package(Freetype)
+    if (FREETYPE_FOUND)
+        include_directories( ${FREETYPE_INCLUDE_DIRS})
+        set(NANA_LINKS "${NANA_LINKS} -lXft")
+    endif(FREETYPE_FOUND)
 endif(UNIX)
 
 
@@ -118,6 +152,47 @@ endif ()
 
 ############# Optional libraries
 
+
+#Find PNG
+if(NANA_CMAKE_ENABLE_PNG)
+    add_definitions(-DNANA_ENABLE_PNG)
+    set(NANA_LINKS "${NANA_LINKS} -lpng")
+    if(NANA_CMAKE_LIBPNG_FROM_OS)
+        find_package(PNG)
+        if (PNG_FOUND)
+            include_directories( ${PNG_INCLUDE_DIRS})
+            add_definitions(-DUSE_LIBPNG_FROM_OS)
+        endif(PNG_FOUND)
+    endif(NANA_CMAKE_LIBPNG_FROM_OS)
+endif(NANA_CMAKE_ENABLE_PNG)
+
+#Find JPEG
+if(NANA_CMAKE_ENABLE_JPEG)
+    add_definitions(-DNANA_ENABLE_JPEG)
+    set(NANA_LINKS "${NANA_LINKS} -ljpeg")
+    if(NANA_CMAKE_LIBJPEG_FROM_OS)
+        find_package(JPEG)
+        if (JPEG_FOUND)
+            include_directories( ${JPEG_INCLUDE_DIRS})
+            add_definitions(-DUSE_LIBJPEG_FROM_OS)
+        endif(JPEG_FOUND)
+    endif(NANA_CMAKE_LIBJPEG_FROM_OS)
+endif(NANA_CMAKE_ENABLE_JPEG)
+
+if(NANA_CMAKE_ENABLE_AUDIO)
+    add_definitions(-DNANA_ENABLE_AUDIO)
+    if(UNIX)
+        find_package(ASOUND)
+        if (ASOUND_FOUND)
+            include_directories( ${ASOUND_INCLUDE_DIRS})
+            set(NANA_LINKS "${NANA_LINKS}  -lasound")
+        else(ASOUND_FOUND)
+            message(FATAL_ERROR "libasound is not found")
+        endif(ASOUND_FOUND)
+    endif(UNIX)
+endif(NANA_CMAKE_ENABLE_AUDIO)
+
+
 if (NANA_CMAKE_NANA_FILESYSTEM_FORCE)
     add_definitions(-DNANA_FILESYSTEM_FORCE)
 	
@@ -148,6 +223,13 @@ elseif (NANA_CMAKE_FIND_BOOST_FILESYSTEM OR NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
 	#set(Boost_USE_MULTITHREADED ON)
 	
 endif (NANA_CMAKE_NANA_FILESYSTEM_FORCE)
+
+
+
+if(NANA_CMAKE_VERBOSE_PREPROCESSOR)
+    add_definitions(-DVERBOSE_PREPROCESSOR)
+endif(NANA_CMAKE_VERBOSE_PREPROCESSOR)
+
 
 set(NANA_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(NANA_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -193,7 +275,7 @@ function(set_nana_test dir files)
 	foreach ( test ${${files}})
 		add_executable(${test} "${${dir}}${test}.cpp")
 		set_property( TARGET ${test} PROPERTY CXX_STANDARD 14 )
-		target_link_libraries(${test} ${nana_lib})
+		target_link_libraries(${test} ${nana_lib} ${NANA_LINKS})
 		#if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
 			#add_custom_command( TARGET  ${test} POST_BUILD COMMAND  ${test} )
 			#add_custom_target(do_always_${test} ALL COMMAND ${test})
