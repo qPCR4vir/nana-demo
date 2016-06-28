@@ -20,6 +20,9 @@ option(NANA_CMAKE_VERBOSE_PREPROCESSOR "Show annoying debug messages during comp
 option(NANA_CMAKE_STOP_VERBOSE_PREPROCESSOR "Stop compilation after showing the annoying debug messages." ON)
 option(NANA_CMAKE_AUTOMATIC_GUI_TESTING "Activate automatic GUI testing?" OFF)
 set(NANA_LIB_HINT "../nana_lib" CACHE PATH "Hint for the directory where the directories lib and include are")
+option(NANA_FORCE_INSTALL_PATH "Use my onw absolute path and not DESTDIR/CMAKE_INSTALL_PREFIX (CLion workaround!)" OFF)
+set(NANA_INSTALL_PATH_W "c:/prog/nana_demo_bin" CACHE PATH "The absolute install path in windows")
+set(NANA_INSTALL_PATH_L "/user/bin/prog/nana_demo_bin" CACHE PATH "The absolute install path in windows")
 
 # Nana uses some build systems: MS-VS solution, MAKE, bakefile, codeblock, etc. manually optimized.
 # In the future CMake could be the prefered, and maybe will be used to generate the others and the central nana repo
@@ -107,6 +110,7 @@ add_definitions(-DNANA_IGNORE_CONF)
 
 if(WIN32)
     add_definitions(-DWIN32)
+    set(NANA_INSTALL_PATH ${NANA_INSTALL_PATH_W})
     #Global MSVC definitions. You may prefer the hand-tuned sln and projects from the nana repository.
     if(MSVC)
         option(WIN32_USE_MP "Set to ON to build nana with the /MP option (Visual Studio 2005 and above)." ON)
@@ -136,6 +140,7 @@ endif(APPLE)
 
 if(UNIX)
     set(NANA_LINKS "${NANA_LINKS} -lX11")
+    set(NANA_INSTALL_PATH ${NANA_INSTALL_PATH_L})
     find_package(Freetype)
     if (FREETYPE_FOUND)
         include_directories( ${FREETYPE_INCLUDE_DIRS})
@@ -275,6 +280,12 @@ if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
 	 enable_testing ()
 endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
 
+if (NANA_FORCE_INSTALL_PATH)
+    set(NANA_INSTALL_PATH "${NANA_INSTALL_PATH}/")
+else()
+    set(NANA_INSTALL_PATH)
+endif()
+
 function(set_nana_test dir files)
     foreach ( test ${${files}})
         add_executable(${test} "${${dir}}${test}.cpp")
@@ -285,7 +296,7 @@ function(set_nana_test dir files)
         #add_custom_target(do_always_${test} ALL COMMAND ${test})
         #add_test(${test} COMMAND ${test})
         #endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
-        install(TARGETS ${test} RUNTIME DESTINATION bin)
+        install(TARGETS ${test} RUNTIME DESTINATION "${NANA_INSTALL_PATH}bin")
         message("... to build:  ${${dir}}${test}.cpp" )
     endforeach( test ${${files}})
 endfunction(set_nana_test)
@@ -322,7 +333,8 @@ endif (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
 
 set_nana_test(demos_dir demos)
 set_nana_test(examples_dir examples)
-install(DIRECTORY ${examples_dir} DESTINATION ${examples_dir} )
+# copy this dir to reuse e resources (images)
+install(DIRECTORY ${examples_dir} DESTINATION "${NANA_INSTALL_PATH}${examples_dir}" )
 
 
 
