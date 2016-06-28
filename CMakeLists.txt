@@ -10,18 +10,6 @@ cmake_minimum_required(VERSION 2.8)
 project(nana_demos)
 # set(NANA_LINKS)
 
-find_library(nana_lib nana "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/lib"
-                           "${CMAKE_CURRENT_SOURCE_DIR}/../nana/lib"      )
-message("nana_lib= " ${nana_lib})
-# list(APPEND NANA_LINKS  "${NANA_LINKS} ../nana_lib/lib/libnana.a" )
-# set(CMAKE_EXE_LINKER_FLAGS "-l${nana_lib}")
-
-find_path(nana_include nana/config.hpp "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/include"
-                                       "${CMAKE_CURRENT_SOURCE_DIR}/../nana/include"
-                                      DOC  "Nana Include directory")
-message("nana_include= " ${nana_include})
-include_directories(${nana_include})
-
 option(NANA_CMAKE_ENABLE_MINGW_STD_THREADS_WITH_MEGANZ "replaced boost.thread with meganz's mingw-std-threads." OFF)
 option(NANA_CMAKE_ENABLE_PNG "Enable the use of PNG" OFF)
 option(NANA_CMAKE_LIBPNG_FROM_OS "Use libpng from operating system." ON)
@@ -51,6 +39,45 @@ option(NANA_CMAKE_AUTOMATIC_GUI_TESTING "Activate automatic GUI testing?" OFF)
 option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" ON)
 option(NANA_CMAKE_AUTOMATIC_GUI_TESTING "Activate automatic GUI testing?" OFF)
 option(NANA_CMAKE_BUILD_FreeMe "Build FreeMe (currently broken)?" OFF)
+
+
+find_library(nana_lib nana
+        "${CMAKE_INSTALL_PREFIX}/../nana_lib/lib"
+        "${CMAKE_INSTALL_PREFIX}/../nana/lib"
+        "${CMAKE_INSTALL_PREFIX}/../lib"
+        "${CMAKE_CURRENT_BINARY_DIR}/../nana_lib/lib"
+        "${CMAKE_CURRENT_BINARY_DIR}/../nana/lib"
+        "${CMAKE_CURRENT_BINARY_DIR}/../lib"
+        "${CMAKE_CURRENT_DIR}/../nana_lib/lib"
+        "${CMAKE_CURRENT_DIR}/../nana/lib"
+        "${CMAKE_CURRENT_DIR}/../lib"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/lib"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../nana/lib"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../lib"
+        )
+
+message("nana_lib = " ${nana_lib})
+# list(APPEND NANA_LINKS  "${NANA_LINKS} ../nana_lib/lib/libnana.a" )
+# set(CMAKE_EXE_LINKER_FLAGS "-l${nana_lib}")
+
+find_path(nana_include nana/config.hpp
+        "${CMAKE_INSTALL_PREFIX}/../nana_lib/include"
+        "${CMAKE_INSTALL_PREFIX}/../nana/include"
+        "${CMAKE_INSTALL_PREFIX}/../include"
+        "${CMAKE_CURRENT_BINARY_DIR}/../nana_lib/include"
+        "${CMAKE_CURRENT_BINARY_DIR}/../nana/include"
+        "${CMAKE_CURRENT_BINARY_DIR}/../include"
+        "${CMAKE_CURRENT_DIR}/../nana_lib/include"
+        "${CMAKE_CURRENT_DIR}/../nana/include"
+        "${CMAKE_CURRENT_DIR}/../include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../nana/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../include"
+        DOC  "Nana Include directory")
+
+message("nana_include= " ${nana_include})
+include_directories(${nana_include})
+
 
 
 ########### Compatibility with CMake 3.1
@@ -231,9 +258,6 @@ if(NANA_CMAKE_VERBOSE_PREPROCESSOR)
 endif(NANA_CMAKE_VERBOSE_PREPROCESSOR)
 
 
-set(NANA_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
-set(NANA_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
  #  Headers: use INCLUDE_DIRECTORIES
  #  Libraries: use FIND_LIBRARY and link with the result of it (try to avoid LINK_DIRECTORIES)
 
@@ -241,6 +265,21 @@ if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
 	 add_definitions(-DNANA_AUTOMATIC_GUI_TESTING)
 	 enable_testing ()
 endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+
+function(set_nana_test dir files)
+    foreach ( test ${${files}})
+        add_executable(${test} "${${dir}}${test}.cpp")
+        set_property( TARGET ${test} PROPERTY CXX_STANDARD 14 )
+        target_link_libraries(${test} ${nana_lib} ${NANA_LINKS})
+        #if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+        #add_custom_command( TARGET  ${test} POST_BUILD COMMAND  ${test} )
+        #add_custom_target(do_always_${test} ALL COMMAND ${test})
+        #add_test(${test} COMMAND ${test})
+        #endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+        install(TARGETS ${test} RUNTIME DESTINATION bin)
+        message("... to build:  ${${dir}}${test}.cpp" )
+    endforeach( test ${${files}})
+endfunction(set_nana_test)
 
 
 set (demos_dir )
@@ -263,28 +302,14 @@ set (examples a_group_impl       animate-bmp        audio_player       audio_pla
 			  )
 # Pending: 
 
-if (NANA_CMAKE_BUILD_FreeMe)
-   add_definitions(-DBUILD_FreeMe)
-endif (NANA_CMAKE_BUILD_FreeMe)
 if (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
-	list(APPEND demos  )    # ?? FreeMe
+	list(APPEND demos  )
+    if (NANA_CMAKE_BUILD_FreeMe)
+        add_definitions(-DBUILD_FreeMe)
+        list(APPEND demos  FreeMe)
+    endif (NANA_CMAKE_BUILD_FreeMe)
 endif (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
-# Pending:      FreeMe (added but really completely compiled if defined BUILD_FreeMe  )
 
-function(set_nana_test dir files)
-	foreach ( test ${${files}})
-		add_executable(${test} "${${dir}}${test}.cpp")
-		set_property( TARGET ${test} PROPERTY CXX_STANDARD 14 )
-		target_link_libraries(${test} ${nana_lib} ${NANA_LINKS})
-		#if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
-			#add_custom_command( TARGET  ${test} POST_BUILD COMMAND  ${test} )
-			#add_custom_target(do_always_${test} ALL COMMAND ${test})
-			#add_test(${test} COMMAND ${test})
-		#endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
-		install(TARGETS ${test} RUNTIME DESTINATION bin)
-		message("... to build:  ${${dir}}${test}.cpp" )
-	endforeach( test ${${files}})
-endfunction(set_nana_test)
 
 set_nana_test(demos_dir demos)
 set_nana_test(examples_dir examples)
@@ -303,6 +328,8 @@ message ( "DESTDIR                 = "  ${DESTDIR})
 message ( "CMAKE_INSTALL_PREFIX    = "  ${CMAKE_INSTALL_PREFIX})
 message ( "NANA_CMAKE_ENABLE_AUDIO = "  ${NANA_CMAKE_ENABLE_AUDIO})
 message ( "CMAKE_CURRENT_SOURCE_DIR= "  ${CMAKE_CURRENT_SOURCE_DIR})
+message ( "CMAKE_CURRENT_DIR       = "  ${CMAKE_CURRENT_DIR})
+message ( "CMAKE_CURRENT_BINARY_DIR= "  ${CMAKE_CURRENT_BINARY_DIR})
 
 message ( "NANA_CMAKE_FIND_BOOST_FILESYSTEM         = "  ${NANA_CMAKE_FIND_BOOST_FILESYSTEM})
 message ( "NANA_CMAKE_BOOST_FILESYSTEM_FORCE        = "  ${NANA_CMAKE_BOOST_FILESYSTEM_FORCE})
