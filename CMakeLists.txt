@@ -19,6 +19,7 @@ option(NANA_CMAKE_ENABLE_AUDIO "Enable class audio::play for PCM playback." OFF)
 option(NANA_CMAKE_VERBOSE_PREPROCESSOR "Show annoying debug messages during compilation." ON)
 option(NANA_CMAKE_STOP_VERBOSE_PREPROCESSOR "Stop compilation after showing the annoying debug messages." ON)
 option(NANA_CMAKE_AUTOMATIC_GUI_TESTING "Activate automatic GUI testing?" OFF)
+set(NANA_LIB_HINT "../nana_lib" CACHE PATH "Hint for the directory where the directories lib and include are")
 
 # Nana uses some build systems: MS-VS solution, MAKE, bakefile, codeblock, etc. manually optimized.
 # In the future CMake could be the prefered, and maybe will be used to generate the others and the central nana repo
@@ -42,6 +43,10 @@ option(NANA_CMAKE_BUILD_FreeMe "Build FreeMe (currently broken)?" OFF)
 
 
 find_library(nana_lib nana
+        "${NANA_LIB_HINT}/lib"
+        "${NANA_LIB_HINT}"
+        "${NANA_LIB_HINT}/nana_lib"
+        "${NANA_LIB_HINT}/nana_lib/lib"
         "${CMAKE_INSTALL_PREFIX}/../nana_lib/lib"
         "${CMAKE_INSTALL_PREFIX}/../nana/lib"
         "${CMAKE_INSTALL_PREFIX}/../lib"
@@ -61,6 +66,10 @@ message("nana_lib = " ${nana_lib})
 # set(CMAKE_EXE_LINKER_FLAGS "-l${nana_lib}")
 
 find_path(nana_include nana/config.hpp
+        "${NANA_LIB_HINT}/include"
+        "${NANA_LIB_HINT}"
+        "${NANA_LIB_HINT}/nana_lib"
+        "${NANA_LIB_HINT}/nana_lib/include"
         "${CMAKE_INSTALL_PREFIX}/../nana_lib/include"
         "${CMAKE_INSTALL_PREFIX}/../nana/include"
         "${CMAKE_INSTALL_PREFIX}/../include"
