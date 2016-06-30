@@ -135,25 +135,92 @@ if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")    # 
 
 endif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 
-# enable static linkage
-if (CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")    # GNU || CLang not MinGW  ?   AND NOT MINGW
-    #set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++  -pthread")
-
+# enable static linkage     # GNU || CLang not MinGW
+if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang") #  AND NOT MINGW
+    # set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++  -pthread")
+    set(NANA_LINKS "${NANA_LINKS} -static-libgcc -static-libstdc++  -pthread")
+    # message("Setting NANA_LINKS to -static-libgcc -static-libstdc++  -pthread or ${NANA_LINKS}")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.3)
         # IS_GNUCXX < 5.3
     else(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.3)
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lstdc++fs")    # IS_GNUCXX 5.3 or more
+        # set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lstdc++fs")    # IS_GNUCXX 5.3 or more
         set(NANA_LINKS "${NANA_LINKS} -lstdc++fs")
     endif(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.3)
 
-endif (CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")    # GNU || CLang not MinGW  ?   AND NOT MINGW
+endif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang") #  AND NOT MINGW
 
 
 if (APPLE AND "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")                    # APPLE Clang
-    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libstdc++")
+    # set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libstdc++")
+    set(NANA_LINKS "${NANA_LINKS} -stdlib=libstdc++")
 endif ()
 
+
+
+############# Optional libraries
+
+# Find PNG
+if(NANA_CMAKE_ENABLE_PNG)
+    add_definitions(-DNANA_ENABLE_PNG)
+    set(NANA_LINKS "${NANA_LINKS} -lpng")
+    if(NANA_CMAKE_LIBPNG_FROM_OS)
+        find_package(PNG)
+        if (PNG_FOUND)
+            include_directories( ${PNG_INCLUDE_DIRS})
+            add_definitions(-DUSE_LIBPNG_FROM_OS)
+        endif(PNG_FOUND)
+    endif(NANA_CMAKE_LIBPNG_FROM_OS)
+endif(NANA_CMAKE_ENABLE_PNG)
+
+# Find JPEG
+if(NANA_CMAKE_ENABLE_JPEG)
+    add_definitions(-DNANA_ENABLE_JPEG)
+    set(NANA_LINKS "${NANA_LINKS} -ljpeg")
+    if(NANA_CMAKE_LIBJPEG_FROM_OS)
+        find_package(JPEG)
+        if (JPEG_FOUND)
+            include_directories( ${JPEG_INCLUDE_DIRS})
+            add_definitions(-DUSE_LIBJPEG_FROM_OS)
+        endif(JPEG_FOUND)
+    endif(NANA_CMAKE_LIBJPEG_FROM_OS)
+endif(NANA_CMAKE_ENABLE_JPEG)
+
+# Find ASOUND
+if(NANA_CMAKE_ENABLE_AUDIO)
+    add_definitions(-DNANA_ENABLE_AUDIO)
+    if(UNIX)
+        find_package(ASOUND)
+        if (ASOUND_FOUND)
+            include_directories( ${ASOUND_INCLUDE_DIRS})
+            set(NANA_LINKS "${NANA_LINKS}  -lasound")
+        else(ASOUND_FOUND)
+            message(FATAL_ERROR "libasound is not found")
+        endif(ASOUND_FOUND)
+    endif(UNIX)
+endif(NANA_CMAKE_ENABLE_AUDIO)
+
+# Find/Select filesystem
+if (NANA_CMAKE_NANA_FILESYSTEM_FORCE)
+    add_definitions(-DNANA_FILESYSTEM_FORCE)
+elseif (NANA_CMAKE_STD_FILESYSTEM_FORCE)
+    add_definitions(-DSTD_FILESYSTEM_FORCE)
+elseif (NANA_CMAKE_FIND_BOOST_FILESYSTEM OR NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
+    if (NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
+        add_definitions(-DNANA_BOOST_FILESYSTEM_FORCE)
+    endif(NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
+    # https://cmake.org/cmake/help/git-master/module/FindBoost.html
+    # Implicit dependencies such as Boost::filesystem requiring Boost::system will be automatically detected and satisfied,
+    # even if system is not specified when using find_package and if Boost::system is not added to target_link_libraries.
+    # If using Boost::thread, then Thread::Thread will also be added automatically.
+    find_package(Boost COMPONENTS filesystem)
+    if (Boost_FOUND)
+        add_definitions(-DNANA_BOOST_FILESYSTEM_AVAILABLE)
+        include_directories(SYSTEM "${Boost_INCLUDE_DIR}")
+        set(NANA_LINKS "${NANA_LINKS} ${Boost_LIBRARIES}")    ######  FIRST !!!!!!!!!!!!!!!!!    add   is not first
+    endif (Boost_FOUND)
+    set(Boost_USE_STATIC_LIBS ON)
+    set(Boost_USE_STATIC_RUNTIME ON)  # ??
+endif (NANA_CMAKE_NANA_FILESYSTEM_FORCE)
 
 
 ######## Nana options
@@ -274,71 +341,6 @@ if(NANA_CLION) # the Clion IDE don't reconize the install target
             DEPENDS ${PROJECT_NAME}
             COMMENT "Installing ${PROJECT_NAME}")
 endif()
-
-############# Optional libraries
-
-# Find PNG
-if(NANA_CMAKE_ENABLE_PNG)
-    add_definitions(-DNANA_ENABLE_PNG)
-    set(NANA_LINKS "${NANA_LINKS} -lpng")
-    if(NANA_CMAKE_LIBPNG_FROM_OS)
-        find_package(PNG)
-        if (PNG_FOUND)
-            include_directories( ${PNG_INCLUDE_DIRS})
-            add_definitions(-DUSE_LIBPNG_FROM_OS)
-        endif(PNG_FOUND)
-    endif(NANA_CMAKE_LIBPNG_FROM_OS)
-endif(NANA_CMAKE_ENABLE_PNG)
-
-# Find JPEG
-if(NANA_CMAKE_ENABLE_JPEG)
-    add_definitions(-DNANA_ENABLE_JPEG)
-    set(NANA_LINKS "${NANA_LINKS} -ljpeg")
-    if(NANA_CMAKE_LIBJPEG_FROM_OS)
-        find_package(JPEG)
-        if (JPEG_FOUND)
-            include_directories( ${JPEG_INCLUDE_DIRS})
-            add_definitions(-DUSE_LIBJPEG_FROM_OS)
-        endif(JPEG_FOUND)
-    endif(NANA_CMAKE_LIBJPEG_FROM_OS)
-endif(NANA_CMAKE_ENABLE_JPEG)
-
-# Find ASOUND
-if(NANA_CMAKE_ENABLE_AUDIO)
-    add_definitions(-DNANA_ENABLE_AUDIO)
-    if(UNIX)
-        find_package(ASOUND)
-        if (ASOUND_FOUND)
-            include_directories( ${ASOUND_INCLUDE_DIRS})
-            set(NANA_LINKS "${NANA_LINKS}  -lasound")
-        else(ASOUND_FOUND)
-            message(FATAL_ERROR "libasound is not found")
-        endif(ASOUND_FOUND)
-    endif(UNIX)
-endif(NANA_CMAKE_ENABLE_AUDIO)
-
-# Find/Select filesystem
-if (NANA_CMAKE_NANA_FILESYSTEM_FORCE)
-    add_definitions(-DNANA_FILESYSTEM_FORCE)
-elseif (NANA_CMAKE_STD_FILESYSTEM_FORCE)
-    add_definitions(-DSTD_FILESYSTEM_FORCE)
-elseif (NANA_CMAKE_FIND_BOOST_FILESYSTEM OR NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
-    if (NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
-        add_definitions(-DNANA_BOOST_FILESYSTEM_FORCE)
-    endif(NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
-    # https://cmake.org/cmake/help/git-master/module/FindBoost.html
-    # Implicit dependencies such as Boost::filesystem requiring Boost::system will be automatically detected and satisfied,
-    # even if system is not specified when using find_package and if Boost::system is not added to target_link_libraries.
-    # If using Boost::thread, then Thread::Thread will also be added automatically.
-    find_package(Boost COMPONENTS filesystem)
-    if (Boost_FOUND)
-        add_definitions(-DNANA_BOOST_FILESYSTEM_AVAILABLE)
-        include_directories(SYSTEM "${Boost_INCLUDE_DIR}")
-        set(NANA_LINKS "${NANA_LINKS} ${Boost_LIBRARIES}")    ######  FIRST !!!!!!!!!!!!!!!!!    add   is not first
-    endif (Boost_FOUND)
-    set(Boost_USE_STATIC_LIBS ON)
-    set(Boost_USE_STATIC_RUNTIME ON)  # ??
-endif (NANA_CMAKE_NANA_FILESYSTEM_FORCE)
 
 
 # Just for information:
