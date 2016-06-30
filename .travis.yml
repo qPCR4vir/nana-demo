@@ -1,0 +1,157 @@
+sudo: false
+language: generic
+
+cache:
+  apt: true
+  directories:
+    - /tmp/tools
+
+matrix:
+  include:
+    - env: CXX=g++-5 CC=gcc-5
+      addons:
+        apt:
+          packages:
+            - g++-5
+            - libjpeg8-dev
+            - libpng-dev
+            - libasound2-dev
+            - alsa-utils
+            - alsa-oss
+            - libx11-dev
+            - libxft-dev
+          sources: 
+            - ubuntu-toolchain-r-test
+    - env: CXX=g++-4.9 CC=gcc-4.9
+      addons:
+        apt:
+          packages:
+            - g++-4.9
+            - libjpeg8-dev
+            - libpng-dev
+            - libasound2-dev
+            - alsa-utils
+            - alsa-oss
+            - libx11-dev
+            - libxft-dev
+            - libboost-filesystem-dev
+          sources: 
+            - ubuntu-toolchain-r-test
+            
+  allow_failures:		
+    - env: CXX=clang++-3.8 CC=clang-3.8
+      addons:
+        apt:
+          packages:
+            - clang-3.8
+            - libjpeg8-dev
+            - libpng-dev
+            - libasound2-dev
+            - alsa-utils
+            - alsa-oss
+            - libx11-dev
+            - libxft-dev
+          sources: 
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise 
+
+before_install:
+  - export PATH="$HOME/bin:$PATH"
+  - mkdir ~/bin
+  # travis don't have a physical monitor. We need to install an emulator: https://docs.travis-ci.com/user/gui-and-headless-browsers/
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - wget --no-check-certificate --no-clobber -O /tmp/tools/cmake https://cmake.org/files/v3.4/cmake-3.4.0-rc3-Linux-x86_64.sh || true
+  - chmod -R +x /tmp/tools
+  - /tmp/tools/cmake --prefix="$HOME" --exclude-subdir
+
+install:
+  # donwload, compile and install nana first
+  - git clone --depth=1 --branch=tests https://github.com/qPCR4vir/nana.git ../nana
+  - mkdir ../nana_lib
+  - cd ../nana_lib
+  - mkdir  bin
+  - cd bin
+  - cmake -G"Unix Makefiles" ../../nana -DCMAKE_INSTALL_PREFIX=.. -DNANA_CMAKE_ENABLE_JPEG=ON -DNANA_CMAKE_ENABLE_PNG=OFF -DNANA_CMAKE_BUILD_DEMOS=ON -DNANA_CMAKE_ENABLE_AUDIO=OFF -DNANA_CMAKE_FIND_BOOST_FILESYSTEM=ON -DNANA_CMAKE_BOOST_FILESYSTEM_FORCE=OFF  -DNANA_CMAKE_AUTOMATIC_GUI_TESTING=ON
+  - make install
+  - ls
+
+before_script :
+  - cd ../..
+  - mkdir nana_demo_bin
+  - ls
+  - cd nana_demo_bin
+
+
+
+
+
+script:
+  # Installing: the static "nana lib" will be in DESTDIR/CMAKE_INSTALL_PREFIX/lib/
+  # and the includes files "nana" in DESTDIR/CMAKE_INSTALL_PREFIX/include/
+  # we are in "... nana/../nana_lib/bin/" we need "../../nana" to get the CMakeList.txt of nana.
+  # Thus, make install will put the nana.lib in "... nana/../nana_lib/lib/"
+  # and the includes in "... nana/../nana_lib/include/"
+  - cmake -G"Unix Makefiles" ../nana-demo -DCMAKE_INSTALL_PREFIX=.. -DNANA_CMAKE_ENABLE_JPEG=ON -DNANA_CMAKE_ENABLE_PNG=OFF -DNANA_CMAKE_BUILD_DEMOS=ON -DNANA_CMAKE_ENABLE_AUDIO=OFF -DNANA_CMAKE_FIND_BOOST_FILESYSTEM=ON -DNANA_CMAKE_BOOST_FILESYSTEM_FORCE=OFF -DNANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS=OFF -DNANA_CMAKE_AUTOMATIC_GUI_TESTING=ON
+  - make install
+  # todo: separate resources from sources (a directory for images)
+  - ls
+  - cd ../bin
+  - ls
+  - ./a_group_impl
+  - ./animate-bmp
+  - ./audio_player
+  - ./background-effects
+  #- ./calculator   # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1159
+  - ./categ
+  - ./clicked
+  - ./decore
+  - ./dock
+  - ./drag-button
+  - ./draw
+  - ./file_explorer
+  #- ./example_menu   # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1348
+  - ./example_listbox
+  #- ./example_combox    # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1378
+  - ./example.button
+  #- ./filebox-txt    # https://travis-ci.org/qPCR4vir/nana/jobs/140250744#L1393
+  - ./folder_tree
+  #- ./folder_tree_nana   # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1408
+  #- ./folder_tree_std     # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1421
+  - ./framework_design_1
+  - ./framework_design_2
+  - ./framework_design_3
+  - ./group
+  - ./HelloWord
+  #- ./helloword_quit      # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1572
+  #- ./inputbox         # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1585
+  - ./label_listener  
+  - ./lambda_event.Cpp11  
+  - ./listbox_inline_widget  
+  - ./listbox_Resolver  
+  - ./loader_1  
+  #- ./loader_2      # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1732
+  - ./mbox  
+  - ./main
+  - ./menu_debug  
+  #- ./modal_form     # https://travis-ci.org/qPCR4vir/nana/jobs/140250744#L1736
+  #- ./MontiHall             # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1775
+  #- ./helloworld_demo           # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1786
+  #- ./notepad      # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1799
+  - ./menu_debug  
+  - ./menu_popuper  
+  #- ./modal_form       # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1846
+  #- ./widget_show2    # https://travis-ci.org/qPCR4vir/nana/jobs/140245437#L1730
+  #- ./widget_show           # https://travis-ci.org/qPCR4vir/nana/jobs/140245437#L1740
+  - ./place_login  
+  - ./png  
+  #- ./screen       # https://travis-ci.org/qPCR4vir/nana/jobs/140238537#L1909
+  - ./stretch_image  
+  #- ./threading     # https://travis-ci.org/qPCR4vir/nana/jobs/140245437#L1826   ?
+  #- ./thread-pool  # https://travis-ci.org/qPCR4vir/nana/jobs/140247564#L1782
+  - ./various_events  
+  #- ./window-dragger    # https://travis-ci.org/qPCR4vir/nana/jobs/140245438#L1820
+  - ./windows-subclassing   
+  - ./textbox_line_number
+
+

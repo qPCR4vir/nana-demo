@@ -3,6 +3,7 @@
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
+#include <iostream>
 
 int main()
 {
@@ -11,6 +12,7 @@ int main()
     form fm;
 
     button btn(fm, "Normal Button");
+	btn.events().click([]() {std::cout << "Normal Button clicked.\n"; });
 
     button btn0(fm, "Basic Mode");
 
@@ -25,6 +27,7 @@ int main()
 
     label lb0(fm,  ("Normal Label"));
     //lb0.fgcolor(color_rgb(0xFFFFFF));
+	lb0.events().click([]() {std::cout << "Label clicked too.\n"; });
 
     label lb1(fm,  ("Basic Mode: Transparent"));
     lb1.fgcolor(color_rgb(0xFFFFFF));
@@ -56,5 +59,5 @@ int main()
     });
     dw.update();
 
-    exec();
+	exec( 1, 1, [&btn,&lb0]() {click(btn); click(lb0); });
 }

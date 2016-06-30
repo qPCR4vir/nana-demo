@@ -29,6 +29,6 @@ int main()
     btn.set_bground(bground);
 
     fm.show();
-    exec();
+	exec(1, 2, [&btn]() {click(btn); });
 }
 

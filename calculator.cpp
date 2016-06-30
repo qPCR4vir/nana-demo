@@ -1,5 +1,6 @@
-/*
- *	Nana Calculator
+/**
+ *  \file calculator.cpp
+ *  \brief Nana Calculator
  *	Nana 1.3 and C++11 is required.
  *	This is a demo for Nana C++ Library.
  *	It creates an intermediate level graphical calculator with few code.
@@ -10,31 +11,39 @@
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
 #include <forward_list>
+#include <map>
+#include <cassert>
+
+//#include <nana/paint/graphics.hpp"
+
+#include <iostream>
+#include <chrono>
+
+#include <thread>
 
 using namespace nana;
+
+// workaround insufficiency in VS2013.
+#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
+	const std::string plus_minus(to_utf8(L"\u00b1")  ;   // 0xB1    u8"\261"
+#else
+	const std::string plus_minus( u8"\u00b1" );
+#endif
 
 struct stateinfo
 {
 	enum class state{init, operated, assigned};
 
-	state	opstate{ state::init };
-#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VC2013
-	std::string    operation;
-#else
-	std::string    operation{"+"};
-#endif
-	double  oprand{ 0 };
-	double  outcome{ 0 };
-	label & procedure;
-	label & result;
+	state	       opstate{ state::init };
+    std::string    operation;
+	double         oprand { 0 };
+	double         outcome{ 0 };
+	label        & procedure;
+	label        & result;
 
 	stateinfo(label& proc, label& resl)
-		: procedure(proc), result(resl)
-	{
-#if defined(_MSC_VER) && (_MSC_VER < 1900)
-		operation = "+";
-#endif
-	}
+		: operation("+"),  procedure(proc), result(resl)
+	{	}
 };
 
 void numkey_pressed(stateinfo& state, const arg_click& arg)
@@ -75,11 +84,7 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 		state.operation = "+";
 		return;
 	}
-#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
-	else if (to_utf8(L"\u00b1") == d) // 0xB1    u8"\261"
-#else
-	else if (u8"\261" == d)
-#endif
+	else if( plus_minus == d)
 	{
 		auto s = state.result.caption();
 		if(s.size())
@@ -149,18 +154,10 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 
 	switch(pre_operation[0])
 	{
-	case '+':
-		state.outcome += state.oprand;
-		break;
-	case '-':
-		state.outcome -= state.oprand;
-		break;
-	case 'X':
-		state.outcome *= state.oprand;
-		break;
-	case '/':
-		state.outcome /= state.oprand;
-		break;
+	case '+': 	state.outcome += state.oprand; 		break;
+	case '-':	state.outcome -= state.oprand;		break;
+	case 'X':	state.outcome *= state.oprand;		break;
+	case '/':	state.outcome /= state.oprand;		break;
 	}
 
 	state.procedure.caption(proc);
@@ -171,7 +168,7 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 	
 	if(outstr.size() && (outstr.back() == '.'))
 		outstr.pop_back();
-	if(outstr.size() == 0) outstr += '0';
+	if( outstr.empty() ) outstr += '0';
 	state.result.caption(outstr);
 }
 
@@ -184,7 +181,7 @@ int main()
 	//Use class place to layout the widgets.
 	place place(fm);
 	place.div(	"vert<procedure weight=10%><result weight=15%>"
-		"<weight=2><opkeys margin=2 grid=[4, 5] gap=2 collapse(0,4,2,1)>");
+                "<weight=2><opkeys margin=2 grid=[4, 5] gap=2 collapse(0,4,2,1)>");
 
 	label procedure(fm), result(fm);
 
@@ -199,27 +196,22 @@ int main()
 	stateinfo state(procedure, result);
 
 	std::forward_list<button> op_keys;
+	std::map<char,button*> bts;
 
 	char keys[] = "Cm%/789X456-123+0.="; // \261
-	nana::paint::font keyfont("", 10, true);
+	paint::font keyfont("", 10, true);
 
 	for (auto key : keys)
 	{
 		std::string Key;
 		if (key == 'm')
-		{
-			// http://daniel-hug.github.io/characters/
-#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
-			Key = to_utf8(L"\u00b1");  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
-#else
-			Key = u8"\261";
-#endif
-		}
-		else
+			Key = plus_minus;  
+    	else
 			Key = std::string(1, key);
 
 		op_keys.emplace_front(fm.handle());
 		auto & key_btn = op_keys.front();
+		bts[key]=&key_btn;
 
 		key_btn.caption(Key);
 		key_btn.typeface(keyfont);
@@ -243,5 +235,23 @@ int main()
 
 	place.collocate();
 	fm.show();
-	exec();
+	exec( 1, 10, [&bts, &result ]()
+	{
+		click(*bts['2']); Wait( 1);
+		click(*bts['+']); Wait( 1);
+		click(*bts['2']); Wait( 1);
+
+		click(*bts['=']);
+
+
+		std::cout << "The result of 2 + 2 is: " << result.caption() << "\n";
+		int r=std::stoi(result.caption());
+
+		//char c; std::cin >> c;
+
+		if ( r != 4 )
+			exit(r?r:1);
+		//assert(r != 4);
+		//API::exit();
+	});
 }

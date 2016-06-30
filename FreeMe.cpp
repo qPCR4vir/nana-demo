@@ -13,9 +13,9 @@
  */
 
 // http://nanapro.sourceforge.net/help/tutorials/thefreeme.htm
+#ifdef NANA_WINDOWS
+#ifdef BUILD_FreeMe
 
-#ifndef PATH_CREATOR_HPP
-#define PATH_CREATOR_HPP
 #include <nana/gui/wvl.hpp>
 #include <shlobj.h>
 #include <windows.h>
@@ -205,7 +205,7 @@ namespace path
 	};
 }
 
-#endif
+
 
 /*
  *	The FreeMe - A sample of Nana C++ Library
@@ -225,9 +225,7 @@ namespace path
 #include <nana/gui/widgets/progress.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
-//#include <nana/filesystem/file_iterator.hpp>
-//#include <nana/filesystem/fs_utility.hpp>
-#include <nana/filesystem/filesystem.hpp>
+#include <nana/filesystem/filesystem_ext.hpp>
 
 #include <thread>
 #include <vector>
@@ -257,7 +255,7 @@ class junk_sweeper
 	using self_type = junk_sweeper ;
 
  public:
-	 using file_iterator = nana::experimental::filesystem::directory_iterator; // ::file_iterator file_iterator;
+	 using file_iterator = std::experimental::filesystem::directory_iterator; // ::file_iterator file_iterator;
 	 using file_info_type =  file_iterator::value_type       ;
 
 	junk_sweeper() {}
@@ -345,7 +343,7 @@ class junk_sweeper
 				files.insert(files.end(), hlp.files.begin(), hlp.files.end());
 			}
 			else
-				bytes += nana::experimental::filesystem::filesize(file.c_(L));
+				bytes += nana::experimental::filesystem::filesize(file.c_str());
 			
 			files.push_back(std::make_pair(file, v.directory));
 			msnger_.active();
@@ -532,7 +530,7 @@ private:
 
 		std::stringstream ss;
 		ss<<capsize;
-		std::string cap = ss.(L);
+		std::string cap = ss.str();
 
 		std::string::size_type dotpos = cap.find('.');
 		if(dotpos != cap.npos)
@@ -589,3 +587,5 @@ int  main( )
 
 	return 0;
 }
+#endif // BUILD_FreeMe
+#endif // NANA_WINDOWS

@@ -35,3 +35,4 @@ lib/
 bin/
 *.opendb
 .idea/
+*.VC.db
