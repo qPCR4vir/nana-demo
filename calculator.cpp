@@ -1,5 +1,6 @@
-/*
- *	Nana Calculator
+/**
+ *  \file calculator.cpp
+ *  \brief Nana Calculator
  *	Nana 1.3 and C++11 is required.
  *	This is a demo for Nana C++ Library.
  *	It creates an intermediate level graphical calculator with few code.
@@ -9,23 +10,40 @@
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
+#include <forward_list>
+#include <map>
+#include <cassert>
+
+//#include <nana/paint/graphics.hpp"
+
+#include <iostream>
+#include <chrono>
+
+#include <thread>
 
 using namespace nana;
+
+// workaround insufficiency in VS2013.
+#if defined(_MSC_VER) && (_MSC_VER < 1900)	//VS2013
+	const std::string plus_minus(to_utf8(L"\u00b1")  ;   // 0xB1    u8"\261"
+#else
+	const std::string plus_minus( u8"\u00b1" );
+#endif
 
 struct stateinfo
 {
 	enum class state{init, operated, assigned};
 
-	state	opstate {state::init};
-	std::string    operation {"+"};
-	double  oprand  {0};
-	double  outcome {0};
-	label & procedure;
-	label & result;
+	state	       opstate{ state::init };
+    std::string    operation;
+	double         oprand { 0 };
+	double         outcome{ 0 };
+	label        & procedure;
+	label        & result;
 
 	stateinfo(label& proc, label& resl)
-		: procedure(proc), result(resl)
-	{}
+		: operation("+"),  procedure(proc), result(resl)
+	{	}
 };
 
 void numkey_pressed(stateinfo& state, const arg_click& arg)
@@ -66,7 +84,7 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 		state.operation = "+";
 		return;
 	}
-	else if( "\u00b1" == d) // 0xB1    u8"\261"
+	else if( plus_minus == d)
 	{
 		auto s = state.result.caption();
 		if(s.size())
@@ -136,18 +154,10 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 
 	switch(pre_operation[0])
 	{
-	case '+':
-		state.outcome += state.oprand;
-		break;
-	case '-':
-		state.outcome -= state.oprand;
-		break;
-	case 'X':
-		state.outcome *= state.oprand;
-		break;
-	case '/':
-		state.outcome /= state.oprand;
-		break;
+	case '+': 	state.outcome += state.oprand; 		break;
+	case '-':	state.outcome -= state.oprand;		break;
+	case 'X':	state.outcome *= state.oprand;		break;
+	case '/':	state.outcome /= state.oprand;		break;
 	}
 
 	state.procedure.caption(proc);
@@ -158,11 +168,12 @@ void opkey_pressed(stateinfo& state, const arg_click& arg)
 	
 	if(outstr.size() && (outstr.back() == '.'))
 		outstr.pop_back();
-	if(outstr.size() == 0) outstr += '0';
+	if( outstr.empty() ) outstr += '0';
 	state.result.caption(outstr);
 }
 
-void go()
+
+int main()
 {
 	form fm;
 	fm.caption(("Calculator"));
@@ -170,7 +181,7 @@ void go()
 	//Use class place to layout the widgets.
 	place place(fm);
 	place.div(	"vert<procedure weight=10%><result weight=15%>"
-		"<weight=2><opkeys margin=2 grid=[4, 5] gap=2 collapse(0,4,2,1)>");
+                "<weight=2><opkeys margin=2 grid=[4, 5] gap=2 collapse(0,4,2,1)>");
 
 	label procedure(fm), result(fm);
 
@@ -179,49 +190,68 @@ void go()
 	result.text_align(nana::align::right);
 	result.typeface(nana::paint::font("", 14, true));
 
-	place.field("procedure")<<procedure;
-	place.field("result")<<result;
+	place["procedure"] << procedure;
+	place["result"] << result;
 
 	stateinfo state(procedure, result);
-	std::vector<std::unique_ptr<nana::button>> op_keys;
+
+	std::forward_list<button> op_keys;
+	std::map<char,button*> bts;
 
 	char keys[] = "Cm%/789X456-123+0.="; // \261
-	nana::paint::font keyfont("", 10, true);
-	//constexpr char k[]{ u8"\261" };
-	for(auto key : keys)
-	{
+	paint::font keyfont("", 10, true);
 
+	for (auto key : keys)
+	{
 		std::string Key;
 		if (key == 'm')
-			Key = "\u00b1";  // in MSVC2015 u8"\261"; in ISO Latin 1 Character set: unsigned char 177; xB1 ; &plusmn;
-			                 // http://daniel-hug.github.io/characters/
-		else
+			Key = plus_minus;  
+    	else
 			Key = std::string(1, key);
 
-		op_keys.emplace_back(new button(fm));
-		op_keys.back()->caption( Key);
-		op_keys.back()->typeface(keyfont);
+		op_keys.emplace_front(fm.handle());
+		auto & key_btn = op_keys.front();
+		bts[key]=&key_btn;
 
-		if('=' == key)
+		key_btn.caption(Key);
+		key_btn.typeface(keyfont);
+
+		if ('=' == key)
 		{
-			op_keys.back()->bgcolor ( color_rgb(  0x7ACC));
-			op_keys.back()->fgcolor ( color_rgb(0xFFFFFF));
+			key_btn.bgcolor(color_rgb(0x7ACC));
+			key_btn.fgcolor(color_rgb(0xFFFFFF));
 		}
-		place.field("opkeys") << *op_keys.back();
+		place["opkeys"] << key_btn;
 
 		//Make event answer for keys.
-		if((L'0' <= key && key <= L'9') || (L'.' == key))
-			op_keys.back()->events().click.connect(std::bind(numkey_pressed, std::ref(state), std::placeholders::_1));
-		else
-			op_keys.back()->events().click.connect(std::bind(opkey_pressed, std::ref(state), std::placeholders::_1));
+		key_btn.events().click([key, &state](const arg_click& arg)
+		{
+			if (('0' <= key && key <= '9') || ('.' == key))
+				numkey_pressed(state, arg);
+			else
+				opkey_pressed(state, arg);
+		});
 	}
 
 	place.collocate();
 	fm.show();
-	exec();
-}
+	exec( 1, 10, [&bts, &result ]()
+	{
+		click(*bts['2']); Wait( 1);
+		click(*bts['+']); Wait( 1);
+		click(*bts['2']); Wait( 1);
 
-int main()
-{
-    go();
+		click(*bts['=']);
+
+
+		std::cout << "The result of 2 + 2 is: " << result.caption() << "\n";
+		int r=std::stoi(result.caption());
+
+		//char c; std::cin >> c;
+
+		if ( r != 4 )
+			exit(r?r:1);
+		//assert(r != 4);
+		//API::exit();
+	});
 }
