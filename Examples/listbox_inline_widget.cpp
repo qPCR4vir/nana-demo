@@ -71,6 +71,23 @@ private:
 		pos_ = pos;
 	}
 
+	//Notify the item status
+	//This method is introduced since 1.4.1
+	void notify_status(status_type status, bool status_on) /*override*/ 
+	{
+		switch(status)
+		{
+		case status_type::selecting:
+			//If status_on is true, the item is selecting.
+			//If status on is false, the item is unselecting
+			break;
+		case status_type::checking:
+			//If status_on is true, the item is checking
+			//If status_on is false, the item is unchecking
+			break;
+		}
+	}
+
 	//Sets the inline widget size
 	//dimension represents the max size can be set
 	//The coordinate of inline widget is a logical coordinate to the sub item of listbox
