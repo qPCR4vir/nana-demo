@@ -1,7 +1,7 @@
 # CMake configuration for Nana Demos and examples
 # Author: Ariel Vina-Rodriguez (https://github.com/qPCR4vir)
 # Prerequisites: 
-# Statically compiled nana.lib and the include directory of nana are in directory: ../nana/lib
+# Statically compiled nana.lib and the include directory of nana are in directory: ../nana_lib
 # That is: your base directory have two directories: nana (with the nana.lib and the include/nana directory), 
 # and nana-demo. This cmake run in the nana-demo directory
 
@@ -248,11 +248,17 @@ find_library(nana_lib nana
         "${NANA_LIB_HINT}"
         "${NANA_LIB_HINT}/nana_lib"
         "${NANA_LIB_HINT}/nana_lib/lib"
+        "${NANA_LIB_HINT}/build"		
+        "${NANA_LIB_HINT}/build/bin"			
         "${CMAKE_INSTALL_PREFIX}/../nana_lib/lib"
         "${CMAKE_INSTALL_PREFIX}/../nana/lib"
         "${CMAKE_INSTALL_PREFIX}/../lib"
+        "${CMAKE_INSTALL_PREFIX}/../nana/build"
+        "${CMAKE_INSTALL_PREFIX}/../nana/build/bin"
         "${CMAKE_CURRENT_BINARY_DIR}/../nana_lib/lib"
         "${CMAKE_CURRENT_BINARY_DIR}/../nana/lib"
+        "${CMAKE_CURRENT_BINARY_DIR}/../nana/build"
+        "${CMAKE_CURRENT_BINARY_DIR}/../nana/build/bin"
         "${CMAKE_CURRENT_BINARY_DIR}/../lib"
         "${CMAKE_CURRENT_DIR}/../nana_lib/lib"
         "${CMAKE_CURRENT_DIR}/../nana/lib"
@@ -260,6 +266,8 @@ find_library(nana_lib nana
         "${CMAKE_CURRENT_SOURCE_DIR}/../nana_lib/lib"
         "${CMAKE_CURRENT_SOURCE_DIR}/../nana/lib"
         "${CMAKE_CURRENT_SOURCE_DIR}/../lib"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../nana/build"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../nana/build/bin"
         )
 find_path(nana_include nana/config.hpp
         "${NANA_LIB_HINT}/include"
