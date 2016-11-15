@@ -23,3 +23,37 @@ This is also a test for each change in nana. I compile regularly all of them aft
 All are automatically added to the Doxygen-generated [Nana Documentation](http://qpcr4vir.github.io/nana-doxy/html/index.html) from the project [Nana-docs](https://github.com/qPCR4vir/nana-docs)
 
 If you have another build system tested for this collection of demos, please take a time to contribute it back here. Thank!
+
+## Travis usage of branchs in *nana* and *nana-demo*:
+
+### When compiling *cnjinhao/nana* (or *qPCR4vir/nana*) 
+It will also compile some test from *qPCR4vir/nana-demo*.
+
+nana branch                    |               call in .travis.yml
+-------------------------------|----------------------------------------
+cnjinhao/nana/**master**/      |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
+qPCR4vir/nana/**master**	      |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
+cnjinhao/nana/**hotfix-1.4.1**	|  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
+qPCR4vir/nana/**hotfix-1.4.1** |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
+cnjinhao/nana/**develop**		    |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo			 
+qPCR4vir/nana/**develop**		    |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
+						
+						 
+That is: all *nana* branchs use *nana-demo/develop*. 
+This need to be fixed. Each *nana* branch have to use the corresponding branch of the demos.
+	
+	
+	
+### Travis is also used to test *nana-demo*. 
+It need to compile first some *nana*. 
+
+nana branch                 	|               call in .travis.yml
+--------------------------------|----------------------------------------
+nana-demo/**master**   				         |  git clone --depth=1 --branch=**master** https://github.com/cnjinhao/nana.git ../nana
+nana-demo/**hotfix-1.4_with_nana**  |  git clone --depth=1 --branch=**hotfix-1.4** https://github.com/cnjinhao/nana.git ../nana
+nana-demo/**hotfix-1.4**			         |  git clone --depth=1 --branch=**hotfix-1.4** https://github.com/cnjinhao/nana.git ../nana
+nana-demo/**develop_with_nana**  	  |  git clone --depth=1 --branch=**tests** https://github.com/qPCR4vir/nana.git ../nana 
+nana-demo/**develop**  			         	|  git clone --depth=1 --branch=**tests** https://github.com/qPCR4vir/nana.git ../nana 
+						    
+							
+Upss... *nana-demo/develop* use some *nana/test* that don't exists any more. It need to be *nana/develop*.
