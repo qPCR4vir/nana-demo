@@ -23,6 +23,7 @@
 #include <nana/gui/tooltip.hpp>
 #include <memory>
 #include <vector>
+#include <map>
 
 #include <nana/filesystem/filesystem_ext.hpp>
 

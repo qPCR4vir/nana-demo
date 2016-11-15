@@ -6,6 +6,7 @@
  */
 #include <memory>
 #include <vector>
+#include <map>
 
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/place.hpp>
