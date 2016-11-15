@@ -67,7 +67,7 @@ before_install:
 
 install:
   # donwload, compile and install nana first
-  - git clone --depth=1 --branch=hotfix-1.4 https://github.com/cnjinhao/nana.git ../nana
+  - git clone --depth=1 --branch=hotfix-1.4.1 https://github.com/cnjinhao/nana.git ../nana
   - mkdir ../nana_lib
   - cd ../nana_lib
   - mkdir  bin
