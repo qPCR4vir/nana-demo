@@ -1,3 +1,4 @@
+//Required Nana version: 1.4
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/drawing.hpp>
 #include <nana/paint/image_process_selector.hpp>

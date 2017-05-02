@@ -1,4 +1,9 @@
 
+// Please, put a test audio file in "../Examples/audio1.wav"  in WAV PCM format
+//
+// you can donwload (an rename) an example from: 
+// http://download.wavetlan.com/SVV/Media/HTTP/WAV/NeroSoundTrax/NeroSoundTrax_test3_PCM_Mono_CBR_8SS_8000Hz.wav
+
 
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/button.hpp>
