@@ -87,7 +87,7 @@ private:
 			break;
 		}
 	}
-			
+
 	//Sets the inline widget size
 	//dimension represents the max size can be set
 	//The coordinate of inline widget is a logical coordinate to the sub item of listbox
