@@ -1,7 +1,9 @@
-#This .gitignore created by qPCR4vir
-#ignore thumbnails created by windows
+# This .gitignore was created by qPCR4vir
+
+# ignore thumbnails created by windows
 Thumbs.db
-#Ignore files build by Visual Studio
+
+# Ignore files build by Visual Studio
 *.obj
 *.exe
 *.pdb
@@ -36,3 +38,11 @@ bin/
 *.opendb
 .idea/
 *.VC.db
+.vs/
+
+# cmake bulids
+cmake-build*/
+
+# codelite
+.codelite/
+
