@@ -20,11 +20,18 @@ int main()
        // use the arg info
 	child.events().selected ( [](const arg_combox &ar_cbx){ std::cout<<ar_cbx.widget.caption()<<std::endl; });
 	fm.show();
-	exec( 3, 5, [&child]() 
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 1, [&child]()
 	{
 		click(child);
 		child.option(3);
 		child.events().selected.emit(arg_combox{ child }, child);
 
-	});
+	}
+#endif
+
+	);
 }

@@ -149,7 +149,10 @@ int main()
 {
     notepad_form npform;
     npform.show();
-    exec( 2,2, [&npform]()
+    exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+		1,1, [&npform]()
     {
         /*
         arg_keyboard k;
@@ -163,7 +166,10 @@ int main()
             npform.get_tb().events().key_char.emit(k); Wait(1);
         }
         */
-    }  );
+    }
+#endif
+
+	);
 }
 
 

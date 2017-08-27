@@ -31,9 +31,18 @@ int main()
 
     fm.show();
 
-    exec(1,5,[&btn]()
+    exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1,
+		5,    // it will wait for the entery sound to finish !! be aweare
+		[&btn]()
 	{
 		click(btn);
-	});
+	}
+#endif
+
+	);
 #endif	//NANA_ENABLE_AUDIO
 }
