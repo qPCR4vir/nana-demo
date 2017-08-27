@@ -126,6 +126,16 @@ int main()
 
 	fm.show();
 
-	::nana::exec();
+	::nana::exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+		1, 1, [&b1, &b2]()
+	{
+		click(b1);
+		click(b2);
+	}
+#endif
+
+	);
 }
 /// 

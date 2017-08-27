@@ -42,11 +42,11 @@ nana branch                    |               call in .travis.yml
 -------------------------------|----------------------------------------
 cnjinhao/nana/**master**/      |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
 qPCR4vir/nana/**master**          |  git clone --depth=1 --branch=**master** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
-cnjinhao/nana/**hotfix-1.4.1**    |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
-qPCR4vir/nana/**hotfix-1.4.1**      |  git clone --depth=1 --branch=**hotfix-1.4** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
+cnjinhao/nana/**hotfix-1.5**    |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
+qPCR4vir/nana/**hotfix-1.5**      |  git clone --depth=1 --branch=**hotfix-1.5** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
 cnjinhao/nana/**develop**            |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo             
 qPCR4vir/nana/**develop**            |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana-demo.git ../nana-demo
-                        
+                    
                          
 That is: all *nana* branchs use *nana-demo/develop*. 
 This need to be fixed. Each *nana* branch have to use the corresponding branch of the demos.
@@ -59,8 +59,8 @@ It need to compile first some *nana*.
 nana branch                        |               call in .travis.yml
 -----------------------------------|----------------------------------------
 nana-demo/**master**               |  git clone --depth=1 --branch=**master** https://github.com/cnjinhao/nana.git ../nana
-nana-demo/**hotfix-1.4_with_nana** |  git clone --depth=1 --branch=**hotfix-1.4.1** https://github.com/cnjinhao/nana.git ../nana
-nana-demo/**hotfix-1.4**           |  git clone --depth=1 --branch=**hotfix-1.4.1** https://github.com/cnjinhao/nana.git ../nana
+nana-demo/**hotfix-1.5_with_nana** |  git clone --depth=1 --branch=**hotfix-1.5** https://github.com/cnjinhao/nana.git ../nana
+nana-demo/**hotfix-1.5**           |  git clone --depth=1 --branch=**hotfix-1.5** https://github.com/cnjinhao/nana.git ../nana
 nana-demo/**develop_with_nana**    |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana.git ../nana 
 nana-demo/**develop**              |  git clone --depth=1 --branch=**develop** https://github.com/qPCR4vir/nana.git ../nana 
                             

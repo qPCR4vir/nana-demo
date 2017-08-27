@@ -29,6 +29,13 @@ int main()
     btn.set_bground(bground);
 
     fm.show();
-	exec(1, 2, [&btn]() {click(btn); });
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 1, [&btn]() {click(btn); }
+#endif
+
+	);
 }
 

@@ -19,7 +19,11 @@ int main()
     form fm;
     fm.events().click(clicked);
     fm.show();
-	exec( 2, 1, [&fm]()
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 1, [&fm]()
 		{
 			std::cout << "3 times automatic click. \n";
 			click(fm);
@@ -42,5 +46,8 @@ int main()
 
 			//fm.close();
 
-	     });
+	     }
+#endif
+
+	);
 }
