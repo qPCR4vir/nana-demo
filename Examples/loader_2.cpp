@@ -20,5 +20,11 @@ int main()
     btn.caption("Open a new form"); 
     btn.events().click(Click); 
     fm.show(); 
-	exec(1, 2, [&btn]() {click(btn); });
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+		1, 2, [&btn]() {click(btn); }
+#endif
+
+	);
 } 

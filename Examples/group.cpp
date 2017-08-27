@@ -70,7 +70,11 @@ int main()
 
 	fm.show();
 
-	::nana::exec(1, 1, [&b1, &out, &grp_right]()
+	::nana::exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 1, [&b1, &out, &grp_right]()
 	{
 		click(b1);
 		click(b1);
@@ -78,5 +82,8 @@ int main()
 		click(out);
 		click(grp_right);
 
-	});
+	}
+#endif
+
+	);
 }
