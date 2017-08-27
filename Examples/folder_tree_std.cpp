@@ -60,8 +60,14 @@ int main()
 	});
 
 	fm.show();
-	exec(2, 1, [&node]()
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+		2, 1, [&node]()
 	{
 		node.expand(true);
-	});
+	}
+#endif
+
+	);
 }

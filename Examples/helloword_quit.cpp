@@ -11,8 +11,15 @@ int main()
      btn.caption("Quit");
      btn.events().click(API::exit_all);
      fm.show();
-	 exec( 2, 1, [&btn]()
+	 exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		 2, 1, [&btn]()
 	 {
 		 click(btn);
-	 });
+	 }
+#endif
+
+	 );
  }

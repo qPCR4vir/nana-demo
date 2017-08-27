@@ -59,5 +59,15 @@ int main()
     });
     dw.update();
 
-	exec( 1, 1, [&btn,&lb0]() {click(btn); click(lb0); });
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+		1, 1, [&btn,&lb0]() 
+	      {
+		     click(btn); 
+			 click(lb0); 
+	      }
+#endif
+	
+	    );
 }

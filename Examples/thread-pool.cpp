@@ -11,7 +11,7 @@ void foo()
 
 void foo2()
 {
-    nana:: system::sleep(1000);
+    nana:: system::sleep(500);
     std::cout<<"This is foo2"<<std::endl;
 }
 
@@ -26,7 +26,7 @@ int main()
     pool.wait_for_signal(); //Wait until the signal is triggered. The wait might be finished
                             //before finish of foo2, because the signal is made before pushing foo2.
 
-	nana::Wait(3);
+	nana::Wait(1);
 
 }
 

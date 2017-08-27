@@ -15,5 +15,12 @@ int main()
     dg.target(btn);   //move the btn
 
     fm.show();
-	exec(2, 3, [&btn]() {click(btn); });
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 1, [&btn]() {click(btn); }
+#endif
+
+	);
 }
