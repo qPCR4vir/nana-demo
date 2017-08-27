@@ -235,7 +235,11 @@ int main()
 
 	place.collocate();
 	fm.show();
-	exec( 1, 10, [&bts, &result ]()
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+		
+		1, 1, [&bts, &result ]()
 	{
 		click(*bts['2']); Wait( 1);
 		click(*bts['+']); Wait( 1);
@@ -253,5 +257,8 @@ int main()
 			exit(r?r:1);
 		//assert(r != 4);
 		//API::exit();
-	});
+	}
+#endif
+
+	);
 }
