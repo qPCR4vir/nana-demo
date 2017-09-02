@@ -104,7 +104,7 @@ elseif(UNIX)
 endif(APPLE)
 
 if(UNIX)
-    set(NANA_LINKS "${NANA_LINKS} -lX11")
+    set(NANA_LINKS "${NANA_LINKS} -lX11 -lfontconfig")
     set(NANA_INSTALL_PATH ${NANA_INSTALL_PATH_L})
     find_package(Freetype)
     if (FREETYPE_FOUND)
