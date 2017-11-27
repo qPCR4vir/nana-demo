@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 
+#include <nana/deploy.hpp>
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
@@ -25,6 +26,9 @@
 #include <nana/gui/timer.hpp>
 #include <nana/gui/tooltip.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
+
+// NOTE: boost::filesystem::path doesn't have a generic_u8string method,
+// so we are using nana::to_utf8(generic_wstring) in this demo.
 
 namespace demo
 {
@@ -84,16 +88,20 @@ namespace demo
 
  
 			item_proxy node = treebox_.insert(fs_ext::def_root, fs_ext::def_rootname);
-			fs::directory_iterator i(fs_ext::def_rootstr), end;
- 
-			for(; i != end; ++i)
-			{
-				if(!is_directory(*i)  ) continue;
 
-				treebox_.insert(node,  i->path().filename().generic_u8string(),
-					                   i->path().filename().generic_u8string());
-				break;
-			}
+			// Boost can throw an exception "Access is denied"
+			// when accessing some system paths, like "C:\Config.Msi"
+			try {
+				fs::directory_iterator i(fs_ext::def_rootstr), end; 
+				for(; i != end; ++i)
+				{
+					if(!is_directory(*i)  ) continue;
+
+					treebox_.insert(node, nana::to_utf8(i->path().filename().generic_wstring()),
+										nana::to_utf8(i->path().filename().generic_wstring()));
+					break;
+				}
+			} catch (...) {}
             treebox_.events().expanded([this](const arg_treebox& a){_m_expand(a.widget, a.item, a.operated);});
 //( [&]( const nana::arg_treebox &tbox_arg_info ) { if (tbox_arg_info.operated) RefreshList(tbox_arg_info.item); });
 		}
@@ -109,29 +117,33 @@ namespace demo
 			if(path_start_pos != std::string::npos)
 				path.erase(0, path_start_pos);
 
-			//Walk in the path directory for sub directories.
-			fs::directory_iterator i(path), end;
-			for(; i != end; ++i)
-			{
-				if (!fs::is_directory(*i))  continue; //If it is not a directory.
-
-				item_proxy child = treebox_.insert(node, i->path().filename().generic_u8string(),
-					                                     i->path().filename().generic_u8string());
-				if ( child.empty() ) continue;
-            
-				//Find a directory in child directory, if there is a directory,
-				//insert it into the child, just insert one node to indicate the
-				//node has a child and an arrow symbol will be displayed in the
-				//front of the node.
-				fs::directory_iterator u(i->path());
-				for(; u != end; ++u)
+			try {
+				//Walk in the path directory for sub directories.
+				fs::directory_iterator i(path), end;
+				for(; i != end; ++i)
 				{
-					if (!fs::is_directory(*u))  continue; //If it is not a directory.
-					treebox_.insert(child, u->path().filename().generic_u8string(),
-						                   u->path().filename().generic_u8string());
-					break;
+					if (!fs::is_directory(*i))  continue; //If it is not a directory.
+
+					item_proxy child = treebox_.insert(node, nana::to_utf8(i->path().filename().generic_wstring()),
+															nana::to_utf8(i->path().filename().generic_wstring()));
+					if ( child.empty() ) continue;
+
+					//Find a directory in child directory, if there is a directory,
+					//insert it into the child, just insert one node to indicate the
+					//node has a child and an arrow symbol will be displayed in the
+					//front of the node.
+					try {
+						fs::directory_iterator u(i->path());
+						for(; u != end; ++u)
+						{
+							if (!fs::is_directory(*u))  continue; //If it is not a directory.
+							treebox_.insert(child, nana::to_utf8(u->path().filename().generic_wstring()),
+												nana::to_utf8(u->path().filename().generic_wstring()));
+							break;
+						}
+					} catch (...) {}
 				}
-			}
+			} catch (...) {}
 		}
 	private:
 		place place_;

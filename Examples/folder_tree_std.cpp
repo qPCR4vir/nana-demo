@@ -1,6 +1,10 @@
+#include <nana/deploy.hpp>
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
+
+// NOTE: boost::filesystem::path doesn't have a generic_u8string method,
+// so we are using nana::to_utf8(generic_wstring) in this demo.
 
 int main()
 {
@@ -9,7 +13,6 @@ int main()
 	namespace fs_ext = nana::filesystem_ext;
 	using SubDirectories = fs::directory_iterator;
 
-
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
 	fm.caption("Nana C++ Library - Treebox-nana::experimental::filesystem example.");
 
@@ -17,13 +20,17 @@ int main()
 
 	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
 
-	for (const auto& dir : SubDirectories{ fs_ext::def_rootstr })
-	{
-		if (! fs::is_directory(dir) ) continue;
-		tree.insert(node, dir.path().filename().generic_u8string() , 
-			              dir.path().filename().generic_u8string());
-		break;
-	}
+	// Boost can throw an exception "Access is denied"
+	// when accessing some system paths, like "C:\Config.Msi"
+	try {
+		for (SubDirectories dir(fs_ext::def_rootstr); dir != SubDirectories(); ++dir)
+		{
+			if (!fs::is_directory(*dir)) continue;
+			tree.insert(node, nana::to_utf8(dir->path().filename().generic_wstring()),
+							nana::to_utf8(dir->path().filename().generic_wstring()));
+			break;
+		}
+	} catch (...) {}
 
 	tree.events().expanded([&tree](const arg_treebox& arg)
 	{
@@ -35,27 +42,31 @@ int main()
 		//avoids frequent useless refreshing
 		tree.auto_draw(false);
 
-		//Walk in the path directory for sub directories.
-		for (const auto& dir : SubDirectories{ Path })
-		{
-			if (!fs::is_directory(dir)) continue; //If it is not a directory.
-
-			auto child = tree.insert(arg.item, dir.path().filename().generic_u8string(), 
-				                               dir.path().filename().generic_u8string());
-			if (child.empty()) continue;
-
-			//Find a directory in child directory, if there is a directory,
-			//insert it into the child, just insert one node to indicate the
-			//node has a child and an arrow symbol will be?displayed in the
-			//front of the node.
-			for (const auto& dr : SubDirectories{ dir.path() })
+		try {
+			//Walk in the path directory for sub directories.
+			for (SubDirectories dir(Path); dir != SubDirectories(); ++dir)
 			{
-				if (!fs::is_directory(dr)) continue; //If it is not a directory.
-				tree.insert(child, dr.path().filename().generic_u8string(), 
-					               dr.path().filename().generic_u8string());
-				break;
+				if (!fs::is_directory(*dir)) continue;
+
+				auto child = tree.insert(arg.item, nana::to_utf8(dir->path().filename().generic_wstring()),
+												nana::to_utf8(dir->path().filename().generic_wstring()));
+				if (child.empty()) continue;
+
+				//Find a directory in child directory, if there is a directory,
+				//insert it into the child, just insert one node to indicate the
+				//node has a child and an arrow symbol will be?displayed in the
+				//front of the node.
+				try {
+					for (SubDirectories subdir(dir->path()); subdir != SubDirectories(); ++subdir)
+					{
+						if (!fs::is_directory(*subdir)) continue;
+						tree.insert(child, nana::to_utf8(subdir->path().filename().generic_wstring()),
+										nana::to_utf8(subdir->path().filename().generic_wstring()));
+						break;
+					}
+				} catch (...) {}
 			}
-		}
+		} catch (...) {}
 		tree.auto_draw(true);
 	});
 

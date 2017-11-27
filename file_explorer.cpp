@@ -43,6 +43,7 @@
 #include <algorithm>
 #include <iostream>
 
+#include <nana/deploy.hpp>
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/panel.hpp>
 #include <nana/gui/place.hpp>
@@ -56,9 +57,12 @@
 namespace fs     = std::experimental::filesystem;
 namespace fs_ext = nana::filesystem_ext;
 
+// NOTE: boost::filesystem::path doesn't have a generic_u8string method,
+// so we are using nana::to_utf8(generic_wstring) in this demo.
+
 //inline directory_only_iterator children(const fs::directory_entry& f) { return directory_only_iterator{ f.path() }; }
 //inline fs::directory_iterator  l_items (const fs::directory_entry& f) { return fs::directory_iterator { f.path() }; }
-//inline std::string             f_name  (const fs::directory_entry& f) { return f.path().filename().generic_u8string(); }
+//inline std::string             f_name  (const fs::directory_entry& f) { return nana::to_utf8(f.path().filename().generic_wstring()); }
 
 // the following types could be converted into types parametrs for a generic treelistpathview explorer
 using d_node            = fs::directory_entry ;
@@ -68,15 +72,25 @@ using ct_l_items        = fs::directory_iterator ;
 
 auto children = [](const d_node& f)->ct_n_children//& 
 				{ 
-					return ct_n_children{ f.path() };
+					// Boost can throw an exception "Access is denied"
+					// when accessing some system paths, like "C:\Config.Msi"
+					try {
+						return ct_n_children{ f.path() };
+					} catch (...) {
+						return ct_n_children();
+					}
 				};   // ct_n_children& f1(const d_node&);
 auto l_items  = [](const d_node& f)->ct_l_items//&    
 				{ 
-					return ct_l_items   { f.path() };
+					try {
+						return ct_l_items   { f.path() };
+					} catch (...) {
+						return ct_l_items();
+					}
 				};   // ct_l_items&  f2(const d_node&);
 auto f_name   = [](const d_node& f) 
 				{ 
-					return  f.path().filename().generic_u8string(); 
+					return  nana::to_utf8(f.path().filename().generic_wstring());
 				};     // std::string  f3(const d_node&);
 
 using f_node_children = decltype (children);
@@ -93,7 +107,7 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_nod
 	else
 	{
 		if (item.path().has_extension())
-			ores << item.path().extension();
+			ores << nana::to_utf8(item.path().extension().generic_wstring());
 		else
 			ores << ("File");
 
@@ -251,8 +265,8 @@ public:
 	{
 		list_.clear();
 		const ct_l_items& items = list_items(sel_node.value<d_node>());
-		for (auto &i : items) 
-			list_.at(0).append(i, true);
+		for (ct_l_items i(items); i != ct_l_items(); ++i)
+			list_.at(0).append(nana::to_utf8(i->path().filename().generic_wstring()), true);
 	}
 
 	void  refresh_path(t_node& sel_node) {};
@@ -355,11 +369,11 @@ const std::string dir_node::separator{ "/" };
 //};
 
 
-std::string            key(const dir_node& dn) { return dn.value.path().filename().generic_u8string(); };
+std::string            key(const dir_node& dn) { return nana::to_utf8(dn.value.path().filename().generic_wstring()); };
 std::string            title(const dir_node& dn) { return key(dn); };
 
 
-std::string            key(const dir_it& d) { return d->path().filename().generic_u8string(); };
+std::string            key(const dir_it& d) { return nana::to_utf8(d->path().filename().generic_wstring()); };
 std::string            title(const dir_it& d) { return key(d); };
 
 
