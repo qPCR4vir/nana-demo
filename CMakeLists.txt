@@ -71,6 +71,8 @@ if(POLICY CMP0004)    # ignore leading space
     cmake_policy(SET CMP0004 OLD)
 endif()
 
+set(CMAKE_DEBUG_POSTFIX "_d")
+
 ########### OS
 
 if(WIN32)
@@ -243,7 +245,9 @@ endif()
 
 #######################     Main setting of Nana lib, demos, sources, targets and install
 
-find_library(nana_lib nana
+set(nana_lib_file_name nana)    #${CMAKE_DEBUG_POSTFIX}
+
+find_library(nana_lib ${nana_lib_file_name}
         "${NANA_LIB_HINT}/lib"
         "${NANA_LIB_HINT}"
         "${NANA_LIB_HINT}/nana_lib"
@@ -289,6 +293,7 @@ find_path(nana_include nana/config.hpp
         DOC  "Nana Include directory")
 include_directories(${nana_include})
 
+message("nana_lib_file_name = " ${nana_lib_file_name})
 message("nana_lib = " ${nana_lib})
 message("nana_include= " ${nana_include})
 
@@ -345,7 +350,7 @@ install(DIRECTORY ${examples_dir} DESTINATION "${NANA_INSTALL_PATH}${examples_di
 # http://stackoverflow.com/questions/33788729/how-do-i-get-clion-to-run-an-install-target
 if(NANA_CLION) # the Clion IDE don't reconize the install target
     add_custom_target(install_${PROJECT_NAME}
-            "${CMAKE_MAKE_PROGRAM} install"
+            $(CMAKE) install
             DEPENDS ${PROJECT_NAME}
             COMMENT "Installing ${PROJECT_NAME}")
 endif()
@@ -365,6 +370,7 @@ message ( "NANA_CMAKE_ENABLE_AUDIO = "  ${NANA_CMAKE_ENABLE_AUDIO})
 message ( "CMAKE_CURRENT_SOURCE_DIR= "  ${CMAKE_CURRENT_SOURCE_DIR})
 message ( "CMAKE_CURRENT_DIR       = "  ${CMAKE_CURRENT_DIR})
 message ( "CMAKE_CURRENT_BINARY_DIR= "  ${CMAKE_CURRENT_BINARY_DIR})
+message ( "CMAKE_DEBUG_POSTFIX     = "  ${CMAKE_DEBUG_POSTFIX})
 
 message ( "NANA_CMAKE_FIND_BOOST_FILESYSTEM         = "  ${NANA_CMAKE_FIND_BOOST_FILESYSTEM})
 message ( "NANA_CMAKE_BOOST_FILESYSTEM_FORCE        = "  ${NANA_CMAKE_BOOST_FILESYSTEM_FORCE})

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26711.1
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "calculator", "calculator.vcxproj", "{C6D0B6AC-E8E0-4791-A2E0-B22EEC864B7E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -14,11 +14,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "widget_show", "widget_show.
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "a_group_impl", "a_group_impl.vcxproj", "{9D6ADD6E-6873-45A8-A752-64F57893C88F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{42D0520F-EFA5-4831-84FE-2B9085301C5D} = {42D0520F-EFA5-4831-84FE-2B9085301C5D}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example.vcxproj", "{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}"
 	ProjectSection(ProjectDependencies) = postProject
 		{42D0520F-EFA5-4831-84FE-2B9085301C5D} = {42D0520F-EFA5-4831-84FE-2B9085301C5D}
 	EndProjectSection
@@ -298,14 +293,6 @@ Global
 		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Release|Win32.Build.0 = Release|Win32
 		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Release|x64.ActiveCfg = Release|x64
 		{9D6ADD6E-6873-45A8-A752-64F57893C88F}.Release|x64.Build.0 = Release|x64
-		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Debug|Win32.ActiveCfg = Debug|Win32
-		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Debug|Win32.Build.0 = Debug|Win32
-		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Debug|x64.ActiveCfg = Debug|x64
-		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Debug|x64.Build.0 = Debug|x64
-		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Release|Win32.ActiveCfg = Release|Win32
-		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Release|Win32.Build.0 = Release|Win32
-		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Release|x64.ActiveCfg = Release|x64
-		{F321FDE5-C8AD-4C06-A6BC-1D51D42A1951}.Release|x64.Build.0 = Release|x64
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|Win32.ActiveCfg = Debug|Win32
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|Win32.Build.0 = Debug|Win32
 		{803BBA79-10E8-40FD-923C-B32ADB6433ED}.Debug|x64.ActiveCfg = Debug|x64
