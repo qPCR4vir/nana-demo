@@ -212,7 +212,7 @@ elseif (NANA_CMAKE_FIND_BOOST_FILESYSTEM OR NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
     # Implicit dependencies such as Boost::filesystem requiring Boost::system will be automatically detected and satisfied,
     # even if system is not specified when using find_package and if Boost::system is not added to target_link_libraries.
     # If using Boost::thread, then Thread::Thread will also be added automatically.
-    find_package(Boost COMPONENTS filesystem)
+    find_package(Boost COMPONENTS filesystem system)
     if (Boost_FOUND)
         add_definitions(-DNANA_BOOST_FILESYSTEM_AVAILABLE)
         include_directories(SYSTEM "${Boost_INCLUDE_DIR}")
