@@ -35,6 +35,7 @@ matrix:
             - libx11-dev
             - libxft-dev
             - libboost-filesystem-dev
+            - libboost-system-dev
           sources: 
             - ubuntu-toolchain-r-test
             
