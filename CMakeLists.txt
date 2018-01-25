@@ -220,7 +220,7 @@ elseif (NANA_CMAKE_FIND_BOOST_FILESYSTEM OR NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
         include_directories(SYSTEM "${Boost_INCLUDE_DIR}")
         
         #set(NANA_LINKS "${NANA_LINKS} ${Boost_LIBRARIES}")    ######  FIRST !!!!!!!!!!!!!!!!!    add   is not first
-        set(NANA_LINKS "${NANA_LINKS} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY}")
+        set(NANA_LINKS "${NANA_LINKS} -lboost_filesystem -lboost_system")
     endif (Boost_FOUND)
     set(Boost_USE_STATIC_LIBS ON)
     set(Boost_USE_STATIC_RUNTIME ON)  # ??
