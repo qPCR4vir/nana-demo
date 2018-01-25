@@ -219,9 +219,8 @@ elseif (NANA_CMAKE_FIND_BOOST_FILESYSTEM OR NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
         add_definitions(-DNANA_BOOST_FILESYSTEM_AVAILABLE)
         include_directories(SYSTEM "${Boost_INCLUDE_DIR}")
         
-        #Why not target_link_libraries???
         #set(NANA_LINKS "${NANA_LINKS} ${Boost_LIBRARIES}")    ######  FIRST !!!!!!!!!!!!!!!!!    add   is not first
-        target_link_libraries(NANA_LINKS ${Boost_LIBRARIES})
+        set(NANA_LINKS "${NANA_LINKS} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY}")
     endif (Boost_FOUND)
     set(Boost_USE_STATIC_LIBS ON)
     set(Boost_USE_STATIC_RUNTIME ON)  # ??
