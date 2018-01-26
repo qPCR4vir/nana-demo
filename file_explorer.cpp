@@ -43,6 +43,7 @@
 #include <algorithm>
 #include <iostream>
 
+#include <nana/deploy.hpp>
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/panel.hpp>
 #include <nana/gui/place.hpp>
@@ -68,11 +69,21 @@ using ct_l_items        = fs::directory_iterator ;
 
 auto children = [](const d_node& f)->ct_n_children//& 
 				{ 
-					return ct_n_children{ f.path() };
+					// Boost can throw an exception "Access is denied"
+					// when accessing some system paths, like "C:\Config.Msi"
+					try {
+						return ct_n_children{ f.path() };
+					} catch (...) {
+						return ct_n_children();
+					}
 				};   // ct_n_children& f1(const d_node&);
 auto l_items  = [](const d_node& f)->ct_l_items//&    
 				{ 
-					return ct_l_items   { f.path() };
+					try {
+						return ct_l_items   { f.path() };
+					} catch (...) {
+						return ct_l_items();
+					}
 				};   // ct_l_items&  f2(const d_node&);
 auto f_name   = [](const d_node& f) 
 				{ 
@@ -94,6 +105,7 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_nod
 	{
 		if (item.path().has_extension())
 			ores << item.path().extension();
+//			ores << nana::to_utf8(item.path().extension().generic_wstring());
 		else
 			ores << ("File");
 
@@ -253,6 +265,7 @@ public:
 		const ct_l_items& items = list_items(sel_node.value<d_node>());
 		for (auto &i : items) 
 			list_.at(0).append(i, true);
+//			list_.at(0).append(nana::to_utf8(i->path().filename().generic_wstring()), true);
 	}
 
 	void  refresh_path(t_node& sel_node) {};

@@ -1,3 +1,4 @@
+#include <nana/deploy.hpp>
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
@@ -17,6 +18,9 @@ int main()
 
 	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
 
+	// Boost can throw an exception "Access is denied"
+	// when accessing some system paths, like "C:\Config.Msi"
+	try {
 	for (const auto& dir : SubDirectories{ fs_ext::def_rootstr })
 	{
 		if (! fs::is_directory(dir) ) continue;
@@ -24,6 +28,7 @@ int main()
 			              dir.path().filename().generic_u8string());
 		break;
 	}
+	} catch (...) {}
 
 	tree.events().expanded([&tree](const arg_treebox& arg)
 	{
@@ -35,10 +40,11 @@ int main()
 		//avoids frequent useless refreshing
 		tree.auto_draw(false);
 
+		try {
 		//Walk in the path directory for sub directories.
-		for (const auto& dir : SubDirectories{ Path })
+			for (SubDirectories dir(Path); dir != SubDirectories(); ++dir)
 		{
-			if (!fs::is_directory(dir)) continue; //If it is not a directory.
+				if (!fs::is_directory(*dir)) continue;
 
 			auto child = tree.insert(arg.item, dir.path().filename().generic_u8string(), 
 				                               dir.path().filename().generic_u8string());
@@ -48,6 +54,7 @@ int main()
 			//insert it into the child, just insert one node to indicate the
 			//node has a child and an arrow symbol will be?displayed in the
 			//front of the node.
+			try {
 			for (const auto& dr : SubDirectories{ dir.path() })
 			{
 				if (!fs::is_directory(dr)) continue; //If it is not a directory.
@@ -55,7 +62,9 @@ int main()
 					               dr.path().filename().generic_u8string());
 				break;
 			}
+			} catch (...) {}
 		}
+		} catch (...) {}
 		tree.auto_draw(true);
 	});
 
