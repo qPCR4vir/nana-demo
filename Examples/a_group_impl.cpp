@@ -68,8 +68,8 @@ namespace dm
             plc["titel"] << titel;
 
             color obg = owner.bgcolor();
-            titel.bgcolor(obg.blend(colors::black, 0.975) );
-            color bg=obg.blend(colors::black, 0.950 );
+            titel.bgcolor(obg.blend(colors::black, 0.025) );
+            color bg=obg.blend(colors::black, 0.050 );
             bgcolor(bg);
 
             drawing dw(*this);

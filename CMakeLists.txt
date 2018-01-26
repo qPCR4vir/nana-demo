@@ -71,6 +71,8 @@ if(POLICY CMP0004)    # ignore leading space
     cmake_policy(SET CMP0004 OLD)
 endif()
 
+set(CMAKE_DEBUG_POSTFIX "_d")
+
 ########### OS
 
 if(WIN32)
@@ -206,17 +208,20 @@ elseif (NANA_CMAKE_STD_FILESYSTEM_FORCE)
     add_definitions(-DSTD_FILESYSTEM_FORCE)
 elseif (NANA_CMAKE_FIND_BOOST_FILESYSTEM OR NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
     if (NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
-        add_definitions(-DNANA_BOOST_FILESYSTEM_FORCE)
+        add_definitions(-DBOOST_FILESYSTEM_FORCE)
     endif(NANA_CMAKE_BOOST_FILESYSTEM_FORCE)
-    # https://cmake.org/cmake/help/git-master/module/FindBoost.html
-    # Implicit dependencies such as Boost::filesystem requiring Boost::system will be automatically detected and satisfied,
-    # even if system is not specified when using find_package and if Boost::system is not added to target_link_libraries.
-    # If using Boost::thread, then Thread::Thread will also be added automatically.
-    find_package(Boost COMPONENTS filesystem)
+    # Some CMake versions don't list missing boost dependencies, so we need to add them manually
+    # - libboost_system is needed for HelloWorld demo at least
+    # - libboost_thread is needed for threading demo
+    # - libboost_chrono is needed for thread_pool demo
+    # Boost_THREADAPI should be set to correct suffix (empty, or win32, or pthread)
+    find_package(Boost COMPONENTS filesystem system thread chrono)
     if (Boost_FOUND)
-        add_definitions(-DNANA_BOOST_FILESYSTEM_AVAILABLE)
+        add_definitions(-DBOOST_FILESYSTEM_AVAILABLE)
         include_directories(SYSTEM "${Boost_INCLUDE_DIR}")
-        set(NANA_LINKS "${NANA_LINKS} ${Boost_LIBRARIES}")    ######  FIRST !!!!!!!!!!!!!!!!!    add   is not first
+        
+        #set(NANA_LINKS "${NANA_LINKS} ${Boost_LIBRARIES}")    ######  FIRST !!!!!!!!!!!!!!!!!    add   is not first
+        set(NANA_LINKS "${NANA_LINKS} -lboost_filesystem -lboost_system")
     endif (Boost_FOUND)
     set(Boost_USE_STATIC_LIBS ON)
     set(Boost_USE_STATIC_RUNTIME ON)  # ??
@@ -243,7 +248,9 @@ endif()
 
 #######################     Main setting of Nana lib, demos, sources, targets and install
 
-find_library(nana_lib nana
+set(nana_lib_file_name nana)    #${CMAKE_DEBUG_POSTFIX}
+
+find_library(nana_lib ${nana_lib_file_name}
         "${NANA_LIB_HINT}/lib"
         "${NANA_LIB_HINT}"
         "${NANA_LIB_HINT}/nana_lib"
@@ -289,6 +296,7 @@ find_path(nana_include nana/config.hpp
         DOC  "Nana Include directory")
 include_directories(${nana_include})
 
+message("nana_lib_file_name = " ${nana_lib_file_name})
 message("nana_lib = " ${nana_lib})
 message("nana_include= " ${nana_include})
 
@@ -345,7 +353,7 @@ install(DIRECTORY ${examples_dir} DESTINATION "${NANA_INSTALL_PATH}${examples_di
 # http://stackoverflow.com/questions/33788729/how-do-i-get-clion-to-run-an-install-target
 if(NANA_CLION) # the Clion IDE don't reconize the install target
     add_custom_target(install_${PROJECT_NAME}
-            "${CMAKE_MAKE_PROGRAM} install"
+            $(CMAKE) install
             DEPENDS ${PROJECT_NAME}
             COMMENT "Installing ${PROJECT_NAME}")
 endif()
@@ -365,6 +373,7 @@ message ( "NANA_CMAKE_ENABLE_AUDIO = "  ${NANA_CMAKE_ENABLE_AUDIO})
 message ( "CMAKE_CURRENT_SOURCE_DIR= "  ${CMAKE_CURRENT_SOURCE_DIR})
 message ( "CMAKE_CURRENT_DIR       = "  ${CMAKE_CURRENT_DIR})
 message ( "CMAKE_CURRENT_BINARY_DIR= "  ${CMAKE_CURRENT_BINARY_DIR})
+message ( "CMAKE_DEBUG_POSTFIX     = "  ${CMAKE_DEBUG_POSTFIX})
 
 message ( "NANA_CMAKE_FIND_BOOST_FILESYSTEM         = "  ${NANA_CMAKE_FIND_BOOST_FILESYSTEM})
 message ( "NANA_CMAKE_BOOST_FILESYSTEM_FORCE        = "  ${NANA_CMAKE_BOOST_FILESYSTEM_FORCE})
