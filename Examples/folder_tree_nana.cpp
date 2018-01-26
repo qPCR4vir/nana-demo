@@ -1,8 +1,11 @@
+#include <nana/deploy.hpp>
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 //#define NANA_FILESYSTEM_FORCE 
 #include <nana/filesystem/filesystem_ext.hpp>
 
+// NOTE: boost::filesystem::path doesn't have a generic_u8string method,
+// so we are using nana::to_utf8(generic_wstring) in this demo.
 
 int main()
 {
@@ -17,10 +20,14 @@ int main()
     
 	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
 
-	dir_it sub_root{ fs_ext::def_rootstr};
-	auto p = sub_root->path();
-	std::string dir_name=p.filename().generic_u8string();
-	tree.insert(node, dir_name,dir_name);
+	// Boost can throw an exception "Access is denied"
+	// when accessing some system paths, like "C:\Config.Msi"
+	try {
+		dir_it sub_root{ fs_ext::def_rootstr};
+		auto p = sub_root->path();
+		std::string dir_name=nana::to_utf8(p.filename().generic_wstring());
+		tree.insert(node, dir_name,dir_name);
+	} catch (...) {}
 
 	tree.events().expanded([&tree](const arg_treebox& arg)
 	{
@@ -32,25 +39,29 @@ int main()
 		//avoids frequent useless refreshing
 		tree.auto_draw(false);
 
-		//Walk in the path directory for sub directories.
-		for (const auto& dir : dir_it{ Path })
-		{
-			std::string dir_name=dir.path().filename().generic_u8string();
-
-			auto child = tree.insert(arg.item, dir_name, dir_name);
-			if (child.empty()) continue;   // ?
-
-			//Find a directory in child directory, if there is a directory,
-			//insert it into the child, just insert one node to indicate the
-			//node has a child and an arrow symbol will be?displayed in the
-			//front of the node.
-			dir_it d{ dir.path() };
-			if (d != dir_it{})
+		try {
+			//Walk in the path directory for sub directories.
+			for (dir_it dir(Path); dir != dir_it(); ++dir)
 			{
-				std::string sdir_name = d->path().filename().generic_u8string();
-				tree.insert(child, sdir_name, sdir_name);
+				std::string dir_name=nana::to_utf8(dir->path().filename().generic_wstring());
+
+				auto child = tree.insert(arg.item, dir_name, dir_name);
+				if (child.empty()) continue;   // ?
+
+				//Find a directory in child directory, if there is a directory,
+				//insert it into the child, just insert one node to indicate the
+				//node has a child and an arrow symbol will be?displayed in the
+				//front of the node.
+				try {
+					dir_it d{ dir->path() };
+					if (d != dir_it{})
+					{
+						std::string sdir_name = nana::to_utf8(d->path().filename().generic_wstring());
+						tree.insert(child, sdir_name, sdir_name);
+					}
+				} catch (...) {}
 			}
-		}
+		} catch (...) {}
 		tree.auto_draw(true);
 	});
 
