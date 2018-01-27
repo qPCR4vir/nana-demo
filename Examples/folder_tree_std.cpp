@@ -42,9 +42,9 @@ int main()
 
 		try {
 		//Walk in the path directory for sub directories.
-			for (SubDirectories dir(Path); dir != SubDirectories(); ++dir)
+		for (const auto& dir : SubDirectories{ Path })
 		{
-				if (!fs::is_directory(*dir)) continue;
+			if (!fs::is_directory(dir)) continue; //If it is not a directory.
 
 			auto child = tree.insert(arg.item, dir.path().filename().generic_u8string(), 
 				                               dir.path().filename().generic_u8string());
