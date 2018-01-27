@@ -41,7 +41,7 @@ int main()
 		//Walk in the path directory for sub directories.
 		for (const auto& dir : dir_it{ Path })
 		{
-			std::string dir_name=dir.path().filename().generic_u8string();
+			std::string dir_name= fs_ext::generic_u8string(dir.path().filename());
 
 			auto child = tree.insert(arg.item, dir_name, dir_name);
 			if (child.empty()) continue;   // ?
@@ -54,7 +54,7 @@ int main()
 			dir_it d{ dir.path() };
 			if (d != dir_it{})
 			{
-				std::string sdir_name = d->path().filename().generic_u8string();
+				std::string sdir_name = fs_ext::generic_u8string(d->path().filename());
 				tree.insert(child, sdir_name, sdir_name);
 			}
 			} catch (...) {}
