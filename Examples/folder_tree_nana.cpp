@@ -23,7 +23,7 @@ int main()
    try {
 	dir_it sub_root{ fs_ext::def_rootstr};
 	auto p = sub_root->path();
-	std::string dir_name=p.filename().generic_u8string();
+	std::string dir_name= fs_ext::generic_u8string(p.filename());
 	tree.insert(node, dir_name,dir_name);
 	} catch (...) {}
 

@@ -104,7 +104,7 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_nod
 	else
 	{
 		if (item.path().has_extension())
-			ores << item.path().extension();
+			ores << fs_ext::generic_u8string(item.path().extension());
 //			ores << nana::to_utf8(item.path().extension().generic_wstring());
 		else
 			ores << ("File");
