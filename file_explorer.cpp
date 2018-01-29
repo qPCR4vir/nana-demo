@@ -87,7 +87,7 @@ auto l_items  = [](const d_node& f)->ct_l_items//&
 				};   // ct_l_items&  f2(const d_node&);
 auto f_name   = [](const d_node& f) 
 				{ 
-					return  f.path().filename().generic_u8string(); 
+					return  fs_ext::generic_u8string(f.path().filename());
 				};     // std::string  f3(const d_node&);
 
 using f_node_children = decltype (children);
@@ -104,7 +104,7 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_nod
 	else
 	{
 		if (item.path().has_extension())
-			ores << item.path().extension();
+			ores << fs_ext::generic_u8string(item.path().extension());
 //			ores << nana::to_utf8(item.path().extension().generic_wstring());
 		else
 			ores << ("File");
@@ -368,11 +368,11 @@ const std::string dir_node::separator{ "/" };
 //};
 
 
-std::string            key(const dir_node& dn) { return dn.value.path().filename().generic_u8string(); };
+std::string            key(const dir_node& dn) { return fs_ext::generic_u8string(dn.value.path().filename()); };
 std::string            title(const dir_node& dn) { return key(dn); };
 
 
-std::string            key(const dir_it& d) { return d->path().filename().generic_u8string(); };
+std::string            key(const dir_it& d) { return fs_ext::generic_u8string(d->path().filename()); };
 std::string            title(const dir_it& d) { return key(d); };
 
 
