@@ -4,6 +4,11 @@
  *	The demo requires Nana 1.0 and C++11 compiler
  *	Screenshot at http://sourceforge.net/projects/stdex
  */
+#include <memory>
+#include <vector>
+#include <map>
+
+#include <nana/deploy.hpp>
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
@@ -21,10 +26,6 @@
 #include <nana/gui/widgets/group.hpp>
 #include <nana/gui/timer.hpp>
 #include <nana/gui/tooltip.hpp>
-#include <memory>
-#include <vector>
-#include <map>
-
 #include <nana/filesystem/filesystem_ext.hpp>
 
 
@@ -89,13 +90,18 @@ namespace demo
 			item_proxy root_node = treebox_.insert(fs_ext::def_root, fs_ext::def_rootname);
 
 			// find first directory --> use std::find ?
-			for (const auto& dir : fs::directory_iterator{ fs_ext::def_rootstr })
+			// Boost can throw an exception "Access is denied"
+			// when accessing some system paths, like "C:\Config.Msi"
+		try {
+		      for (const auto& dir : fs::directory_iterator{ fs_ext::def_rootstr })
+
 			{
 				if (!fs::is_directory(dir)) continue;
-				std::string fname = dir.path().filename().generic_u8string();
+				std::string fname = fs_ext::generic_u8string(dir.path().filename());
 				treebox_.insert(root_node, fname, fname);
 				break;
 			}
+		} catch (...) {}
 
             treebox_.events().expanded([this](const arg_treebox& a){_m_expand(a.widget, a.item, a.operated);});
 		}
@@ -114,13 +120,15 @@ namespace demo
 			treebox_.auto_draw(false);
 
 			//Walk in the path directory for sub directories.
+		try {		
 			for (const auto& dir : fs::directory_iterator{ path })
 			{
 				if (!fs::is_directory(dir)) continue;
-				std::string fname = dir.path().filename().generic_u8string();
+				std::string fname = fs_ext::generic_u8string(dir.path().filename());
 				auto child = treebox_.insert(node, fname, fname);
 				if (child.empty()) continue;
 
+				try {
 				//Find a directory in child directory, if there is a directory,
 				//insert it into the child, just insert one node to indicate the
 				//node has a child and an arrow symbol will be displayed in the
@@ -129,11 +137,13 @@ namespace demo
 				{
 					if (!fs::is_directory(sdir)) continue; //If it is not a directory.
 					
-					std::string fname = sdir.path().filename().generic_u8string();
+					std::string fname = fs_ext::generic_u8string(sdir.path().filename());
 					treebox_.insert(child, fname, fname);
 					break;
 				}
+				} catch (...) {}
 			}
+			} catch (...) {}
 			treebox_.auto_draw(true);
 		}
 	};
