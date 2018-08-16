@@ -22,12 +22,12 @@ matrix:
             - libxft-dev
           sources: 
             - ubuntu-toolchain-r-test
-    - env: CXX=g++-4.9 CC=gcc-4.9
     - env: CXX=g++-8
       addons:
         apt:
           packages:
             - g++-8
+            - cmake-3.12
             - libjpeg8-dev
             - libpng-dev
             - libasound2-dev
