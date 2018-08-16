@@ -348,13 +348,6 @@ set_nana_test(demos_dir demos)
 set_nana_test(examples_dir examples)
 # copy this dir to reuse e resources (images)
 install(DIRECTORY ${examples_dir} DESTINATION "${NANA_INSTALL_PATH}${examples_dir}" )
-# http://stackoverflow.com/questions/33788729/how-do-i-get-clion-to-run-an-install-target
-if(NANA_CLION) # the Clion IDE don't reconize the install target
-    add_custom_target(install_${PROJECT_NAME}
-            $(CMAKE) install
-            DEPENDS ${PROJECT_NAME}
-            COMMENT "Installing ${PROJECT_NAME}")
-endif()
 
 
 # Just for information:
