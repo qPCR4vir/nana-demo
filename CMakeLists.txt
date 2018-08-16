@@ -1,27 +1,15 @@
 # CMake configuration for Nana Demos and examples
-# Author: Ariel Vina-Rodriguez (https://github.com/qPCR4vir)
+# Author: Ariel Vina-Rodriguez (qPCR4vir)
 # Prerequisites: 
 # Statically compiled nana.lib and the include directory of nana are in directory: ../nana_lib
 # That is: your base directory have two directories: nana (with the nana.lib and the include/nana directory), 
 # and nana-demo. This cmake run in the nana-demo directory
 
-# Nana uses some build systems: MS-VS solution, MAKE, bakefile, codeblock, etc. manually optimized.
-# In the future CMake could be the prefered, and maybe will be used to generate the others and the central nana repo
-# will distribute all of them. But by now CMake is just one of them and all the other distributed build system
-# files/projects are manually write. This current CMakeList.txt reflect this fact and that is why we don't
-# generate here configurated *.h files or explicitly enumerate the sources files: anyway this CM-list
-# will be "touched" to force a re-run of cmake.
-
-#https://cmake.org/cmake-tutorial/
-#https://cmake.org/cmake/help/v3.3/module/CMakeDependentOption.html?highlight=cmakedependentoption
-# use CACHE FORCE  or set(ENABLE_MINGW_STD_THREADS_WITH_MEGANZ ON) or delete CMakecache.txt or the entirely build dir
-# if your changes don't execute
-
-#  It seems that project() defines essential system variables like CMAKE_FIND_LIBRARY_PREFIXES.
-#  https://bbs.archlinux.org/viewtopic.php?id=84967
-
-project(nana_demo)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.12)
+project(nana_demo VERSION      1.6.1
+        DESCRIPTION "nana C++ GUI library demos and tests"
+        HOMEPAGE_URL http://nanapro.org
+        LANGUAGES CXX         )
 
 # TODO: Enforce compatibility with the already compiled nana
 option(NANA_CMAKE_ENABLE_MINGW_STD_THREADS_WITH_MEGANZ "replaced boost.thread with meganz's mingw-std-threads." OFF)
