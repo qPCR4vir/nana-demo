@@ -2,8 +2,14 @@
 # Author: Ariel Vina-Rodriguez (qPCR4vir)
 # Prerequisites: 
 # Statically compiled nana.lib and the include directory of nana are in directory: ../nana_lib
-# That is: your base directory have two directories: nana (with the nana.lib and the include/nana directory), 
+# That is: your base directory have two directories: nana_lib (with the nana.lib and the include/nana directory),
 # and nana-demo. This cmake run in the nana-demo directory
+#  |
+#  +  nana-demo         (directory with this file and all the others from nana-demo)
+#  +  nana_lib
+#         |
+#         +  lib        (directory with the staticaly complied nana library)
+#         +  include    (directory with all the nana include files)
 
 cmake_minimum_required(VERSION 3.12)
 project(nana_demo VERSION      1.6.1
@@ -320,7 +326,8 @@ set (demos    calculator file_explorer helloworld_demo notepad   widget_show  wi
 # Pending:
 
 set (examples_dir Examples/)
-set (examples a_group_impl       animate-bmp        audio_player       audio_player_simple
+set (examples
+        a_group_impl       animate-bmp        audio_player       audio_player_simple
         background-effects categ              clicked            windows-subclassing
         dock               drag-button        draw               example.button
         example_combox     example_listbox    example_menu       lambda_event.Cpp11
