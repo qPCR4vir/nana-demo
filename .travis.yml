@@ -70,7 +70,8 @@ before_install:
 
 install:
   # donwload, compile and install nana first
-  - git clone --depth=1 --branch=CMake https://github.com/qPCR4vir/nana.git ../nana
+  - cd ..
+  - git clone --depth=1 --branch=CMake https://github.com/qPCR4vir/nana.git nana
 
 before_script :
   - mkdir nana_demo_bin
