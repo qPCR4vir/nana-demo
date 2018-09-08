@@ -20,16 +20,11 @@ project(nana_demo VERSION      1.6.2
         DESCRIPTION "nana C++ GUI library demos and tests"
         HOMEPAGE_URL http://nanapro.org
         LANGUAGES CXX         )
-
-include(../nana/CMakeLists.txt)
+# ?? different project uses the same built dir?? what about - for release?
+add_subdirectory(../nana ../cmake-nana-build-${CONFIG} )
 # TODO: Enforce compatibility with the already compiled nana
 option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" OFF)
 option(NANA_CMAKE_BUILD_FreeMe "Build FreeMe (currently broken)?" OFF)
-
-option(NANA_FORCE_INSTALL_PATH "Use my onw absolute path and not DESTDIR/CMAKE_INSTALL_PREFIX (CLion workaround!)" OFF)
-set(NANA_INSTALL_PATH_W "c:/prog/nana_demo_bin" CACHE PATH "The absolute install path in windows")
-set(NANA_INSTALL_PATH_L "/user/bin/prog/nana_demo_bin" CACHE PATH "The absolute install path in windows")
-
 
 function(set_nana_test dir files)
     foreach ( test ${${files}})
@@ -40,8 +35,8 @@ function(set_nana_test dir files)
         #add_custom_target(do_always_${test} ALL COMMAND ${test})
         #add_test(${test} COMMAND ${test})
         #endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
-        install(TARGETS ${test} RUNTIME DESTINATION "${NANA_INSTALL_PATH}bin")
-        message("... to build:  ${${dir}}${test}.cpp" )
+        install(TARGETS ${test} RUNTIME DESTINATION "${NANA_INSTALL_PATH}/bin")
+        message("... to build:  ${${dir}}/${test}.cpp" )
     endforeach( test ${${files}})
 endfunction(set_nana_test)
 
@@ -80,7 +75,7 @@ endif (NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS)
 set_nana_test(demos_dir demos)
 set_nana_test(examples_dir examples)
 # copy this dir to reuse e resources (images)
-install(DIRECTORY ${examples_dir} DESTINATION "${NANA_INSTALL_PATH}${examples_dir}" )
+install(DIRECTORY ${examples_dir} DESTINATION "${NANA_INSTALL_PATH}/Examples")
 
 
 # Just for information:
