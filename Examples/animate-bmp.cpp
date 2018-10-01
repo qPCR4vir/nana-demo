@@ -7,9 +7,10 @@ int main()
    
     //Build frames
     frameset fset;
-    fset.push_back(nana::paint::image("../Examples/a_pic0.bmp"));
-    fset.push_back(nana::paint::image("../Examples/a_pic1.bmp"));
-    fset.push_back(nana::paint::image("../Examples/a_pic2.bmp"));
+    auto grs = {"000", "015", "030", "045", "060", "075", "090", "105", "120", "135", "150", "170",
+                "180", "195", "210", "225", "240", "260", "270", "285", "300", "315", "330", "345"};
+    for (const auto& gr: grs)
+        fset.push_back(nana::paint::image(std::string("../Examples/a_pic")+gr+".bmp"));
 
     //A widget to display animation.
     form fm;
