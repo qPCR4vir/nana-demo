@@ -7,6 +7,7 @@
 
 #ifdef NANA_LINUX
 #  include <unistd.h>
+#  include <linux/limits.h>
 #endif
 
 int main()
