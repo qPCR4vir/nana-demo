@@ -5,15 +5,15 @@
 #include <iostream>
 #include <fstream>
 
-#ifdef NANA_LINUX
+//#ifdef NANA_LINUX
 #  include <unistd.h>
 #  include <linux/limits.h>
-#endif
+//#endif
 
 int main()
 {
 
-#ifdef NANA_LINUX
+//#ifdef NANA_LINUX
 	char buf[PATH_MAX];
 	getcwd(buf, PATH_MAX);
 	
@@ -24,7 +24,7 @@ int main()
 		std::cout<<"OK"<<std::endl;
 	else
 		std::cout<<"not found"<<std::endl;
-#endif
+//#endif
     using namespace nana;
 
     form fm;
