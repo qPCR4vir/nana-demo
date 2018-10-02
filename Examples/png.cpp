@@ -18,7 +18,7 @@ int main()
 #endif
 
 #ifdef  NANA_ENABLE_JPEG
-   // picJPEG.load( paint::image("../Examples/jpeg.jpg") );
+    picJPEG.load( paint::image("../Examples/jpeg.jpg") );
     p["pic"] << picJPEG ;
 #endif
 

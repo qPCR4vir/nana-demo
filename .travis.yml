@@ -83,6 +83,8 @@ script:
   - make install
   # todo: separate resources from sources (a directory for images)
   - ls -lh
+  - cd ../nana-test
+  - ls -lh
   - cd ../bin
   - ls -lh
   - ./a_group_impl
