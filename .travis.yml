@@ -85,7 +85,7 @@ script:
   - ls -lh
   - cd ../nana-test
   - ls -lh
-  - cd ../bin
+  - cd bin
   - ls -lh
   - ./a_group_impl
   - ./animate-bmp
