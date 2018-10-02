@@ -2,9 +2,28 @@
 
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/button.hpp>
+#include <iostream>
+#include <fstream>
+
+#ifdef NANA_LINUX
+#  include <unistd.h>
+#endif
 
 int main()
 {
+
+#ifdef NANA_LINUX
+	char buf[PATH_MAX];
+	getcwd(buf, PATH_MAX);
+	
+	std::cout<<"cwd:"<<buf<<std::endl;
+	
+	std::ifstream img_ifs(std::string(buf) + "/../Examples/bground.6states.bmp", std::ios::binary);
+	if(img_ifs)
+		std::cout<<"OK"<<std::endl;
+	else
+		std::cout<<"not found"<<std::endl;
+#endif
     using namespace nana;
 
     form fm;
