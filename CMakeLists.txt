@@ -29,7 +29,7 @@ option(NANA_CMAKE_BUILD_FreeMe "Build FreeMe (currently broken)?" OFF)
 function(set_nana_test dir files)
     foreach ( test ${${files}})
         add_executable(${test} "${${dir}}/${test}.cpp")
-        target_link_libraries(${test} PRIVATE nana)
+        target_link_libraries(${test} PUBLIC nana)
         #if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
         #add_custom_command( TARGET  ${test} POST_BUILD COMMAND  ${test} )
         #add_custom_target(do_always_${test} ALL COMMAND ${test})
@@ -80,6 +80,12 @@ install(DIRECTORY ${examples_dir} DESTINATION "nana-test")
 
 # Just for information:
 include(CMakePrintHelpers)
+
+cmake_print_properties(TARGETS file_explorer  PROPERTIES
+        COMPILE_DEFINITIONS   COMPILE_OPTIONS    COMPILE_FLAGS  LINK_LIBRARIES
+        INCLUDE_DIRECTORIES   INSTALL_NAME_DIR   LINK_FLAGS     VERSION
+        ARCHIVE_OUTPUT_DIRECTORY ARCHIVE_OUTPUT_NAME INSTALL_RPATH
+        )
 cmake_print_variables(CONFIG)
 
 message ( "CMAKE_CXX_COMPILER_ID   = "  ${CMAKE_CXX_COMPILER_ID})
