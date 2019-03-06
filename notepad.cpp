@@ -91,7 +91,7 @@ private:
                     if (fs.extension() != ".txt")
                         fs += ".txt";
                 }
-                textbox_.store(fs.data());
+                textbox_.store(fs);
                 break;
             case msgbox::pick_no:
                 break;
