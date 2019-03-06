@@ -88,7 +88,7 @@ private:
                     fs = _m_pick_file(false);
                     if (fs.empty())
                         break;
-                    if (fs.extension() == ".txt")
+                    if (fs.extension() != ".txt")
                         fs += ".txt";
                 }
                 textbox_.store(fs.data());
