@@ -20,6 +20,7 @@ matrix:
             - alsa-oss
             - libx11-dev
             - libxft-dev
+			- libxcursor-dev
           sources: 
             - ubuntu-toolchain-r-test
     - env: CXX=g++-8
@@ -34,6 +35,7 @@ matrix:
             - alsa-oss
             - libx11-dev
             - libxft-dev
+			- libxcursor-dev
             - libboost-filesystem-dev
             - libboost-system-dev
             - libboost-thread-dev
