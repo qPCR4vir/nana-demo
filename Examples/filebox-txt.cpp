@@ -9,10 +9,11 @@ int main()
     filebox fb(0, true);
     fb.add_filter( ("Text File"),  ("*.text;*.doc"));
     fb.add_filter( ("All Files"),  ("*.*"));
-    if(fb())
+    
+    auto files = fb();
+    if(!files.empty())
     {
-        std::string file = fb.file();
-        std::cout << "Selected file:  " << file << std::endl; 
+        std::cout << "Selected file:  " << files.front() << std::endl; 
     }
     char a;
     std::cin >> a;

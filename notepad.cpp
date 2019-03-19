@@ -44,7 +44,7 @@ public:
         textbox_.events().mouse_dropfiles([this](const arg_dropfiles& arg)
         {
             if (arg.files.size() && _m_ask_save())
-                textbox_.load(arg.files.at(0).data());
+                textbox_.load(arg.files.front());
         });
 
         _m_make_menus();
@@ -62,13 +62,14 @@ public:
 
     textbox& get_tb(){return textbox_;}
 private:
-    std::string _m_pick_file(bool is_open) const
+    std::filesystem::path _m_pick_file(bool is_open) const
     {
         filebox fbox(*this, is_open);
         fbox.add_filter("Text", "*.txt");
         fbox.add_filter("All Files", "*.*");
 
-		return (fbox.show() ? fbox.file() : "" );
+        auto files = fbox.show();
+	return (files.empty() ? std::filesystem::path{} : files.front());
     }
 
     bool _m_ask_save()
@@ -87,10 +88,10 @@ private:
                     fs = _m_pick_file(false);
                     if (fs.empty())
                         break;
-                    if (fs.find(".txt") == fs.npos)
+                    if (fs.extension() != ".txt")
                         fs += ".txt";
                 }
-                textbox_.store(fs.data());
+                textbox_.store(fs);
                 break;
             case msgbox::pick_no:
                 break;
@@ -114,8 +115,8 @@ private:
             if (_m_ask_save())
             {
                 auto fs = _m_pick_file(true);
-                if (fs.size())
-                    textbox_.load(fs.data());
+                if (!fs.empty())
+                    textbox_.load(fs);
             }
         });
         menubar_.at(0).append("Save", [this](menu::item_proxy&)
@@ -127,7 +128,7 @@ private:
                 if (fs.empty())
                     return;
             }
-            textbox_.store(fs.data());
+            textbox_.store(fs);
         });
 
         menubar_.push_back("F&ORMAT");

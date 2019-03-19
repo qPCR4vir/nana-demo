@@ -9,8 +9,8 @@ int main()
 	
 	internationalization i18n;
 	//Translate these 2 words into Chinese.
-	i18n.set("OK", u8"确定");
-	i18n.set("Cancel", u8"取消");
+	i18n.set("NANA_BUTTON_OK", u8"确定");
+	i18n.set("NANA_BUTTON_CANCEL", u8"取消");
 		
 	//Show an inputbox when the form is clicked.
 	fm.events().click([&fm]
