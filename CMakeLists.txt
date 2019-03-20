@@ -20,9 +20,9 @@ project(nana_demo VERSION      1.6.2
         DESCRIPTION "nana C++ GUI library demos and tests"
         HOMEPAGE_URL http://nanapro.org
         LANGUAGES CXX         )
-# ?? different project uses the same built dir?? what about - for release?
+
 add_subdirectory(../nana ../cmake-nana-build-${CMAKE_BUILD_TYPE} )
-# TODO: Enforce compatibility with the already compiled nana
+
 option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" OFF)
 option(NANA_CMAKE_BUILD_FreeMe "Build FreeMe (currently broken)?" OFF)
 

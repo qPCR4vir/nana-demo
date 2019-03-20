@@ -1,19 +1,19 @@
 #include <nana/deploy.hpp>
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
-//#define NANA_FILESYSTEM_FORCE 
-#include <nana/filesystem/filesystem_ext.hpp>
 
+//#define NANA_FILESYSTEM_FORCE      // if used this way, make sure nana was compiled with this option too
+#include <nana/filesystem/filesystem_ext.hpp>
 
 int main()
 {
 	using namespace nana;
-	namespace fs = std::experimental::filesystem;
+	namespace fs = std::filesystem;
 	namespace fs_ext = nana::filesystem_ext;
 	using dir_it = fs_ext::directory_only_iterator;
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
-	fm.caption("Nana C++ Library - Treebox-nana::experimental::filesystem example.");
+	fm.caption("Nana C++ Library - Treebox-nana::filesystem example.");
 	nana::treebox tree{ fm, { 10, 10, 380, 480 } };
     
 	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
