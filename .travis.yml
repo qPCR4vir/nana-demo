@@ -53,7 +53,7 @@ before_install:
 install:
   # donwload, compile and install nana first
   - cd ..
-  - git clone --depth=1 --branch=dev https://github.com/qPCR4vir/nana.git nana
+  - git clone --depth=1 --branch=master https://github.com/cnjinhao/nana.git nana
 
 before_script :
   - mkdir nana_demo_bin
