@@ -42,6 +42,9 @@ int main()
         }
         catch( std::invalid_argument& e )
         {
+            std::cout << e.what();
+            nana::msgbox m( e.what() );
+            m.show();
             throw;
         }
 
