@@ -59,7 +59,7 @@ set (examples
         main mbox          menu_debug         menu_popuper       modal_form
         MontiHall          place_login        png                textbox_line_number
         stretch_image      threading          thread-pool        various_events
-        window-dragger     screen             decore
+        window-dragger     screen             decore             place_runtime_error
         )
 # Pending:
 
