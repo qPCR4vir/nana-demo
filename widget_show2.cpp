@@ -374,7 +374,7 @@ namespace demo
 				progr_u.inc();
 			});
 
-			timer_.interval(80);
+			timer_.interval(std::chrono::milliseconds{80});
 			timer_.start();
 		}
 
