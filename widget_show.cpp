@@ -400,7 +400,7 @@ namespace demo
 				}
 			});
 
-			timer_.interval(80);
+			timer_.interval(std::chrono::milliseconds{80});
 			timer_.start();
 			
 
