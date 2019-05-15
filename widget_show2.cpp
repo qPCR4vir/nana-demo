@@ -268,7 +268,8 @@ namespace demo
 		widget_show()
 			: form(API::make_center(500, 600), appear::decorate<appear::sizable>())
 		{
-			this->caption(("This is a demo of Nana C++ Library"));
+            nana::API::track_window_size(*this, {300,300}, false); //minimum
+		    this->caption(("This is a demo of Nana C++ Library"));
 			place_.div( R"(vertical
                                    <weight=30% min=260 <weight=10> <simples gap=3 margin=5> >
                                    <weight=20 tab >
