@@ -44,7 +44,7 @@
 #include <iostream>
 
 #include <nana/deploy.hpp>
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/panel.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/treebox.hpp>

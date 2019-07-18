@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/threads/pool.hpp>
 #include <nana/system/platform.hpp>
 

@@ -1,7 +1,7 @@
 
 // http://nanapro.org/en-us/thread.php?id=74f0972e5806733fac93bd659dfdaba9&stmp=1445985332412
 
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/form.hpp>

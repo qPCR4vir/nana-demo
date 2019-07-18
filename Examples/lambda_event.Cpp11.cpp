@@ -1,4 +1,4 @@
-#include <nana/gui/wvl.hpp> 
+#include <nana/gui.hpp> 
 #include <iostream> 
 int main() 
 { 

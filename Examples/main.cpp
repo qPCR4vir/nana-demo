@@ -1,11 +1,11 @@
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <iostream>
 #include <exception>
 
 int main()
 {
     using namespace nana;
-    std::cout << "Hello main... and nana/gui/wvl.hpp " << std::endl;    
+    std::cout << "Hello main... and nana/gui.hpp " << std::endl;    
     try {
             form fm;
             std::cout << "After fm " << std::endl; 
