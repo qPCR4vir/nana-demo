@@ -5,7 +5,7 @@
 // http://download.wavetlan.com/SVV/Media/HTTP/WAV/NeroSoundTrax/NeroSoundTrax_test3_PCM_Mono_CBR_8SS_8000Hz.wav
 
 
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/audio/player.hpp>
 #include <nana/threads/pool.hpp>

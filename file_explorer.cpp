@@ -44,7 +44,7 @@
 #include <iostream>
 
 #include <nana/deploy.hpp>
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/panel.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/treebox.hpp>
@@ -217,7 +217,7 @@ public:
 		for (auto & col : columns)
 			list_.append_header(col.first, col.second);
 	}
-
+#if 0 //deprecated
 	t_node add_root(d_node & root)
 	{
 		auto r= tree_.insert(node_to_title(root), node_to_title(root));
@@ -233,10 +233,10 @@ public:
 		signal_child(r);
 		return r;
 	}
-
+#endif
 	t_node add_root(std::string k, std::string t, d_node && root)   // revise ref types
 	{
-		auto r = tree_.insert(k, t);
+		auto r = tree_.insert("root_" + k, t); //From 1.7.1, a key should not be a separator \ or /
 		r.value(root);
 		signal_child(r);
 		return r;

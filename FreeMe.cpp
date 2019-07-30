@@ -16,7 +16,7 @@
 #ifdef NANA_WINDOWS
 #ifdef BUILD_FreeMe
 
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <shlobj.h>
 #include <windows.h>
 using wstring = std::wstring;
@@ -219,7 +219,7 @@ namespace path
  *		This sample shows you how to write an application with Nana C++ Library.
  */
 // TODO: , HACK, or UNDONE
-//#include <nana/gui/wvl.hpp>
+//#include <nana/gui.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/picture.hpp>
 #include <nana/gui/widgets/progress.hpp>

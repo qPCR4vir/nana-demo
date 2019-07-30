@@ -1,4 +1,4 @@
-#include <nana/gui/wvl.hpp> 
+#include <nana/gui.hpp> 
 #include <nana/gui/widgets/button.hpp> 
 #include <iostream> 
 void foo(const nana::arg_click& ei)
