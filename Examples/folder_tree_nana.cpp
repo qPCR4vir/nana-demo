@@ -1,5 +1,5 @@
 #include <nana/deploy.hpp>
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 
 //#define NANA_FILESYSTEM_FORCE      // if used this way, make sure nana was compiled with this option too

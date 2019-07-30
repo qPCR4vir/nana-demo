@@ -1,4 +1,4 @@
-#include <nana/gui/wvl.hpp> 
+#include <nana/gui.hpp> 
 #include <nana/gui/widgets/label.hpp> 
 #include <nana/gui/widgets/button.hpp> 
 #include <nana/system/platform.hpp> 

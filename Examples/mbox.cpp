@@ -1,4 +1,4 @@
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 
 void when_exit(const nana::arg_unload& ei)
 {
