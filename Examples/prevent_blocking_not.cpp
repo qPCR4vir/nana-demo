@@ -1,3 +1,4 @@
+// need nana 1.7.2
 #include <iostream>
 
 #include <nana/gui.hpp>

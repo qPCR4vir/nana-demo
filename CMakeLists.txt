@@ -60,7 +60,7 @@ set (examples
         MontiHall          place_login        png                textbox_line_number
         stretch_image      threading          thread-pool        various_events
         window-dragger     screen             decore             prevent_blocking_not
-        prevent_blocking
+        prevent_blocking   prevent_blocking_uncancel
         )
 # Pending:
 
