@@ -10,7 +10,6 @@
 class example : public nana::form
 {
 private:
-    bool            working_   { false };
     nana::button    btn_start_ { *this, nana::rectangle( 10, 10, 100, 20)};
     nana::progress  prog_      { *this, nana::rectangle( 10, 40, 280, 20)};
     nana::threads::pool pool_;
@@ -29,7 +28,7 @@ private:
     void _m_start()
     {
         btn_start_.enabled(false);
-        nana::system::sleep(1000); // 1 sec., a long-running simulation
+        nana::system::sleep(10000); // 10 sec., a long-running simulation
         btn_start_.enabled(true);
     }
     void _m_ui_update()
@@ -37,7 +36,7 @@ private:
         while(!btn_start_.enabled())
         {
             prog_.inc();
-            nana::system::sleep(100);
+            nana::system::sleep(100);  // 0.1 sec
         }
     }
     void _m_cancel(const nana::arg_unload& ei)
