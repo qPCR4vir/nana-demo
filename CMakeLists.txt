@@ -20,8 +20,8 @@ project(nana_demo VERSION      1.6.2
         DESCRIPTION "nana C++ GUI library demos and tests"
         HOMEPAGE_URL http://nanapro.org
         LANGUAGES CXX         )
-
-add_subdirectory(../nana ../cmake-nana-build-${CMAKE_BUILD_TYPE} )
+# while calling cmake, please set -DNANA_CMAKE_INSTALL=OFF
+add_subdirectory(../nana ../cmake-nana-build-${CMAKE_BUILD_TYPE} EXCLUDE_FROM_ALL)
 
 option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" OFF)
 option(NANA_CMAKE_BUILD_FreeMe "Build FreeMe (currently broken)?" OFF)
@@ -59,7 +59,7 @@ set (examples
         main mbox          menu_debug         menu_popuper       modal_form
         MontiHall          place_login        png                textbox_line_number
         stretch_image      threading          thread-pool        various_events
-        window-dragger     screen             decore
+        window-dragger     screen             decore             prevent_blocking
         )
 # Pending:
 
