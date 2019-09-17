@@ -17,8 +17,9 @@ project(nana_demo VERSION      1.6.2
 include(${CMAKE_CURRENT_LIST_DIR}/build/cmake/build_type.cmake)
 
 # project structures
-add_subdirectory(../nana ../cmake-nana-build-${CMAKE_BUILD_TYPE} )
-include_directories(../nana/include)
+add_subdirectory(${CMAKE_SOURCE_DIR}/../nana ./cmake-nana-build-${CMAKE_BUILD_TYPE} )
+include_directories(${CMAKE_SOURCE_DIR}/../nana/include)
+link_directories(./cmake-nana-build-${CMAKE_BUILD_TYPE})
 
 option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" OFF)
 option(NANA_CMAKE_BUILD_FreeMe "Build FreeMe (currently broken)?" OFF)
