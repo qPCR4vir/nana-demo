@@ -1,3 +1,6 @@
+// demo and test for nana::internationalization,
+//                   nana::inputbox,
+//                   nana::paint::image
 #include <nana/gui.hpp>
 int main()
 {
