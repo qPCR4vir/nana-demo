@@ -13,7 +13,7 @@ int main()
     auto files = fb();
     if(!files.empty())
     {
-        std::cout << "Selected file:  " << files.front() << std::endl; 
+        std::cout << "Selected file:  " << files.front().string() << std::endl;
     }
     char a;
     std::cin >> a;

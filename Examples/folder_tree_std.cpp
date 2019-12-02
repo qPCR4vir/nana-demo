@@ -24,8 +24,7 @@ int main()
 	for (const auto& dir : SubDirectories{ fs_ext::def_rootstr })
 	{
 		if (! fs::is_directory(dir) ) continue;
-		tree.insert(node, fs_ext::generic_u8string(dir.path().filename()) ,
-			fs_ext::generic_u8string(dir.path().filename()));
+		tree.insert(node, dir.path().filename().generic_string(), dir.path().filename().generic_string());
 		break;
 	}
 	} catch (...) {}
@@ -46,8 +45,8 @@ int main()
 		{
 			if (!fs::is_directory(dir)) continue; //If it is not a directory.
 
-			auto child = tree.insert(arg.item, fs_ext::generic_u8string(dir.path().filename()),
-				                               fs_ext::generic_u8string(dir.path().filename()));
+			auto child = tree.insert(arg.item, dir.path().filename().generic_string(),
+				                               dir.path().filename().generic_string());
 			if (child.empty()) continue;
 
 			//Find a directory in child directory, if there is a directory,
@@ -58,8 +57,8 @@ int main()
 			for (const auto& dr : SubDirectories{ dir.path() })
 			{
 				if (!fs::is_directory(dr)) continue; //If it is not a directory.
-				tree.insert(child, fs_ext::generic_u8string(dr.path().filename()),
-					               fs_ext::generic_u8string(dr.path().filename()));
+				tree.insert(child, dr.path().filename().generic_string(),
+					               dr.path().filename().generic_string());
 				break;
 			}
 			} catch (...) {}

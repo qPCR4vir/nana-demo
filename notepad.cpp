@@ -69,7 +69,7 @@ private:
         fbox.add_filter("All Files", "*.*");
 
         auto files = fbox.show();
-	return (files.empty() ? std::filesystem::path{} : files.front());
+	    return (files.empty() ? std::filesystem::path{} : files.front());
     }
 
     bool _m_ask_save()
@@ -88,8 +88,8 @@ private:
                     fs = _m_pick_file(false);
                     if (fs.empty())
                         break;
-                    if (fs.extension() != ".txt")
-                        fs += ".txt";
+                    if (fs.extension().string() != ".txt")
+                        fs = fs.extension().string() + ".txt";
                 }
                 textbox_.store(fs);
                 break;
