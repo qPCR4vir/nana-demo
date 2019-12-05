@@ -13,7 +13,7 @@ int main()
      place  fm_place{fm};                    // have automatic layout
      bool   really_quick{false};             // and a default behavior
      label  hello{fm,"Hello World"};         // We put a label on our window
-     button btn  {fm,"Quit"};               // and a button
+     button btn  {fm,"Quit"};                // and a button
      btn.tooltip( "I will ask first");       // that show a tip upon mouse hover
      group  act  {fm, "Actions"};            // Add a group of "options"
 
