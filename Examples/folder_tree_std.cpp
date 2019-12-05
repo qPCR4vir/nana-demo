@@ -1,7 +1,10 @@
 #include <nana/deploy.hpp>
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/treebox.hpp>
+
 #include <nana/filesystem/filesystem_ext.hpp>
+//#define NANA_USING_STD_FILESYSTEM      // if used this way, make sure nana was compiled with this option too
+//#if 1 //NANA_USING_STD_FILESYSTEM
 
 int main()
 {
@@ -12,8 +15,7 @@ int main()
 
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
-	fm.caption("Nana C++ Library - Treebox-nana::experimental::filesystem example.");
-
+	fm.caption("Nana C++ Library - Treebox-std::filesystem example.");
 	nana::treebox tree{ fm,{ 10, 10, 380, 480 } };
 
 	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
@@ -71,11 +73,13 @@ int main()
 	exec(
 
 #ifdef NANA_AUTOMATIC_GUI_TESTING
-		2, 1, [&node]()
+/*		2, 1, [&node]()
 	{
 		node.expand(true);
 	}
+*/
 #endif
 
 	);
 }
+//#endif

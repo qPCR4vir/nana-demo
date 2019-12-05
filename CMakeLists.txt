@@ -52,7 +52,7 @@ set (examples
         background-effects categ              clicked            windows-subclassing
         dock               drag-button        draw               example.button
         example_combox     example_listbox    example_menu       lambda_event.Cpp11
-        filebox-txt        folder_tree        folder_tree_nana   folder_tree_std
+        filebox-txt                           folder_tree_nana   folder_tree_std
         framework_design_1 framework_design_2 framework_design_3 label_listener
         group              HelloWord          helloword_quit     listbox_inline_widget
         inputbox           listbox_Resolver   loader_1           loader_2
