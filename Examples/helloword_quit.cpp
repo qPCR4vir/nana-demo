@@ -7,7 +7,7 @@ int main()
      fm.caption("Hello World");
      nana::button btn(fm, nana::rectangle(20, 20, 150, 30));
      btn.caption("Quit");
-     btn.events().click(API::exit_all);
+     btn.events().click(nana::API::exit_all);
      fm.show();
      nana::exec(
 
