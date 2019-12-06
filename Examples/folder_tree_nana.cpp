@@ -2,8 +2,9 @@
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 
-//#define NANA_FILESYSTEM_FORCE      // if used this way, make sure nana was compiled with this option too
 #include <nana/filesystem/filesystem_ext.hpp>
+//#define NANA_FILESYSTEM_FORCE      // if used this way, make sure nana was compiled with this option too
+//#if NANA_USING_NANA_FILESYSTEM
 
 int main()
 {
@@ -67,11 +68,14 @@ int main()
 	exec(
 
 #ifdef NANA_AUTOMATIC_GUI_TESTING
-		2, 1, [&node]()
+/*		2, 1, [&node]()
 	{
 		node.expand(true);
 	}
+ */
 #endif
 
 	);
 }
+
+//#endif   // #if NANA_USING_NANA_FILESYSTEM
