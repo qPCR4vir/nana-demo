@@ -1,19 +1,11 @@
 # CMake configuration for Nana Demos and examples
 # Author: Ariel Vina-Rodriguez (qPCR4vir)
-# Prerequisites:
-# The source code of nana is in directory: ../nana
-# That is: your base directory have two directories: nana (with source code of nana),
-# and nana-demo. This cmake run in the nana-demo directory
-# deprecated:
-# Statically compiled nana.lib and the include directory of nana are in directory: ../nana_lib
-# That is: your base directory have two directories: nana_lib (with the nana.lib and the include/nana directory),
-# and nana-demo. This cmake run in the nana-demo directory
-#  |
+# Prerequisites (directory structures):
 #  +  nana-demo         (directory with this file and all the others from nana-demo)
-#  +  nana_lib
+#  +  nana              (directory with nana source codes)
 #         |
-#         +  lib        (directory with the staticaly complied nana library)
 #         +  include    (directory with all the nana include files)
+# cmake will compile nana in to a static library and place it in cmake-nana-build-$(CMAKE_BUILD_TYPE)
 
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 project(nana_demo VERSION      1.6.2
@@ -21,7 +13,13 @@ project(nana_demo VERSION      1.6.2
         HOMEPAGE_URL http://nanapro.org
         LANGUAGES CXX         )
 
-add_subdirectory(../nana ../cmake-nana-build-${CMAKE_BUILD_TYPE} )
+# include configurations
+include(${CMAKE_CURRENT_LIST_DIR}/build/cmake/build_type.cmake)
+
+# project structures
+add_subdirectory(${CMAKE_SOURCE_DIR}/../nana ./cmake-nana-build-${CMAKE_BUILD_TYPE} )
+include_directories(${CMAKE_SOURCE_DIR}/../nana/include)
+link_directories(./cmake-nana-build-${CMAKE_BUILD_TYPE})
 
 option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" OFF)
 option(NANA_CMAKE_BUILD_FreeMe "Build FreeMe (currently broken)?" OFF)
