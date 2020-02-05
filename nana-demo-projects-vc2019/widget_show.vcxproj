@@ -74,7 +74,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\</OutDir>
+    <OutDir>..\..\nana_demo_bin\vs</OutDir>
     <IntDir>..\..\temp\$(ProjectName)\$(PlatformToolset)_$(Configuration)_$(PlatformShortName)\</IntDir>
     <IncludePath>..\..\nana\include\;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\nana\build\bin;$(LibraryPath)</LibraryPath>
@@ -83,7 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\</OutDir>
+    <OutDir>..\..\nana_demo_bin\vs</OutDir>
     <IntDir>..\..\temp\$(ProjectName)\$(PlatformToolset)_$(Configuration)_$(PlatformShortName)\</IntDir>
     <IncludePath>..\..\nana\include\;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\nana\build\bin;$(LibraryPath)</LibraryPath>
@@ -92,7 +92,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\</OutDir>
+    <OutDir>..\..\nana_demo_bin\vs</OutDir>
     <IntDir>..\..\temp\$(ProjectName)\$(PlatformToolset)_$(Configuration)_$(PlatformShortName)\</IntDir>
     <IncludePath>..\..\nana\include\;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\nana\build\bin;$(LibraryPath)</LibraryPath>
@@ -101,7 +101,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\</OutDir>
+    <OutDir>..\..\nana_demo_bin\vs</OutDir>
     <IntDir>..\..\temp\$(ProjectName)\$(PlatformToolset)_$(Configuration)_$(PlatformShortName)\</IntDir>
     <IncludePath>..\..\nana\include\;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\nana\build\bin;$(LibraryPath)</LibraryPath>
