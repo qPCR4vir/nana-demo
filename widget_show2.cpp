@@ -97,7 +97,7 @@ namespace demo
 
 			{
 				if (!fs::is_directory(dir)) continue;
-				std::string fname = fs_ext::generic_u8string(dir.path().filename());
+				std::string fname = dir.path().filename().generic_string();
 				treebox_.insert(root_node, fname, fname);
 				break;
 			}
@@ -124,7 +124,7 @@ namespace demo
 			for (const auto& dir : fs::directory_iterator{ path })
 			{
 				if (!fs::is_directory(dir)) continue;
-				std::string fname = fs_ext::generic_u8string(dir.path().filename());
+				std::string fname = dir.path().filename().generic_string();
 				auto child = treebox_.insert(node, fname, fname);
 				if (child.empty()) continue;
 
@@ -137,7 +137,7 @@ namespace demo
 				{
 					if (!fs::is_directory(sdir)) continue; //If it is not a directory.
 					
-					std::string fname = fs_ext::generic_u8string(sdir.path().filename());
+					std::string fname = sdir.path().filename().generic_string();
 					treebox_.insert(child, fname, fname);
 					break;
 				}

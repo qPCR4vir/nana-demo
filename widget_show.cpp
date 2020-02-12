@@ -94,8 +94,8 @@ namespace demo
 				{
 					if(!is_directory(*i)  ) continue;
 
-				    treebox_.insert(node, fs_ext::generic_u8string(i->path().filename()),
-					                      fs_ext::generic_u8string(i->path().filename()));
+				    treebox_.insert(node, i->path().filename().generic_string(),
+					                      i->path().filename().generic_string());
 					break;
 				}
 			} catch (...) {}
@@ -121,8 +121,8 @@ namespace demo
 			{
 				if (!fs::is_directory(*i))  continue; //If it is not a directory.
 
-				item_proxy child = treebox_.insert(node, fs_ext::generic_u8string(i->path().filename()),
-					                                     fs_ext::generic_u8string(i->path().filename()));
+				item_proxy child = treebox_.insert(node, i->path().filename().generic_string(),
+					                                     i->path().filename().generic_string());
 				if ( child.empty() ) continue;
             
 				//Find a directory in child directory, if there is a directory,
@@ -134,8 +134,8 @@ namespace demo
 				for(; u != end; ++u)
 				{
 					if (!fs::is_directory(*u))  continue; //If it is not a directory.
-					treebox_.insert(child, fs_ext::generic_u8string(u->path().filename()),
-						                   fs_ext::generic_u8string(u->path().filename()));
+					treebox_.insert(child, u->path().filename().generic_string(),
+						                   u->path().filename().generic_string());
 					break;
 				}
 					} catch (...) {}

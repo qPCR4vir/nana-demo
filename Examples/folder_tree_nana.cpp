@@ -2,8 +2,9 @@
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/treebox.hpp>
 
-//#define NANA_FILESYSTEM_FORCE      // if used this way, make sure nana was compiled with this option too
 #include <nana/filesystem/filesystem_ext.hpp>
+//#define NANA_FILESYSTEM_FORCE      // if used this way, make sure nana was compiled with this option too
+//#if NANA_USING_NANA_FILESYSTEM
 
 int main()
 {
@@ -23,7 +24,7 @@ int main()
    try {
 	dir_it sub_root{ fs_ext::def_rootstr};
 	auto p = sub_root->path();
-	std::string dir_name= fs_ext::generic_u8string(p.filename());
+	std::string dir_name= p.filename().generic_string();
 	tree.insert(node, dir_name,dir_name);
 	} catch (...) {}
 
@@ -41,7 +42,7 @@ int main()
 		//Walk in the path directory for sub directories.
 		for (const auto& dir : dir_it{ Path })
 		{
-			std::string dir_name= fs_ext::generic_u8string(dir.path().filename());
+			std::string dir_name= dir.path().filename().generic_string();
 
 			auto child = tree.insert(arg.item, dir_name, dir_name);
 			if (child.empty()) continue;   // ?
@@ -54,7 +55,7 @@ int main()
 			dir_it d{ dir.path() };
 			if (d != dir_it{})
 			{
-				std::string sdir_name = fs_ext::generic_u8string(d->path().filename());
+				std::string sdir_name = d->path().filename().generic_string();
 				tree.insert(child, sdir_name, sdir_name);
 			}
 			} catch (...) {}
@@ -67,11 +68,14 @@ int main()
 	exec(
 
 #ifdef NANA_AUTOMATIC_GUI_TESTING
-		2, 1, [&node]()
+/*		2, 1, [&node]()
 	{
 		node.expand(true);
 	}
+ */
 #endif
 
 	);
 }
+
+//#endif   // #if NANA_USING_NANA_FILESYSTEM

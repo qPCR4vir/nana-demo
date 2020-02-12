@@ -1,7 +1,10 @@
 #include <nana/deploy.hpp>
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/treebox.hpp>
+
 #include <nana/filesystem/filesystem_ext.hpp>
+//#define NANA_USING_STD_FILESYSTEM      // if used this way, make sure nana was compiled with this option too
+//#if 1 //NANA_USING_STD_FILESYSTEM
 
 int main()
 {
@@ -12,8 +15,7 @@ int main()
 
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
-	fm.caption("Nana C++ Library - Treebox-nana::experimental::filesystem example.");
-
+	fm.caption("Nana C++ Library - Treebox-std::filesystem example.");
 	nana::treebox tree{ fm,{ 10, 10, 380, 480 } };
 
 	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
@@ -24,8 +26,7 @@ int main()
 	for (const auto& dir : SubDirectories{ fs_ext::def_rootstr })
 	{
 		if (! fs::is_directory(dir) ) continue;
-		tree.insert(node, fs_ext::generic_u8string(dir.path().filename()) ,
-			fs_ext::generic_u8string(dir.path().filename()));
+		tree.insert(node, dir.path().filename().generic_string(), dir.path().filename().generic_string());
 		break;
 	}
 	} catch (...) {}
@@ -46,8 +47,8 @@ int main()
 		{
 			if (!fs::is_directory(dir)) continue; //If it is not a directory.
 
-			auto child = tree.insert(arg.item, fs_ext::generic_u8string(dir.path().filename()),
-				                               fs_ext::generic_u8string(dir.path().filename()));
+			auto child = tree.insert(arg.item, dir.path().filename().generic_string(),
+				                               dir.path().filename().generic_string());
 			if (child.empty()) continue;
 
 			//Find a directory in child directory, if there is a directory,
@@ -58,8 +59,8 @@ int main()
 			for (const auto& dr : SubDirectories{ dir.path() })
 			{
 				if (!fs::is_directory(dr)) continue; //If it is not a directory.
-				tree.insert(child, fs_ext::generic_u8string(dr.path().filename()),
-					               fs_ext::generic_u8string(dr.path().filename()));
+				tree.insert(child, dr.path().filename().generic_string(),
+					               dr.path().filename().generic_string());
 				break;
 			}
 			} catch (...) {}
@@ -72,11 +73,13 @@ int main()
 	exec(
 
 #ifdef NANA_AUTOMATIC_GUI_TESTING
-		2, 1, [&node]()
+/*		2, 1, [&node]()
 	{
 		node.expand(true);
 	}
+*/
 #endif
 
 	);
 }
+//#endif

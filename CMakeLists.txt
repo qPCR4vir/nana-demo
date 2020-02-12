@@ -21,6 +21,7 @@ project(nana_demo VERSION      1.6.2
         HOMEPAGE_URL http://nanapro.org
         LANGUAGES CXX         )
 
+enable_testing()
 add_subdirectory(../nana ../cmake-nana-build-${CMAKE_BUILD_TYPE} )
 
 option(NANA_CMAKE_INCLUDE_EXPERIMENTAL_DEMOS "" OFF)
@@ -30,11 +31,12 @@ function(set_nana_test dir files)
     foreach ( test ${${files}})
         add_executable(${test} "${${dir}}/${test}.cpp")
         target_link_libraries(${test} PUBLIC nana)
-        #if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
-        #add_custom_command( TARGET  ${test} POST_BUILD COMMAND  ${test} )
-        #add_custom_target(do_always_${test} ALL COMMAND ${test})
-        #add_test(${test} COMMAND ${test})
-        #endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+        if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+            #add_custom_command( TARGET  ${test} POST_BUILD COMMAND  ${test} )
+            #add_custom_target(do_always_${test} ALL COMMAND ${test})
+            add_test(NAME ${test} COMMAND ${test} WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/Examples)
+            message("... added test:  ${test}" )
+        endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
         install(TARGETS ${test} RUNTIME DESTINATION "nana-test/bin")
         message("... to build:  ${${dir}}/${test}.cpp" )
     endforeach( test ${${files}})
@@ -52,7 +54,7 @@ set (examples
         background-effects categ              clicked            windows-subclassing
         dock               drag-button        draw               example.button
         example_combox     example_listbox    example_menu       lambda_event.Cpp11
-        filebox-txt        folder_tree        folder_tree_nana   folder_tree_std
+        filebox-txt                           folder_tree_nana   folder_tree_std
         framework_design_1 framework_design_2 framework_design_3 label_listener
         group              HelloWord          helloword_quit     listbox_inline_widget
         inputbox           listbox_Resolver   loader_1           loader_2

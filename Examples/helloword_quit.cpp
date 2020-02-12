@@ -3,22 +3,16 @@
 
 int main()
  {
-     using namespace nana;
-
-     form fm;
+     nana::form fm;
      fm.caption("Hello World");
-     button btn(fm, nana::rectangle(20, 20, 150, 30));
+     nana::button btn(fm, nana::rectangle(20, 20, 150, 30));
      btn.caption("Quit");
-     btn.events().click(API::exit_all);
+     btn.events().click(nana::API::exit_all);
      fm.show();
-	 exec(
+     nana::exec(
 
 #ifdef NANA_AUTOMATIC_GUI_TESTING
-
-		 2, 1, [&btn]()
-	 {
-		 click(btn);
-	 }
+     2, 1, [&btn]() { click(btn); }
 #endif
 
 	 );
