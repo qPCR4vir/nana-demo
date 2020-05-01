@@ -11,7 +11,7 @@ void foo()
 
 void foo2()
 {
-    nana:: system::sleep(500);
+    std::this_thread::sleep_for(std::chrono::milliseconds{500});
     std::cout<<"This is foo2"<<std::endl;
 }
 
