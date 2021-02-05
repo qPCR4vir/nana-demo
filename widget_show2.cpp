@@ -260,6 +260,10 @@ namespace demo
 		label      	 lab    {labels_};
 		progress     progr_k{progreses_},
                      progr_u{progreses_} ;
+		button       b_a{ *this ,  ("About") },
+			         b_l{ *this ,  ("left..") },
+			         b_q{ *this ,  ("Quick") };
+
 		tabbar<std::string> tabbar_{*this} ;
         tab_page_listbox     tp_l  {*this} ;
         tab_page_treebox     tp_t  {*this} ;
@@ -284,6 +288,8 @@ namespace demo
 			place_["simples"] << simple_;
 			simple_.div("vertical all   min=260 gap=3 margin=5");
 			simple_["all"]<< buttons_ << comboxes_ << labels_ << progreses_ ;
+			place_["leftb"] << b_l;
+			place_["quick"] << b_a << b_q;
 
 			_m_init_menus();
 			_m_init_buttons();
@@ -326,6 +332,10 @@ namespace demo
 			b_i.icon( paint::image("../Examples/image.bmp"));
 
 			b_p.enable_pushed(true);
+
+			b_q.events().click([this]() {std::cout << "\nQuick?\n"; this->close(); });
+			b_a.events().click([this]() {std::cout << "\nAbout Nana Demo.\n"; });
+
 		}
 
 		void _m_init_comboxs()
