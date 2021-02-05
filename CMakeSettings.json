@@ -7,10 +7,26 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}\\..\\nana-demo_build_${name}\\",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "-DNANA_CMAKE_AUTOMATIC_GUI_TESTING=ON",
+      "cmakeCommandArgs": "-DNANA_CMAKE_AUTOMATIC_GUI_TESTING=OFF -DCMAKE_INSTALL_PREFIX=\"../\"",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
-      "variables": [],
+      "variables": [
+        {
+          "name": "NANA_CMAKE_ENABLE_CONF",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "NANA_CMAKE_ENABLE_JPEG",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "NANA_CMAKE_ENABLE_PNG",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ],
       "cmakeToolchain": ""
     },
     {
