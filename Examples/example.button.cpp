@@ -9,12 +9,12 @@ int main()
 
     form fm;
 
-    //Define a background for a button.
+    // Define a background for a button.
     element::bground bground;
 
-    //Load the BMP file
-    //The second parameter is passed by true to indicate that each state aligns vertically.
-    //The third parameter specifies the valid area of the picture. It uses the whole picture when the width or height of the valid area is zero.
+    // Load the BMP file containing a series of pictures - one for each button state.
+    // The second parameter is passed as true to indicate that the state pictures are vertically aligned.
+    // The third parameter specifies the valid area of the picture. The whole picture is used when the width or height of the valid area is zero.
     bground.image(paint::image("../Examples/bground.6states.bmp"), true, {});
 
     //Defaultly the button will stretch the whole background of state to fit the widget,

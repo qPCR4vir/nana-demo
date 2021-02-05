@@ -20,7 +20,7 @@ int main()
     label  out   {fm,  "This label is out of any group"};
     group  ext_gr{fm,  "An external <bold=true, color=blue>Group:</>", true };
 
-    plc.div("vert gap=10 margin=5 <lab weight=30><all> ");
+    plc.div("vertical gap=10 margin=5 <height=30   lab ><all> ");
     plc["lab"]  << out ;
     plc["all"]  << ext_gr;
 
