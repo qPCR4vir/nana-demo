@@ -99,18 +99,29 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_nod
 	ores << f_name(item);
     ores << fs_ext::pretty_file_date(item);//.path()
 
-	if (fs::is_directory(item))
-		ores << ("Directory") << "";
-	else
-	{
-		if (item.path().has_extension())
-			ores << item.path().extension().generic_string();
-//			ores << nana::to_utf8(item.path().extension().generic_wstring());
-		else
-			ores << ("File");
+	bool is_dir = false;
 
-        ores << fs_ext::pretty_file_size(item);
+	try 
+	{
+		is_dir = fs::is_directory(item);
+		if (is_dir)
+			ores << ("Directory") << "";
+		else
+		{
+			if (item.path().has_extension())
+				ores << item.path().extension().generic_string();
+	//			ores << nana::to_utf8(item.path().extension().generic_wstring());
+			else
+				ores << ("File");
+
+			ores << fs_ext::pretty_file_size(item);
+		}	
 	}
+	catch (std::filesystem::filesystem_error &e)
+	{
+		ores << ("Error: ") << e.what();
+	}
+
 
 	return ores;
 }
