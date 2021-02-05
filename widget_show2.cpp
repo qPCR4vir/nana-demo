@@ -427,7 +427,12 @@ namespace demo
 	}
 }
 
-int main()
+int main() try
 {
-	demo::go();	
+		demo::go();	
 }
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what();
+		return -1;
+	}
