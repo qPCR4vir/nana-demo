@@ -1,7 +1,8 @@
 /*
  *	This is a demo of Nana C++ Library
- *	Author: Jinhao, simplified by qPCR4vir
- *	The demo requires Nana 1.0 and C++11 compiler
+ *	Author: Jinhao
+ *  modified:qPCR4vir
+ *	The demo requires Nana 1.8 and C++17 compiler
  *	Screenshot at http://sourceforge.net/projects/stdex
  */
 #include <memory>
@@ -318,8 +319,11 @@ namespace demo
 			menu& prog = menubar_.push_back("Program");
 			menu& help = menubar_.push_back("Help");
 
-			prog.append("Quick", [this](menu::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
-			help.append("About", [this](menu::item_proxy& i) {std::cout<<"\nAbout Nana Demo.\n"; });
+			auto& about = help.append("About", [this](menu::item_proxy& i) {std::cout<<"\nAbout Nana Demo.\n"; });
+			auto& quick = prog.append("Quick", [this](menu::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
+
+			prog.image(quick.index(), paint::image("../Examples/img/exit_PNG43-16px.bmp"));
+			help.image(about.index(), paint::image("../Examples/img/Information-16px.bmp"));
 
 		}
 		void _m_init_tools()
@@ -351,8 +355,8 @@ namespace demo
 
 			b_p.enable_pushed(true);
 
-			b_q.events().click([this]() {std::cout << "\nQuick?\n"; this->close(); });
 			b_a.events().click([this]() {std::cout << "\nAbout Nana Demo.\n"; });
+			b_q.events().click([this]() {std::cout << "\nQuick?\n"; this->close(); });
 
 			b_a.icon(paint::image("../Examples/img/Information-16px.bmp"));
 			b_q.icon(paint::image("../Examples/img/exit_PNG43-16px.bmp"));
