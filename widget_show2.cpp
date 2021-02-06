@@ -14,6 +14,7 @@
 #include <nana/gui.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/menubar.hpp>
+#include <nana/gui/widgets/toolbar.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/combox.hpp>
 #include <nana/gui/widgets/label.hpp>
@@ -247,6 +248,8 @@ namespace demo
         place        place_ {*this} ;    //A layout management
 		timer        timer_ ;
 		menubar      menubar_{ *this };
+		toolbar      toolbar_{ *this };
+
 		group        simple_    {*this,  "Simple <bold=true, color=0xff0000>widgets</>", true /*formated*/} ,
                      buttons_   {simple_,  "Buttons"},
 				     comboxes_  {simple_,  "Comboxes"},
@@ -278,13 +281,14 @@ namespace demo
 		{
             nana::API::track_window_size(*this, {300,300}, false); //minimum
 		    this->caption(("This is a demo of Nana C++ Library"));
-			place_.div( R"(vertical <height=25 menubar>
+			place_.div( R"(vertical <height=25 <menubar><><width=50 toolbar><width=10> >
                                     <height=30% min=260 <width=10> <simples gap=3 margin=5> >
-                                    <height=30 margin=[0,10,2,10] <fit leftb gap=2> <> <fit quick gap=2>>
+                                    <height=30 margin=[0,10,2,10] <fit leftb gap=2> <> <width=142 quick arrange=[70] gap=2>>
                                     <height=20 tab >
                                     <tab_frame>        )"      );
 
 			place_["menubar"] << menubar_;
+			place_["toolbar"] << toolbar_;
 			place_["simples"] << simple_;
 			simple_.div("vertical all   min=260 gap=3 margin=5");
 			simple_["all"]<< buttons_ << comboxes_ << labels_ << progreses_ ;
@@ -292,6 +296,7 @@ namespace demo
 			place_["quick"] << b_a << b_q;
 
 			_m_init_menus();
+			_m_init_tools();
 			_m_init_buttons();
 			_m_init_comboxs();
 			_m_init_labels();
@@ -315,6 +320,19 @@ namespace demo
 
 			prog.append("Quick", [this](menu::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
 			help.append("About", [this](menu::item_proxy& i) {std::cout<<"\nAbout Nana Demo.\n"; });
+
+		}
+		void _m_init_tools()
+		{
+			auto& about = toolbar_.append(toolbar::tools::button, 
+				                         "About", 
+				                         paint::image("../Examples/img/Information-16px.bmp"),
+				                         [this](toolbar::item_proxy& i) {std::cout << "\nAbout Nana Demo.\n"; });
+
+			auto& quick = toolbar_.append(toolbar::tools::button,
+										  "Quick",
+										  paint::image("../Examples/img/exit_PNG43-16px.bmp"),
+										  [this](toolbar::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
 
 		}
 		void _m_init_buttons()
