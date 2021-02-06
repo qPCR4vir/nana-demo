@@ -336,6 +336,8 @@ namespace demo
 			b_q.events().click([this]() {std::cout << "\nQuick?\n"; this->close(); });
 			b_a.events().click([this]() {std::cout << "\nAbout Nana Demo.\n"; });
 
+			b_a.icon(paint::image("../Examples/img/Information-16px.bmp"));
+			b_q.icon(paint::image("../Examples/img/exit_PNG43-16px.bmp"));
 		}
 
 		void _m_init_comboxs()
