@@ -268,6 +268,13 @@ namespace demo
 			         b_l{ *this ,  ("left..") },
 			         b_q{ *this ,  ("Quick") };
 
+		shared_command quick = std::make_shared<command>( "Quick",
+			                  [this](command& me) {std::cout << "\nQuick?\n"; this->close() ; },
+			                  paint::image("../Examples/img/exit_PNG43-16px.bmp")  ),
+			           about = std::make_shared<command>( "About",
+						      [this](command& me) {std::cout << "\nAbout Nana Demo.\n"; },
+			                  paint::image("../Examples/img/Information-16px.bmp") );
+
 		tabbar<std::string> tabbar_{*this} ;
         tab_page_listbox     tp_l  {*this} ;
         tab_page_treebox     tp_t  {*this} ;
@@ -316,28 +323,13 @@ namespace demo
 	private:
 		void _m_init_menus()
 		{
-			menu& prog = menubar_.push_back("Program");
-			menu& help = menubar_.push_back("Help");
-
-			auto& about = help.append("About", [this](menu::item_proxy& i) {std::cout<<"\nAbout Nana Demo.\n"; });
-			auto& quick = prog.append("Quick", [this](menu::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
-
-			prog.image(quick.index(), paint::image("../Examples/img/exit_PNG43-16px.bmp"));
-			help.image(about.index(), paint::image("../Examples/img/Information-16px.bmp"));
-
+			menubar_.push_back("Program").append(this->about);
+			menubar_.push_back("Help").append(this->quick);
 		}
 		void _m_init_tools()
 		{
-			auto& about = toolbar_.append(toolbar::tools::button, 
-				                         "About", 
-				                         paint::image("../Examples/img/Information-16px.bmp"),
-				                         [this](toolbar::item_proxy& i) {std::cout << "\nAbout Nana Demo.\n"; });
-
-			auto& quick = toolbar_.append(toolbar::tools::button,
-										  "Quick",
-										  paint::image("../Examples/img/exit_PNG43-16px.bmp"),
-										  [this](toolbar::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
-
+			toolbar_.append(toolbar::tools::button, this->about);
+			toolbar_.append(toolbar::tools::button, this->quick);
 		}
 		void _m_init_buttons()
 		{
