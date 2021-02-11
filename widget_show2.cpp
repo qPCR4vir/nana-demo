@@ -273,10 +273,9 @@ namespace demo
 		label      	 lab    {labels_};
 		progress     progr_k{progreses_},
                      progr_u{progreses_} ;
-		button       b_a{ *this ,  ("About") },
+		button       b_a{ *this ,  about },
 			         b_l{ *this ,  ("left..") },
-			         b_q{ *this ,  ("Quick") };
-
+			         b_q{ *this ,  quick };
 
 		tabbar<std::string> tabbar_{*this} ;
         tab_page_listbox     tp_l  {*this} ;
@@ -350,11 +349,11 @@ namespace demo
 
 			b_p.enable_pushed(true);
 
-			b_a.events().click([this]() {std::cout << "\nAbout Nana Demo.\n"; });
-			b_q.events().click([this]() {std::cout << "\nQuick?\n"; this->close(); });
+			//b_a.events().click([this]() {std::cout << "\nAbout Nana Demo.\n"; });
+			//b_q.events().click([this]() {std::cout << "\nQuick?\n"; this->close(); });
 
-			b_a.icon(paint::image("../Examples/img/Information-16px.bmp"));
-			b_q.icon(paint::image("../Examples/img/exit_PNG43-16px.bmp"));
+			b_a.icon(about->image);
+			//b_q.icon(paint::image("../Examples/img/exit_PNG43-16px.bmp"));
 		}
 
 		void _m_init_comboxs()
