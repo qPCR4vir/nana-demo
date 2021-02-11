@@ -246,7 +246,16 @@ namespace demo
 
 	class widget_show	: public form
 	{
-        place        place_ {*this} ;    //A layout management
+        shared_command quick = std::make_shared<command>( 
+			                  "Quick",
+			                  [this](command& me) {std::cout << "\nQuick?\n"; this->close() ; },
+			                  paint::image("../Examples/img/exit_PNG43-16px.bmp")  ),
+			           about = std::make_shared<command>( 
+						      "About",
+						      [this](command& me) {std::cout << "\nAbout Nana Demo.\n"; },
+			                  paint::image("../Examples/img/Information-16px.bmp") );
+        
+		place        place_ {*this} ;    //A layout management
 		timer        timer_ ;
 		menubar      menubar_{ *this };
 		toolbar      toolbar_{ *this };
@@ -268,12 +277,6 @@ namespace demo
 			         b_l{ *this ,  ("left..") },
 			         b_q{ *this ,  ("Quick") };
 
-		shared_command quick = std::make_shared<command>( "Quick",
-			                  [this](command& me) {std::cout << "\nQuick?\n"; this->close() ; },
-			                  paint::image("../Examples/img/exit_PNG43-16px.bmp")  ),
-			           about = std::make_shared<command>( "About",
-						      [this](command& me) {std::cout << "\nAbout Nana Demo.\n"; },
-			                  paint::image("../Examples/img/Information-16px.bmp") );
 
 		tabbar<std::string> tabbar_{*this} ;
         tab_page_listbox     tp_l  {*this} ;
