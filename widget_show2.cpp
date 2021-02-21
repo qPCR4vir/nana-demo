@@ -325,8 +325,8 @@ namespace demo
 	private:
 		void _m_init_menus()
 		{
-			menubar_.push_back("Program").append(this->about);
-			menubar_.push_back("Help").append(this->quick);
+			menubar_.push_back("Program").append(quick);
+			menubar_.push_back("Help").append(about);
 		}
 		void _m_init_tools()
 		{
@@ -348,12 +348,6 @@ namespace demo
 			b_i.icon( paint::image("../Examples/image.bmp"));
 
 			b_p.enable_pushed(true);
-
-			//b_a.events().click([this]() {std::cout << "\nAbout Nana Demo.\n"; });
-			//b_q.events().click([this]() {std::cout << "\nQuick?\n"; this->close(); });
-
-			b_a.icon(about->image);
-			//b_q.icon(paint::image("../Examples/img/exit_PNG43-16px.bmp"));
 		}
 
 		void _m_init_comboxs()
