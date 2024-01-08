@@ -319,8 +319,8 @@ namespace demo
 			menu& prog = menubar_.push_back("Program");
 			menu& help = menubar_.push_back("Help");
 
-			auto& about = help.append("About", [this](menu::item_proxy& i) {std::cout<<"\nAbout Nana Demo.\n"; });
-			auto& quick = prog.append("Quick", [this](menu::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
+			const auto& about = help.append("About", [this](menu::item_proxy& i) {std::cout<<"\nAbout Nana Demo.\n"; });
+			const auto& quick = prog.append("Quick", [this](menu::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
 
 			prog.image(quick.index(), paint::image("../Examples/img/exit_PNG43-16px.bmp"));
 			help.image(about.index(), paint::image("../Examples/img/Information-16px.bmp"));
@@ -328,12 +328,12 @@ namespace demo
 		}
 		void _m_init_tools()
 		{
-			auto& about = toolbar_.append(toolbar::tools::button, 
+			const auto& about = toolbar_.append(toolbar::tools::button, 
 				                         "About", 
 				                         paint::image("../Examples/img/Information-16px.bmp"),
 				                         [this](toolbar::item_proxy& i) {std::cout << "\nAbout Nana Demo.\n"; });
 
-			auto& quick = toolbar_.append(toolbar::tools::button,
+			const auto& quick = toolbar_.append(toolbar::tools::button,
 										  "Quick",
 										  paint::image("../Examples/img/exit_PNG43-16px.bmp"),
 										  [this](toolbar::item_proxy& i) {std::cout << "\nQuick?\n"; this->close(); });
