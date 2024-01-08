@@ -3,8 +3,6 @@
 #include <nana/gui/widgets/treebox.hpp>
 
 #include <nana/filesystem/filesystem_ext.hpp>
-//#define NANA_FILESYSTEM_FORCE      // if used this way, make sure nana was compiled with this option too
-//#if NANA_USING_NANA_FILESYSTEM
 
 int main()
 {
@@ -19,14 +17,18 @@ int main()
     
 	auto node = tree.insert(fs_ext::def_root, fs_ext::def_rootname);
 
-	// Boost can throw an exception "Access is denied"
+	// Boost? can throw an exception "Access is denied"
 	// when accessing some system paths, like "C:\Config.Msi"
    try {
-	dir_it sub_root{ fs_ext::def_rootstr};
-	auto p = sub_root->path();
-	std::string dir_name= p.filename().generic_string();
-	tree.insert(node, dir_name,dir_name);
+	    // build the root node
+
+		dir_it sub_root{ fs_ext::def_rootstr};
+		std::string dir_name= sub_root->path().filename().generic_string();
+		tree.insert(node, dir_name, dir_name);
+
 	} catch (...) {}
+
+
 
 	tree.events().expanded([&tree](const arg_treebox& arg)
 	{
@@ -57,6 +59,7 @@ int main()
 			{
 				std::string sdir_name = d->path().filename().generic_string();
 				tree.insert(child, sdir_name, sdir_name);
+
 			}
 			} catch (...) {}
 		}
@@ -77,5 +80,4 @@ int main()
 
 	);
 }
-
 //#endif   // #if NANA_USING_NANA_FILESYSTEM
