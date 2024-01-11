@@ -42,6 +42,8 @@ bin/
 
 # cmake bulids
 cmake-build*/
+build/
+cmake-nana-build-*/
 
 # codelite
 .codelite/
