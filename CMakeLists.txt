@@ -78,6 +78,33 @@ endfunction(set_nana_test)
 set_nana_test(demos_dir demos)
 set_nana_test(examples_dir examples)
 
+if(WIN32)
+    set(CMAKE_DEBUG_POSTFIX "_d")    # ??
+    # Global MSVC definitions. You may prefer the hand-tuned sln and projects from the nana repository.
+    if(MSVC)
+    #    option(MSVC_USE_MP "Set to ON to build nana with the /MP option (Visual Studio 2005 and above)." ON)
+    #    option(MSVC_USE_STATIC_RUNTIME "Set to ON to build nana with the /MT(d) option." ON)
+
+        # Change the MSVC Compiler flags
+        #if(MSVC_USE_MP)
+        #    target_compile_options(nana PUBLIC "/MP" )
+        #endif()
+
+        if(MSVC_USE_STATIC_RUNTIME)
+            foreach(flag
+                    CMAKE_C_FLAGS              CMAKE_C_FLAGS_DEBUG             CMAKE_C_FLAGS_RELEASE
+                    CMAKE_C_FLAGS_MINSIZEREL   CMAKE_C_FLAGS_RELWITHDEBINFO
+                    CMAKE_CXX_FLAGS            CMAKE_CXX_FLAGS_DEBUG           CMAKE_CXX_FLAGS_RELEASE
+                    CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+                if(${flag} MATCHES "/MD")
+                    string(REGEX REPLACE "/MD" "/MT" ${flag} "${${flag}}")
+                endif()
+            endforeach()
+        endif()
+    endif()
+endif()
+
+
 if (NANA_CMAKE_VERBOSE_PREPROCESSOR)
     # Just for information:
     include(CMakePrintHelpers)
