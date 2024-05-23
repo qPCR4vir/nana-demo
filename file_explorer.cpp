@@ -94,44 +94,47 @@ using f_node_children = decltype (children);
 using f_list_items    = decltype (l_items);
 using f_node_title    = decltype (f_name);
 
-nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_node& item)
+namespace nana::drawerbase::listbox
 {
-	ores << f_name(item);
-    ores << fs_ext::pretty_file_date(item);//.path()
-
-	bool is_dir = false;
-
-	try 
+	nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const d_node& item)
 	{
-		is_dir = fs::is_directory(item);
-		if (is_dir)
-			ores << ("Directory") << "";
-		else
+		ores << f_name(item);
+	    ores << fs_ext::pretty_file_date(item);//.path()
+	
+		bool is_dir = false;
+	
+		try 
 		{
-			if (item.path().has_extension())
-				ores << item.path().extension().generic_string();
-	//			ores << nana::to_utf8(item.path().extension().generic_wstring());
+			is_dir = fs::is_directory(item);
+			if (is_dir)
+				ores << ("Directory") << "";
 			else
-				ores << ("File");
-
-			ores << fs_ext::pretty_file_size(item);
-		}	
+			{
+				if (item.path().has_extension())
+					ores << item.path().extension().generic_string();
+		//			ores << nana::to_utf8(item.path().extension().generic_wstring());
+				else
+					ores << ("File");
+	
+				ores << fs_ext::pretty_file_size(item);
+			}	
+		}
+		catch (std::filesystem::filesystem_error &e)
+		{
+			ores << ("Error: ") << e.what();
+		}
+	
+	
+		return ores;
 	}
-	catch (std::filesystem::filesystem_error &e)
+	
+	nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires, d_node& m)
 	{
-		ores << ("Error: ") << e.what();
+		/*std::string  type;
+		ires >> m.name >> type >> type;
+		m.directory = (type == "Directory");*/
+		return ires;
 	}
-
-
-	return ores;
-}
-
-nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires, d_node& m)
-{
-	/*std::string  type;
-	ires >> m.name >> type >> type;
-	m.directory = (type == "Directory");*/
-	return ires;
 }
 //template <class d_node, 
 //	      class d_item = d_node::value_type,
