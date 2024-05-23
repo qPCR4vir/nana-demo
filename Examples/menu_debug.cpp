@@ -8,6 +8,7 @@ int main(int argc, char **argv)
     nana::place pl(fm);
     nana::menubar mn(fm);
 
+    fm.caption("I call a modal window using a Menu");
     pl.div("<vertical <menu weight=25>>");
     pl.field("menu") << mn; 
 
@@ -15,6 +16,7 @@ int main(int argc, char **argv)
     mn.at(0).append("open modal window", [&fm](nana::menu::item_proxy& ip)
     {
         nana::form fm2(fm);
+        fm2.caption("Modal Window");
         fm2.show();
         fm2.modality();
     });
