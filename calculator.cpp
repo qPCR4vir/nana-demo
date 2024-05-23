@@ -188,7 +188,7 @@ int main()
 	//Make the label right aligned.
 	procedure.text_align(nana::align::right);
 	result.text_align(nana::align::right);
-	result.typeface(nana::paint::font("", 14, true));
+	result.typeface(nana::paint::font("", 14.0));
 
 	place["procedure"] << procedure;
 	place["result"] << result;
@@ -199,7 +199,7 @@ int main()
 	std::map<char,button*> bts;
 
 	char keys[] = "Cm%/789X456-123+0.="; // \261
-	paint::font keyfont("", 10, true);
+	paint::font keyfont("", 10);
 
 	for (auto key : keys)
 	{
