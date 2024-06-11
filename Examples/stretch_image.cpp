@@ -32,7 +32,7 @@ public:
 		if (!img_.open(("../Examples/bground.6states.bmp")))
 			throw std::runtime_error("Imposible to open the image");    /// \todo Open the image file.
         
-		drawing dw(*this);
+		nana::drawing dw(*this);
 		dw.draw([this](paint::graphics& graph)
 		{
 			rectangle r { point{ 0,0 }, img_.size() };
