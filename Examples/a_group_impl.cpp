@@ -31,7 +31,7 @@ namespace dm
 		    plc_.div("abc vert gap=5 margin=3");
 
 		    //draw a simple border.
-		    drawing dw(*this);
+		    nana::drawing dw(*this);
 		    dw.draw([](paint::graphics& graph)
 		    {
 			    graph.rectangle(false, colors::gray_border);
@@ -72,7 +72,7 @@ namespace dm
             color bg=obg.blend(colors::black, 0.050 );
             bgcolor(bg);
 
-            drawing dw(*this);
+            nana::drawing dw(*this);
 		    dw.draw([gap,sz,bg,obg](paint::graphics& graph)
 		    {
 			    graph.rectangle(true, obg);
