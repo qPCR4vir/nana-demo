@@ -112,6 +112,7 @@ free to process the events.
 |---|---|
 | `test_button` | the example above: a real click on a button runs its click handler |
 | `test_menu` | a popup menu opened by clicking a button: an item chosen with the keyboard (Down, Down, Enter, skipping the splitter) and an item chosen with the mouse (hover and click) |
+| `test_tooltip` | tooltips shown by hovering three buttons, and the form closed (by clicking a button) while its tooltip is visible |
 
 ## Files
 
