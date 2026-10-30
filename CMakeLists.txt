@@ -104,6 +104,12 @@ if(WIN32)
     endif()
 endif()
 
+# Tests that drive the widgets with real mouse and keyboard input: see InteractionTests/README.md.
+# After the MSVC runtime flags above: a subdirectory copies them when it is added.
+if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+    add_subdirectory(InteractionTests)
+endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+
 
 if (NANA_CMAKE_VERBOSE_PREPROCESSOR)
     # Just for information:
