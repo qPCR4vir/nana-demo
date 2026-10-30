@@ -23,7 +23,7 @@ thread and its locks. Emitting nana events directly (`api::emit_event`) would sk
 | Platform | To build | To run |
 |---|---|---|
 | Linux / X11 | the XTest development files (e.g. Debian/Ubuntu: `sudo apt install libxtst-dev`) | an X server with the XTest extension. A virtual one is enough, e.g. `Xvfb :99 -screen 0 1280x900x24 &` and then `DISPLAY=:99`. Not WSLg: there XTest does not move the pointer |
-| Windows | nothing more (`SendInput` is in `user32`, already used by nana) | an interactive desktop session; do not touch the mouse or keyboard while the tests run |
+| Windows | nothing more (`SendInput` is in `user32`, already used by nana) | an interactive desktop session; run `ctest` from a console in the foreground (see below); do not touch the mouse or keyboard while the tests run |
 
 If XTest is not found, CMake prints a warning and these tests are not built; everything else is unchanged.
 
@@ -42,6 +42,12 @@ On Linux without a display, start Xvfb first (see above) and run `DISPLAY=:99 ct
 
 Each test prints one line per check (`OK` or `FAIL`) and returns the number of failures, so CTest reports it as failed if
 any check fails.
+
+Real input goes wherever the operating system sends it: on Windows, to the window in the foreground. Before every input
+event the helper checks that it will reach a window of the test; if not, the test sends nothing more, prints `SKIP` and
+exits with code 77, which CTest reports as skipped, not failed. On Windows this happens when the test window cannot take
+the foreground: Windows does not allow it to a program started by another one in the background (e.g. from a script or
+an IDE without focus). Run `ctest` from a console in the foreground.
 
 ## How a test works
 
@@ -82,7 +88,7 @@ windows.
 | `move(wd, pos)` | moves the pointer to `pos`, in the coordinates of window or widget `wd` |
 | `move(wd)` | moves the pointer to the center of `wd` |
 | `click(button = mouse::left_button)` | presses and releases a mouse button where the pointer is (`nana::mouse`; `any_button` is the left one) |
-| `click(wd, button = mouse::left_button)` | moves to the center of `wd` and clicks |
+| `click(wd, button = mouse::left_button)` | moves onto `wd`, then to its center (so that `wd` always sees the pointer move), and clicks |
 | `key(k)` | presses and releases a key: a code of `nana::keyboard` (`keyboard::os_arrow_down`, `keyboard::enter`, `keyboard::escape`, …) or a character without modifiers (`L'a'`) |
 | `settle(ms = 300)` | waits so that the GUI thread can process the events sent so far |
 
@@ -116,4 +122,5 @@ free to process the events.
 ## Status
 
 - X11: tested with Xvfb (Ubuntu 26.04, GCC 15 and clang 21).
-- Windows: the `SendInput` implementation is a first version, not yet tested.
+- Windows: tested on Windows 11 with Visual Studio 2026 (MSVC; clang-cl 22 with ASan and UBSan) and MinGW-w64 GCC 15.2
+  (with UBSan), run from a console in the foreground. Started by a program in the background, the tests are skipped.

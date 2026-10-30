@@ -1,7 +1,8 @@
 // Windows: SendInput generates real input events (needs an interactive desktop session).
-// DRAFT, not compiled nor tested on Linux: to be completed and tested on Windows.
 #include "test_input.hpp"
 #include <windows.h>
+#include <chrono>
+#include <thread>
 
 namespace nana_test
 {
@@ -41,10 +42,47 @@ namespace nana_test
 		}
 
 		void flush() {}
+
+		void ensure_target();
+
+		namespace
+		{
+			bool foreground_is_ours()
+			{
+				DWORD pid = 0;
+				::GetWindowThreadProcessId(::GetForegroundWindow(), &pid);
+				return pid == ::GetCurrentProcessId();
+			}
+
+			BOOL CALLBACK find_own_window(HWND wd, LPARAM result)
+			{
+				DWORD pid = 0;
+				::GetWindowThreadProcessId(wd, &pid);
+				if (pid != ::GetCurrentProcessId() || !::IsWindowVisible(wd))
+					return TRUE;
+				*reinterpret_cast<HWND*>(result) = wd;
+				return FALSE;
+			}
+		}
+
+		// SendInput goes to the foreground window. Windows lets a program take the foreground only in some cases
+		// (e.g. not when it was started by a program in the background), so it may stay behind another program's window.
+		bool input_goes_to_this_program()
+		{
+			if (foreground_is_ours())
+				return true;
+
+			HWND own = nullptr;
+			::EnumWindows(find_own_window, reinterpret_cast<LPARAM>(&own));
+			if (own && ::SetForegroundWindow(own))
+				std::this_thread::sleep_for(std::chrono::milliseconds{ 100 });
+			return foreground_is_ours();
+		}
 	}
 
 	void click(nana::mouse button)
 	{
+		detail::ensure_target();
 		DWORD down = MOUSEEVENTF_LEFTDOWN, up = MOUSEEVENTF_LEFTUP;
 		if (button == nana::mouse::middle_button) { down = MOUSEEVENTF_MIDDLEDOWN; up = MOUSEEVENTF_MIDDLEUP; }
 		else if (button == nana::mouse::right_button) { down = MOUSEEVENTF_RIGHTDOWN; up = MOUSEEVENTF_RIGHTUP; }
@@ -57,6 +95,7 @@ namespace nana_test
 
 	void key(wchar_t k)
 	{
+		detail::ensure_target();
 		INPUT in[2]{};
 		in[0].type = in[1].type = INPUT_KEYBOARD;
 		if (auto const vk = vkey(k))

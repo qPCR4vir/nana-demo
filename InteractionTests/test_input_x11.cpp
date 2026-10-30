@@ -63,10 +63,19 @@ namespace nana_test
 		{
 			::XSync(display(), False);
 		}
+
+		void ensure_target();
+
+		// XTest events go to the X server: the window under the pointer or with the focus gets them, as with a user
+		bool input_goes_to_this_program()
+		{
+			return true;
+		}
 	}
 
 	void click(nana::mouse button)
 	{
+		detail::ensure_target();
 		unsigned const xbutton = (button == nana::mouse::middle_button ? 2 : (button == nana::mouse::right_button ? 3 : 1));
 		::XTestFakeButtonEvent(display(), xbutton, True, CurrentTime);
 		::XTestFakeButtonEvent(display(), xbutton, False, CurrentTime);
@@ -75,6 +84,7 @@ namespace nana_test
 
 	void key(wchar_t k)
 	{
+		detail::ensure_target();
 		auto const code = ::XKeysymToKeycode(display(), keysym(k));
 		::XTestFakeKeyEvent(display(), code, True, CurrentTime);
 		::XTestFakeKeyEvent(display(), code, False, CurrentTime);

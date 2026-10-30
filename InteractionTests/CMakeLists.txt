@@ -23,5 +23,6 @@ foreach(test ${interaction_tests})
     add_executable(${test} ${test}.cpp)
     target_link_libraries(${test} PRIVATE nana_test_input)
     add_test(NAME ${test} COMMAND ${test})
+    set_tests_properties(${test} PROPERTIES SKIP_RETURN_CODE 77)	# nana_test::skip_code: the input could not be sent
     message("... added interaction test:  ${test}")
 endforeach()
