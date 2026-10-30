@@ -78,6 +78,11 @@ endfunction(set_nana_test)
 set_nana_test(demos_dir demos)
 set_nana_test(examples_dir examples)
 
+# Tests that drive the widgets with real mouse and keyboard input: see InteractionTests/README.md
+if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+    add_subdirectory(InteractionTests)
+endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
+
 if(WIN32)
     set(CMAKE_DEBUG_POSTFIX "_d")    # ??
     # Global MSVC definitions. You may prefer the hand-tuned sln and projects from the nana repository.
