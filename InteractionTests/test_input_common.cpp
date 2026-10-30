@@ -18,7 +18,7 @@ namespace nana_test
 		move(wd, nana::point{ static_cast<int>(sz.width / 2), static_cast<int>(sz.height / 2) });
 	}
 
-	void click(nana::window wd, int button)
+	void click(nana::window wd, nana::mouse button)
 	{
 		move(wd);
 		settle(100);

@@ -6,18 +6,17 @@
 
 namespace nana_test
 {
-	enum class keys { down, up, left, right, enter, escape, tab, space };
-
 	/// Moves the pointer to pos, in the coordinates of the window wd.
 	void move(nana::window wd, nana::point pos);
 	/// Moves the pointer to the center of the window wd.
 	void move(nana::window wd);
-	/// Clicks (press and release) a mouse button where the pointer is. button: 1 left, 2 middle, 3 right.
-	void click(int button = 1);
+	/// Clicks (press and release) a mouse button where the pointer is. any_button is the left button.
+	void click(nana::mouse button = nana::mouse::left_button);
 	/// Moves the pointer to the center of wd and clicks.
-	void click(nana::window wd, int button = 1);
-	/// Presses and releases a key.
-	void key(keys k);
+	void click(nana::window wd, nana::mouse button = nana::mouse::left_button);
+	/// Presses and releases a key: a code of nana::keyboard (e.g. keyboard::os_arrow_down, keyboard::enter)
+	/// or a character without modifiers (e.g. L'a', L'1').
+	void key(wchar_t k);
 	/// Lets the GUI thread process the events sent so far.
 	void settle(unsigned ms = 300);
 }

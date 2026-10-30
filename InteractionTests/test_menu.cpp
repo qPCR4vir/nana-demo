@@ -42,9 +42,9 @@ int main()
 		// keyboard: Down selects "Item 0", Down skips the splitter to "Item 1" (index 2), Enter activates it
 		t::click(btn);
 		t::settle();
-		t::key(t::keys::down);
-		t::key(t::keys::down);
-		t::key(t::keys::enter);
+		t::key(keyboard::os_arrow_down);
+		t::key(keyboard::os_arrow_down);
+		t::key(keyboard::enter);
 		expect("keyboard, Item 1", 2);
 
 		// mouse: the menu pops up at (100, 36) of the button, with a 2-pixel border; hover "Item 0" and click it

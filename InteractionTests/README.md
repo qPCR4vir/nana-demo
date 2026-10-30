@@ -81,9 +81,9 @@ windows.
 |---|---|
 | `move(wd, pos)` | moves the pointer to `pos`, in the coordinates of window or widget `wd` |
 | `move(wd)` | moves the pointer to the center of `wd` |
-| `click(button = 1)` | presses and releases a mouse button where the pointer is (1 left, 2 middle, 3 right) |
-| `click(wd, button = 1)` | moves to the center of `wd` and clicks |
-| `key(keys::...)` | presses and releases a key: `down`, `up`, `left`, `right`, `enter`, `escape`, `tab`, `space` |
+| `click(button = mouse::left_button)` | presses and releases a mouse button where the pointer is (`nana::mouse`; `any_button` is the left one) |
+| `click(wd, button = mouse::left_button)` | moves to the center of `wd` and clicks |
+| `key(k)` | presses and releases a key: a code of `nana::keyboard` (`keyboard::os_arrow_down`, `keyboard::enter`, `keyboard::escape`, …) or a character without modifiers (`L'a'`) |
 | `settle(ms = 300)` | waits so that the GUI thread can process the events sent so far |
 
 Call these functions from the test function `f`, never from the GUI thread (an event handler): the GUI thread must stay
