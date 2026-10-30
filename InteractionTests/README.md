@@ -22,10 +22,10 @@ thread and its locks. Emitting nana events directly (`api::emit_event`) would sk
 
 | Platform | To build | To run |
 |---|---|---|
-| Linux / X11 | the XTest development files (e.g. Debian/Ubuntu: `sudo apt install libxtst-dev`) | an X server with the XTest extension. A virtual one is enough, e.g. `Xvfb :99 -screen 0 1280x900x24 &` and then `DISPLAY=:99`. Not WSLg: there XTest does not move the pointer |
+| Linux / X11 | the XTest and XCB development files (e.g. Debian/Ubuntu: `sudo apt install libxtst-dev libxcb1-dev`) | an X server with the XTest extension. A virtual one is enough, e.g. `Xvfb :99 -screen 0 1280x900x24 &` and then `DISPLAY=:99`. Not WSLg: there XTest does not move the pointer |
 | Windows | nothing more (`SendInput` is in `user32`, already used by nana) | an interactive desktop session; run `ctest` from a console in the foreground (see below); do not touch the mouse or keyboard while the tests run |
 
-If XTest is not found, CMake prints a warning and these tests are not built; everything else is unchanged.
+If XTest or XCB is not found, CMake prints a warning and these tests are not built; everything else is unchanged.
 
 ## Build and run
 
@@ -47,7 +47,9 @@ Real input goes wherever the operating system sends it: on Windows, to the windo
 event the helper checks that it will reach a window of the test; if not, the test sends nothing more, prints `SKIP` and
 exits with code 77, which CTest reports as skipped, not failed. On Windows this happens when the test window cannot take
 the foreground: Windows does not allow it to a program started by another one in the background (e.g. from a script or
-an IDE without focus). Run `ctest` from a console in the foreground.
+an IDE without focus). Run `ctest` from a console in the foreground. On X11 a click is sent only if the window under the
+pointer belongs to the test, and a key only if the window with the keyboard focus does (e.g. not when another program's
+window covers the test window); moving the pointer is always allowed, it cannot activate anything.
 
 ## How a test works
 

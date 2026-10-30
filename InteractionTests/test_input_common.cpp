@@ -12,6 +12,8 @@ namespace nana_test
 		void flush();
 		bool input_goes_to_this_program();	// platform: false if the input would reach another program
 
+		nana::native_window_type target_root{};	// root of the last window given to move(): one of this test's windows
+
 		void ensure_target()
 		{
 			if (input_goes_to_this_program())
@@ -24,6 +26,7 @@ namespace nana_test
 
 	void move(nana::window wd, nana::point pos)
 	{
+		detail::target_root = nana::api::root(wd);
 		nana::api::calc_screen_point(wd, pos);
 		detail::ensure_target();
 		detail::move_screen(pos.x, pos.y);

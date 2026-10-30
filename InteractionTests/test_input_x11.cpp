@@ -3,6 +3,9 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/extensions/XTest.h>
+#include <xcb/xcb.h>
+#include <cstdlib>
+#include <iostream>
 #include <stdexcept>
 
 namespace nana_test
@@ -65,17 +68,63 @@ namespace nana_test
 		}
 
 		void ensure_target();
+		extern nana::native_window_type target_root;
 
-		// XTest events go to the X server: the window under the pointer or with the focus gets them, as with a user
+		// XTest events go to the X server, which gives them to the window under the pointer (buttons) or with the
+		// keyboard focus (keys), as with a user. A move cannot activate anything: click() and key() check the target.
 		bool input_goes_to_this_program()
 		{
 			return true;
 		}
 	}
 
+	namespace
+	{
+		// The X server gives each connection a base for the ids of its resources: the windows created by this test (by
+		// nana's connection) share the bits outside the resource id mask, and the windows of other programs do not.
+		bool of_this_test(Window wd)
+		{
+			static unsigned long const mask = [] {
+				unsigned long m = 0;
+				if (auto conn = ::xcb_connect(nullptr, nullptr))
+				{
+					if (!::xcb_connection_has_error(conn))
+						m = ::xcb_get_setup(conn)->resource_id_mask;
+					::xcb_disconnect(conn);
+				}
+				return m;
+			}();
+
+			auto const own = reinterpret_cast<Window>(detail::target_root);
+			return mask && own && wd && ((wd & ~mask) == (own & ~mask));
+		}
+
+		// the deepest window under the pointer
+		Window under_pointer()
+		{
+			Window wd = DefaultRootWindow(display()), root, child;
+			int root_x, root_y, x, y;
+			unsigned mask;
+			while (::XQueryPointer(display(), wd, &root, &child, &root_x, &root_y, &x, &y, &mask) && child != None)
+				wd = child;
+			return wd;
+		}
+
+		// input must never reach another program: send nothing more and end the test as skipped
+		void skip_unless(bool ours, const char* what)
+		{
+			if (ours)
+				return;
+			std::cout << "SKIP " << what << " is not a window of this test (another window covers it?). No input was sent."
+				<< std::endl;
+			std::_Exit(skip_code);
+		}
+	}
+
 	void click(nana::mouse button)
 	{
 		detail::ensure_target();
+		skip_unless(of_this_test(under_pointer()), "the window under the pointer");
 		unsigned const xbutton = (button == nana::mouse::middle_button ? 2 : (button == nana::mouse::right_button ? 3 : 1));
 		::XTestFakeButtonEvent(display(), xbutton, True, CurrentTime);
 		::XTestFakeButtonEvent(display(), xbutton, False, CurrentTime);
@@ -85,6 +134,11 @@ namespace nana_test
 	void key(wchar_t k)
 	{
 		detail::ensure_target();
+		Window focus;
+		int revert_to;
+		::XGetInputFocus(display(), &focus, &revert_to);
+		// PointerRoot: the keys go to the window under the pointer
+		skip_unless(of_this_test(focus == PointerRoot ? under_pointer() : focus), "the window with the keyboard focus");
 		auto const code = ::XKeysymToKeycode(display(), keysym(k));
 		::XTestFakeKeyEvent(display(), code, True, CurrentTime);
 		::XTestFakeKeyEvent(display(), code, False, CurrentTime);
