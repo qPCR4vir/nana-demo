@@ -17,7 +17,7 @@ else()
     endif()
 endif()
 
-set(interaction_tests test_button test_menu test_tooltip test_filebox)
+set(interaction_tests test_button test_menu test_menubar test_tooltip test_filebox)
 
 foreach(test ${interaction_tests})
     add_executable(${test} ${test}.cpp)
