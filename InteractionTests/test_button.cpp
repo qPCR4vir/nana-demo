@@ -2,6 +2,7 @@
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include "test_input.hpp"
+#include <atomic>
 #include <iostream>
 
 int main()
@@ -10,7 +11,7 @@ int main()
 	form fm;
 	button btn(fm, rectangle(10, 10, 100, 25));
 	btn.caption("Click me");
-	bool clicked = false;
+	std::atomic<bool> clicked{ false };	// written by the GUI thread, read by the thread of the test
 	btn.events().click([&] { clicked = true; });
 	fm.show();
 
