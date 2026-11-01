@@ -59,13 +59,14 @@ A test is an ordinary nana program that uses the test mode of `nana::exec`:
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include "test_input.hpp"
+#include <atomic>
 
 int main()
 {
 	using namespace nana;
 	form fm;
 	button btn(fm, rectangle(10, 10, 100, 25));
-	bool clicked = false;
+	std::atomic<bool> clicked{ false };  // written by the GUI thread, read by the thread of the test
 	btn.events().click([&] { clicked = true; });
 	fm.show();
 
