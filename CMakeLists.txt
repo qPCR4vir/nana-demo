@@ -7,7 +7,7 @@
 # The used 'resources' and self the soucers will be copied into the directory "nana-test/Examples"
 # and the executables in "nana-test/bin"
 
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 project(nana_demo VERSION      1.6.2
         DESCRIPTION "nana C++ GUI library demos and tests"
         HOMEPAGE_URL https://github.com/cnjinhao/nana
@@ -80,32 +80,10 @@ set_nana_test(examples_dir examples)
 
 if(WIN32)
     set(CMAKE_DEBUG_POSTFIX "_d")    # ??
-    # Global MSVC definitions. You may prefer the hand-tuned sln and projects from the nana repository.
-    if(MSVC)
-    #    option(MSVC_USE_MP "Set to ON to build nana with the /MP option (Visual Studio 2005 and above)." ON)
-    #    option(MSVC_USE_STATIC_RUNTIME "Set to ON to build nana with the /MT(d) option." ON)
-
-        # Change the MSVC Compiler flags
-        #if(MSVC_USE_MP)
-        #    target_compile_options(nana PUBLIC "/MP" )
-        #endif()
-
-        if(MSVC_USE_STATIC_RUNTIME)
-            foreach(flag
-                    CMAKE_C_FLAGS              CMAKE_C_FLAGS_DEBUG             CMAKE_C_FLAGS_RELEASE
-                    CMAKE_C_FLAGS_MINSIZEREL   CMAKE_C_FLAGS_RELWITHDEBINFO
-                    CMAKE_CXX_FLAGS            CMAKE_CXX_FLAGS_DEBUG           CMAKE_CXX_FLAGS_RELEASE
-                    CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-                if(${flag} MATCHES "/MD")
-                    string(REGEX REPLACE "/MD" "/MT" ${flag} "${${flag}}")
-                endif()
-            endforeach()
-        endif()
-    endif()
+    # The MSVC runtime (static by default) is selected by nana's CMake: CMAKE_MSVC_RUNTIME_LIBRARY, MSVC_USE_STATIC_RUNTIME.
 endif()
 
 # Tests that drive the widgets with real mouse and keyboard input: see InteractionTests/README.md.
-# After the MSVC runtime flags above: a subdirectory copies them when it is added.
 if(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
     add_subdirectory(InteractionTests)
 endif(NANA_CMAKE_AUTOMATIC_GUI_TESTING)
